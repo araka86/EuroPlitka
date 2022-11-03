@@ -1,0 +1,10 @@
+﻿@model IEnumerable<EuroPlitka_Model.Category>
+
+
+<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"> Каталог </a>
+<div class="dropdown-menu">
+    @foreach (var cat in Model)
+    {
+        <a class="dropdown-item" asp-route-id="@cat.DisplayOrder" asp-controller="CategoryMenu" asp-action="Category">@cat.Name</a>
+    }
+</div>
