@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using static System.Environment;
 
 namespace EuroPlitka_Services
 {
@@ -22,6 +18,7 @@ namespace EuroPlitka_Services
 
 
         //For Path to image
-        public const string ImagePath = @"\images";
+        public const string ImageFolder = @"\images";
+      
     }
 }

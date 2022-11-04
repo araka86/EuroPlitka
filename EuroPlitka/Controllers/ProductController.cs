@@ -4,16 +4,8 @@ using EuroPlitka_Model.ViewModels;
 using EuroPlitka_Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Drawing;
-using System.Net;
 using System.IO;
-using System.Net.Mail;
-
-
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Web;
-using NuGet.Packaging.Signing;
-using System;
+using static System.Environment;
 
 
 namespace EuroPlitka.Controllers
@@ -38,38 +30,16 @@ namespace EuroPlitka.Controllers
             return View(objtList);
         }
 
-
-     
-
         //Get - Upsert(Views-->Index (create/update))
         public IActionResult Upsert(int? id)
         {
 
-          
-            //byte[] contents = System.IO.File.ReadAllBytes("D:\\МНТУ\\Final Сессия\\Бакалаврська робота\\EuroPlitka\\EuroPlitkakover.jpg");
-
-            //string base64ImageRepresentation = Convert.ToBase64String(contents);
-
-            //var base64 = $"data:image/png;base64,{Convert.ToBase64String(contents)}";
-            //string imgDataURL = string.Format("data:image/jpg;base64,{0}", base64ImageRepresentation);
-
-            //var img = Image.FromStream(new MemoryStream(Convert.FromBase64String(base64ImageRepresentation)));
-
-       
-            //ViewBag.Image = base64;
-
-
-
-
             ProdoctVM prodoctVM = new ProdoctVM()
             {
-                Product = new Product(),             
+                Product = new Product(),
                 CategorySelectList = _prodRepo.GetAllDropdownList(WebConstanta.CategoryName),
                 ProductTypeSelectList = _prodRepo.GetAllDropdownList(WebConstanta.ProductTypeName)
             };
-
-         
-
             if (id == null) //Check object
             {
                 //this is for create
@@ -83,44 +53,33 @@ namespace EuroPlitka.Controllers
                 {
                     return NotFound();
                 }
-
-                string base64ImageRepresentation = Convert.ToBase64String(prodoctVM.Product.imagebyte);
-                string imgDataURL = string.Format("data:image/jpg;base64,{0}", base64ImageRepresentation);
-                ViewBag.Image = imgDataURL;
+                if (prodoctVM.Product.imagebyte !=null)
+                {
+                    string base64ImageRepresentation = Convert.ToBase64String(prodoctVM.Product.imagebyte);
+                    string imgDataURL = string.Format("data:image/jpg;base64,{0}", base64ImageRepresentation);
+                    ViewBag.Image = imgDataURL;
+                }              
                 return View(prodoctVM);
             }
-
         }
-
-/// /////////////////////////////////////////////////
-
-        public Image byteArrayToImage(byte[] byteArrayIn)
+        public void CheckFolder(string path)
         {
-            MemoryStream ms = new MemoryStream(byteArrayIn);
-            Image returnImage = Image.FromStream(ms);
-            return returnImage;
-        }
-        public byte[] imageToByteArray(Image imageIn)
-        {
-            MemoryStream ms = new MemoryStream();
-            imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Gif);
-            return ms.ToArray();
-        }
-
-        public Image ConvertBase64ToImage(string base64String)
-        {
-            byte[] imageBytes = Convert.FromBase64String(base64String);
-            using (MemoryStream ms = new MemoryStream(imageBytes, 0, imageBytes.Length))
+            if (!Directory.Exists(path))
             {
-                ms.Write(imageBytes, 0, imageBytes.Length);
-                return Image.FromStream(ms, true);
+                Directory.CreateDirectory(path);
+            }
+            else
+            {
+                var existFile = Directory.GetFiles(path);
+                if (existFile.Length > 0)
+                {
+                    foreach (var item in existFile)
+                    {
+                        System.IO.File.Delete(item);
+                    }
+                }
             }
         }
-
-        /// /////////////////////////////////////////////////
-
-
-
 
         //Post - Upsert (Views-->Upsert(only UPDATE) )
         [HttpPost]
@@ -129,51 +88,56 @@ namespace EuroPlitka.Controllers
         {
             if (ModelState.IsValid)
             {
-
+                string PublicPictureFolder = GetFolderPath(SpecialFolder.CommonPictures);
+                string FullPathToDirectory = Path.Combine(PublicPictureFolder + WebConstanta.ImageFolder);
+                CheckFolder(FullPathToDirectory);
                 var files = HttpContext.Request.Form.Files; //get image
-                string webRootPath = _webHostEnvironment.WebRootPath; //get path to wwwroot
-
-               
                 if (prodoctVM.Product.Id == 0)
                 {
-
-                    //creating
-                    string upload = webRootPath + WebConstanta.ImagePath; //get path from image
+                    //////////////////creating/////////////////////////
                     string fileName = Guid.NewGuid().ToString();       //greate random guid
                     string extension = Path.GetExtension(files[0].FileName); //get extension file which uploaded
-                    string FullPath = Path.Combine(upload, fileName + extension);
-
-                    using (var filestream = new FileStream(Path.Combine(upload, fileName + extension), FileMode.Create))
+                    string FullPath = Path.Combine(FullPathToDirectory, fileName + extension);
+                    using (var filestream = new FileStream(FullPath, FileMode.Create))
                     {
                         files[0].CopyTo(filestream);
                     }
-
                     byte[] contents = System.IO.File.ReadAllBytes(FullPath);  //crush to byte
-
                     prodoctVM.Product.imagebyte = contents;
                     _prodRepo.Add(prodoctVM.Product);
-
-
+                    TempData[WebConstanta.Success] = "Prodoct Create successfully";
                 }
                 else
                 {
-
+                    ////////////////////////////////////updating//////////////////////////////////
+                    var objFromDB = _prodRepo.FirstOrDefault(u => u.Id == prodoctVM.Product.Id, isTracking: false);
+                    if (files.Count > 0)
+                    {
+                        string fileName = Guid.NewGuid().ToString();       //greate random guid
+                        string extension = Path.GetExtension(files[0].FileName); //get extension file which uploaded
+                        string FullPath = Path.Combine(FullPathToDirectory, fileName + extension);
+                        using (var filestream = new FileStream(FullPath, FileMode.Create))
+                        {
+                            files[0].CopyTo(filestream);
+                        }
+                        byte[] contents = System.IO.File.ReadAllBytes(FullPath);  //crush to byte
+                        prodoctVM.Product.imagebyte = contents;
+                    }
+                    else
+                    {
+                        prodoctVM.Product.imagebyte = objFromDB.imagebyte;
+                    }
+                    TempData[WebConstanta.Success] = "Prodoct Update successfully";
+                    _prodRepo.Update(prodoctVM.Product);
                 }
-
+                CheckFolder(FullPathToDirectory);
                 _prodRepo.Save();
                 return RedirectToAction("Index"); //return to Action
-
-
             }
             //if no valid
             prodoctVM.CategorySelectList = _prodRepo.GetAllDropdownList(WebConstanta.CategoryName);
             prodoctVM.ProductTypeSelectList = _prodRepo.GetAllDropdownList(WebConstanta.ProductTypeName);
-
-
-
             return View(prodoctVM);
-
-
         }
 
 
