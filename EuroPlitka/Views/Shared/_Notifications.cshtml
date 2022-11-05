@@ -1,0 +1,23 @@
+﻿ @using EuroPlitka_Services
+
+@if (TempData[WebConstanta.Success] != null)
+{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/toastr.min.js"></script>
+
+       <script type="text/javascript">
+        toastr.success('@TempData[WebConstanta.Success]');
+       </script>
+}
+@if (TempData[WebConstanta.Error] != null)
+{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/toastr.min.js"></script>
+
+       <script type="text/javascript">
+        toastr.error('@TempData[WebConstanta.Error]');
+    </script>
+}
+  
+
+

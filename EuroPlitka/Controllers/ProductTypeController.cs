@@ -32,10 +32,10 @@ namespace EuroPlitka.Controllers
             {
                 _productTypeRepository.Add(obj);
                 _productTypeRepository.Save();
-                TempData[WebConstanta.Success] = "AplicationType create successfully";
+                TempData[WebConstanta.Success] = "Product Type create successfully";
                 return Redirect("Index");
             }
-            TempData[WebConstanta.Error] = "AplicationType create Error";
+            TempData[WebConstanta.Error] = "Product Type create Error";
             return View(obj);
         }
 
@@ -66,10 +66,10 @@ namespace EuroPlitka.Controllers
             {
                 _productTypeRepository.Update(obj);
                 _productTypeRepository.Save();
-                TempData[WebConstanta.Success] = "AplicationType Update successfully";
+                TempData[WebConstanta.Success] = "Product Type Update successfully";
                 return RedirectToAction("Index");
             }
-            TempData[WebConstanta.Error] = "AplicationType Update Error";
+            TempData[WebConstanta.Error] = "Product Type Update Error";
             return View(obj);
         }
 
@@ -105,7 +105,7 @@ namespace EuroPlitka.Controllers
 
             _productTypeRepository.Remove(obj);
             _productTypeRepository.Save();
-            TempData[WebConstanta.Success] = "AplicationType Delete successfully";
+            TempData[WebConstanta.Success] = "Product Type Delete successfully";
             return RedirectToAction("Index");
         }
 

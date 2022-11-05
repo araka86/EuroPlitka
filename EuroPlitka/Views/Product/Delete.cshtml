@@ -1,0 +1,139 @@
+﻿@model EuroPlitka_Model.Product
+@using EuroPlitka_Services
+
+
+<form method="post"  > 
+   
+        <input asp-for="Id" hidden />
+    
+   
+    <div class="border p-3 bg-white">
+        <div class=form-group p-3>
+            <h2 class="text-info pl-3">Delete Product</h2> @*использования title*@
+        </div>
+
+        <div class="row" >
+            <div class="col-md-8">
+
+                                            @*---------> Name <---------*@
+                <div class="form-group row py-2">
+                    <div class="col-md-4">
+                        <label asp-for="Name"></label>
+                    </div>
+                    <div class="col-md-8" >
+                        <input asp-for="Name" disabled class="form-control" />
+                   
+                    </div>
+                </div>
+
+
+                  
+                                            @*---------> CategoryList (DropDouwn) <---------*@
+                <div class="form-group row py-2">
+                    <div class="col-md-4" >
+                        <label asp-for="CategoryId" ></label>
+                    </div>
+                    <div class="col-md-8" >
+             
+                         <input asp-for="Category.Name" disabled class="form-control" />
+                        
+                    </div>
+                </div> 
+
+
+                                          @*---------> ApplicationListId (DropDouwn) <---------*@
+                <div class="form-group row py-2">
+                    <div class="col-md-4" >
+                        <label asp-for="ProductTypeId" ></label>
+                    </div>
+                    <div class="col-md-8" >
+             
+                         <input asp-for="ProductType.Name" disabled class="form-control" />
+                        
+                    </div>
+                </div> 
+
+
+                                               @*---------> Description <---------*@
+                <div class="form-group row py-2">
+
+                    <div class="col-md-4">
+                        <label asp-for="Description"></label>
+
+                    </div>
+                    <div class="col-md-8">
+                            <textarea  asp-for="Description"  class="form-control summernote"></textarea>
+                      
+                    </div>
+                </div>
+
+
+                                        
+
+
+                                                @*---------> Price <---------*@
+
+                 <div class="form-group row py-2">
+                    <div class="col-md-4" >
+                        <label asp-for="Price" ></label>
+                    </div>
+                    <div class="col-md-8" >
+                        <input asp-for="Price" disabled class="form-control" />
+            
+                    </div>
+                </div>
+
+
+                                            @*---------> Button <---------*@
+                <div class="form-group row py-2">
+                    <div class="col-md-8 offset-4 row">
+
+                        <div class="col" >
+                           
+                                    <button type="submit" class="btn btn-danger w-100 " >Delete</button>
+                               
+                        </div>
+
+                        <div class="col" >
+                              <a asp-controller="Product" asp-action="Index" class="btn btn-success  w-100" >
+                                  <i class="fa-solid fa-rotate-left"></i>
+                                  </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-4 ">
+                <img  src="@string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(Model.imagebyte).ToString())" class="w-100"  style="border-radius:15px; border:1px solid #bbb; "/>
+                @*Keep this empty*@
+            </div>
+
+
+        </div>
+    </div>
+</form>
+
+<!-- Проверка на стороне клиента.Достаточно asp-validation-for и проверка на стороне клиента + проверка на стороне контролерра(после отправки данних) -->
+@section Scripts{
+    @{ <partial name="_ValidationScriptsPartial"/>}
+
+   <!--
+   Скрипт sweetalert2 (54). requare для картинок (стилизованные предупреждения)
+   -->
+    <script>
+            $(document).ready(function() {
+                  $('.summernote').summernote({
+                  height:250,
+                  disable: true
+                  });
+            });
+
+ 
+
+    
+    </script>
+
+
+}
+
+

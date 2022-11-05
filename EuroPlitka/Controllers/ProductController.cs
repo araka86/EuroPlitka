@@ -107,9 +107,9 @@ namespace EuroPlitka.Controllers
                     _prodRepo.Add(prodoctVM.Product);
                     TempData[WebConstanta.Success] = "Prodoct Create successfully";
                 }
-                else
+                else  ////////////////////////////////////updating if need to change images//////////////////////////////////
                 {
-                    ////////////////////////////////////updating//////////////////////////////////
+                   
                     var objFromDB = _prodRepo.FirstOrDefault(u => u.Id == prodoctVM.Product.Id, isTracking: false);
                     if (files.Count > 0)
                     {
@@ -123,7 +123,7 @@ namespace EuroPlitka.Controllers
                         byte[] contents = System.IO.File.ReadAllBytes(FullPath);  //crush to byte
                         prodoctVM.Product.imagebyte = contents;
                     }
-                    else
+                    else ////////////////////////////////////updating if will not need to change images//////////////////////////////////
                     {
                         prodoctVM.Product.imagebyte = objFromDB.imagebyte;
                     }
@@ -138,6 +138,44 @@ namespace EuroPlitka.Controllers
             prodoctVM.CategorySelectList = _prodRepo.GetAllDropdownList(WebConstanta.CategoryName);
             prodoctVM.ProductTypeSelectList = _prodRepo.GetAllDropdownList(WebConstanta.ProductTypeName);
             return View(prodoctVM);
+        }
+
+
+
+
+        //Get - Delete
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id == 0)
+                return NotFound();
+
+            Product product = _prodRepo.FirstOrDefault(u => u.Id == id, includeProperties: "Category,ProductType");
+
+
+            if (product == null)
+                return NotFound();
+
+
+
+            return View(product);
+        }
+
+
+        //Post - Delete
+        [HttpPost, ActionName("Delete")] //from  Product/Delete.cshtml
+        [ValidateAntiForgeryToken]
+        public IActionResult DeletePost(int? id)
+        {
+            var obj = _prodRepo.Find(id.GetValueOrDefault());
+            if (obj == null)
+                return NotFound();
+
+
+
+            _prodRepo.Remove(obj);
+            _prodRepo.Save();
+            TempData[WebConstanta.Success] = "Prodoct Delete successfully";
+            return RedirectToAction("Index");
         }
 
 

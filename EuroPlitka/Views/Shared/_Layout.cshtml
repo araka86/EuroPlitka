@@ -15,7 +15,9 @@
     <link rel="stylesheet" href="~/fontawesome/css/all.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
      <link href="~/css/summernote-bs4.min.css" rel="stylesheet" />
+    <link href="~/css/toastr.min.css" rel="stylesheet" />
 
+   @* <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" crossorigin="anonymous" />*@
 
     @*    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />*@
     @* <link rel="stylesheet" href="~/EuroPlitka.styles.css" asp-append-version="true" />*@
@@ -23,7 +25,8 @@
 
 
 @* <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">*@
-
+    @*sweetalert img (анимированные ошибки)*@
+   
   
     
 
@@ -102,6 +105,7 @@
     </header>
     <div class="main-container">
         <main role="main" class="pb-3">
+            <partial name="_Notifications" />
             @RenderBody()
         </main>
     </div>
@@ -121,6 +125,10 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/bootstrap.js"></script>
     <script src="~/js/summernote-bs4.min.js"></script>
+
+   <script src="~/js/sweetalert2.all.min.js"></script>
+
+   @* <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>*@
 
     @*  <script src="~/js/site.js" asp-append-version="true"></script>*@
     @*  <script src="~/js/jquery.min.js"></script>*@ 

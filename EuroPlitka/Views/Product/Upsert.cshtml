@@ -73,7 +73,6 @@
                     <div class="col-md-4">Image</div>
                     <div class="col-md-8">
                         <input type="file"  name="files" id="uploadBox" multiple class="form-control"  />
-
                     </div>
                 </div>
                 @*---------> Price <---------*@
@@ -124,17 +123,19 @@
                 </div>
 
 
-
+             
 
             </div>
 
-            <div class="col-md-4 ">
-                <img src="@ViewBag.Image" class="w-100" style="border-radius:15px; border:1px solid #bbb; " />
-               
-                
+            @if (Model.Product.imagebyte != null)
+            {
+                <div class="col-md-4 ">
+                    @*  <img src="@ViewBag.Image" class="w-100" style="border-radius:15px; border:1px solid #bbb; " />*@
+                    <img src="@string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(Model.Product.imagebyte).ToString())" class="w-100" style="border-radius:15px; border:1px solid #bbb; " />
+                </div>
+            }
 
-                @*Keep this empty*@
-            </div>
+            
 
         </div>
     </div>
