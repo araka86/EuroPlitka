@@ -5,6 +5,6 @@
 <div class="dropdown-menu">
     @foreach (var cat in Model)
     {
-        <a class="dropdown-item" asp-route-id="@cat.DisplayOrder" asp-controller="CategoryMenu" asp-action="Category">@cat.Name</a>
+        <a class="dropdown-item" asp-route-id="@cat.Id" asp-controller="CategoryMenu" asp-action="Index">@cat.Name</a>
     }
 </div>

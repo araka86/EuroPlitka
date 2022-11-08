@@ -19,6 +19,22 @@ namespace EuroPlitka_Services
 
         //For Path to image
         public const string ImageFolder = @"\images";
-      
+
+        //For session
+        public const string SessionCart = "ShoppingCartSession";
+        //ключ для храниния значения ID запроса текущего сеанса
+        public const string SessionInquiryId = "InquirySession";
+
+        //remove duplicate for category product type
+        public static T[] RemoteDuplicates<T>(T[] array)
+        {
+            HashSet<T> set = new HashSet<T>(array);
+            T[] result = new T[set.Count];
+            set.CopyTo(result);
+            return result;
+        }
+
+
+
     }
 }

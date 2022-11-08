@@ -64,12 +64,36 @@ namespace EuroPlitka_DataAccess.Repository
             return query.ToList();
         }
 
+
+
+
+
+
+
         public void Update(Product obj)
         {
          
             _db.Product.Update(obj);
         }
 
-        
+
+
+
+        public async Task<IEnumerable<Product>> GetSliceAsync(int offset, int size, int idCat)
+        {
+            return await _db.Product.Include(i => i.Category)
+                .Include(x=>x.ProductType).Where(y=>y.CategoryId ==idCat)
+                .Skip(offset)
+                .Take(size)
+                .ToListAsync();
+        }
+
+
+
+
+
+
+
+
     }
 }

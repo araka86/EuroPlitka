@@ -69,9 +69,13 @@ namespace EuroPlitka_DataAccess.Extensions
                 {
                     context.Categorys.AddRange(new List<Category>()
                     {
-                        new Category{Name ="Category 1", DisplayOrder= 1},
-                        new Category{Name ="Category 2", DisplayOrder= 2},
-                        new Category{Name ="Category 3", DisplayOrder= 3},
+                        new Category{Name ="Для ванной", DisplayOrder= 1},
+                        new Category{Name ="Для підлоги", DisplayOrder= 2},
+                        new Category{Name ="Для стін", DisplayOrder= 3},
+                        new Category{Name ="Для кухні", DisplayOrder= 4},
+                        new Category{Name ="Вулична", DisplayOrder= 5}
+                    
+                     
                     });
                 }
                 context.SaveChanges();
@@ -79,10 +83,31 @@ namespace EuroPlitka_DataAccess.Extensions
                 {
                     context.ProductTypes.AddRange(new List<ProductType>()
                     {
-                        new ProductType{Name = "qwe"},
-                        new ProductType{Name = "qwe"},
-                        new ProductType{Name = "qwe"},
+                        new ProductType{Name = "На стелю"},
+                        new ProductType{Name = "На підлогу"},
+                        new ProductType{Name = "На стіну"},
+                        new ProductType{Name = "На кухню"},
+                        new ProductType{Name = "В коридор"},
+                        new ProductType{Name = "На балкон"},
+                        new ProductType{Name = "На сходи"},
+                        new ProductType{Name = "В туалет"},
+                        new ProductType{Name = "Вулична"},
+                        new ProductType{Name = "В баню"},
 
+                    });
+                }
+                context.SaveChanges();
+                if(!context.Product.Any())
+                {
+                    context.Product.AddRange(new List<Product>() 
+                    {
+                       new Product
+                       {
+                           Name="Product1",
+                           Price=200,
+                           shortDesc = "shortDec",
+                           Description="decriotion"
+                       }
                     });
                 }
                 context.SaveChanges();

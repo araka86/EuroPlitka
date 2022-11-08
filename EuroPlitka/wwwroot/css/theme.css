@@ -7742,7 +7742,9 @@ dt {
   opacity: 0.9; }
 
 [class*='height-'] {
-  display: flex; }
+/*    display: flex;*/
+    display: inherit;
+}
   [class*='height-'] > .container {
     align-self: center; }
 

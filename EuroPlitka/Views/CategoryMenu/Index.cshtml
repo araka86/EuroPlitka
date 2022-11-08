@@ -1,0 +1,101 @@
+﻿@model EuroPlitka_Model.ViewModels.CategoryMenuVM
+@using EuroPlitka_Services
+<!--Filter-->
+@{
+    string[] prodType = new string[Model.ProductsCat.Count()];
+    int i = 0;
+    foreach (var obj in Model.ProductsCat)
+    {
+        prodType[i] += @obj.ProductType.Name;
+        i++;
+    }
+    string[] originalItemsProductTypest = WebConstanta.RemoteDuplicates(prodType);
+
+
+    int resultStart = ((Model.Page - 1) * Model.PageSize) + 1;
+    int resultEnd = Math.Min(resultStart + Model.PageSize - 1, Model.TotalCountAllCurrentCategory);
+    bool isValidPage = resultStart <= Model.TotalCountAllCurrentCategory;
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+
+
+
+
+}
+<section class="space-sm flush-with-above">
+    <div class="container pb-5">
+        <div class="text-center">
+            <button class="btn btn-dark filter-button" data-filter="all">All</button>  <!-- data-filter - attribute name for javascript-->
+            @foreach (var obj in originalItemsProductTypest)
+            {
+                <button class="btn btn-outline-secondary filter-button" data-filter="@obj.Replace(' ','_')"> @obj </button>
+            }
+        </div>
+        <br />
+        <form method="post">
+            <div class="row">
+                @if (@Model.AllPage)
+                {
+                    @foreach (var prod in Model.ProductsCat)
+                    {
+                        <partial name="_IndividualProductCard" model="prod" />
+                    }
+                }
+                else
+                {
+
+                    @foreach (var prod in Model.ConditionProducts)
+                    {
+                        <partial name="_IndividualProductCard" model="prod" />
+                    }
+                }
+            </div>
+        </form>
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                @if (isValidPage)
+                {
+                    <a type="button" class="btn btn-sm btn-outline-primary @prevDisabled"
+                   asp-action="Index" asp-route-page="@(Model.Page - 1)" asp-route-id="@Model.CategoryProduct.Id">
+                        Prev
+                    </a>
+                    <a type="button" class="btn btn-sm btn-outline-primary @nextDisabled"
+                   asp-action="Index" asp-route-page="@(Model.Page + 1)" asp-route-id="@Model.CategoryProduct.Id">
+                        Next
+                    </a>
+                    <span class="text-muted text-small">Results @resultStart - @resultEnd of @Model.TotalCountAllCurrentCategory</span>
+
+                    <a type="button" class="btn btn-sm btn-outline-primary asp-action="Index" asp-route-allResultPage="true">All</a>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts
+    {
+    <!--for filter main menu-->
+    <script>
+        $(document).ready(function () {
+
+            $(".filter-button").click(function () {
+
+                var value = $(this).attr('data-filter');
+                if (value == "all") {
+                    $('.filter').show('1000');
+                }
+                else {
+                    $(".filter").not('.' + value).hide('3000');
+                    $(".filter").filter('.' + value).show('3000');
+                }
+            });
+        });
+
+
+
+
+
+    </script>
+
+
+}

@@ -11,10 +11,20 @@ namespace EuroPlitka_DataAccess.Repository.IRepository
         void Update(Product obj);
 
         IEnumerable<SelectListItem> GetAllDropdownList(string obj);
-        IEnumerable<Product> GetProductCategory(
+       IEnumerable<Product> GetProductCategory(
             Expression<Func<Product, bool>>? filter = null,
             string? includeProperties = null,
-            bool isTracking = true
-            );
+            bool isTracking = true);
+
+
+
+          Task<IEnumerable<Product>> GetSliceAsync(int offset, int size, int idCat);
+
+
     }
+
+  
+
+
+
 }

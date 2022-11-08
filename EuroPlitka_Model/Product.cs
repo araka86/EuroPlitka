@@ -25,7 +25,7 @@ namespace EuroPlitka_Model
         [Range(1, int.MaxValue)]
         public double Price { get; set; }
 
-        public string? Image { get; set; }
+
 
         public byte[]? imagebyte { get; set; }
 
@@ -47,6 +47,9 @@ namespace EuroPlitka_Model
         [Range(1, 10000, ErrorMessage = "Sqft must be gereater than 0.")]
         public int TempSqFt { get; set; } //кол-тво товара
 
+        [NotMapped]
+        public bool ExistInCart { get; set; }
+       
 
 
     }

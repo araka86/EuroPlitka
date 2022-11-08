@@ -16,17 +16,15 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.10" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.0-rc.2.22510.1" />
+    <PackageReference Include="Syncfusion.EJ2.GridExport.Core" Version="20.3.0.56" />
+    <PackageReference Include="Syncfusion.EJ2.WordEditor.AspNet.Core" Version="20.3.0.56" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\EuroPlitka_DataAccess\EuroPlitka_DataAccess.csproj" />
     <ProjectReference Include="..\EuroPlitka_Model\EuroPlitka_Model.csproj" />
     <ProjectReference Include="..\EuroPlitka_Services\EuroPlitka_Services.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
 </Project>
