@@ -55,10 +55,24 @@ namespace EuroPlitka.Controllers
 
 
 
-
-
-
             return View(orderListVm);
         }
+
+
+        public IActionResult Details(int id)
+        {
+            OrderVM orderVM = new OrderVM()
+            {
+                OrderHeader = _orderHRepo.FirstOrDefault(u => u.Id == id),
+             
+                OrderDetails = _orderDRepo.GetAll(o => o.OrderHeaderId == id, includeProperties: "Product")
+
+            };
+            return View(orderVM);
+        }
+
+
+
+
     }
 }

@@ -4,6 +4,7 @@ using EuroPlitka_DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EuroPlitka_DataAccess.Migrations
 {
     [DbContext(typeof(EuroPlitkaDbContext))]
-    partial class EuroPlitkaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221109175947_addDescriptionToAplicationUser")]
+    partial class addDescriptionToAplicationUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -392,9 +394,11 @@ namespace EuroPlitka_DataAccess.Migrations
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
                     b.Property<string>("City")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FullName")
@@ -402,10 +406,11 @@ namespace EuroPlitka_DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StreetAddress")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte[]>("imgUserAva")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<byte>("imgUserAva")
+                        .HasColumnType("tinyint");
 
                     b.HasDiscriminator().HasValue("AplicationUser");
                 });

@@ -90,10 +90,5 @@ namespace EuroPlitka_DataAccess.Repository
 
 
 
-
-
-
-
-
     }
 }

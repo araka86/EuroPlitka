@@ -21,7 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EuroPlitka_Model\EuroPlitka_Model.csproj" />
-    <ProjectReference Include="..\EuroPlitka_Services\EuroPlitka_Services.csproj" />
   </ItemGroup>
+	
 
 </Project>
