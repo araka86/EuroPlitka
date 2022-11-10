@@ -121,11 +121,8 @@
                         </div>
                         <div class="col-12">
                             <div class="form-group">
-                                <label asp-for="Description">About me:</label>
-                                <textarea class="form-control form-control-lg"
-                                          name="profileBio"
-                                          rows="4"
-                                          id="about-me"></textarea>
+                                <label>About me:</label>
+                                <textarea class="form-control form-control-lg" name="Description" rows="4"> @Model.Description</textarea>
                             </div>
                         </div>
 

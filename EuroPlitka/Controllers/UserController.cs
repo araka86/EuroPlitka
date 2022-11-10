@@ -2,12 +2,14 @@
 using CloudinaryDotNet.Actions;
 using EuroPlitka_DataAccess.Data;
 using EuroPlitka_DataAccess.Repository;
+using EuroPlitka_DataAccess.Repository.IRepository;
 using EuroPlitka_Model;
 using EuroPlitka_Model.ViewModels;
 using EuroPlitka_Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace EuroPlitka.Controllers
 {
@@ -15,20 +17,28 @@ namespace EuroPlitka.Controllers
     {
         private readonly UserManager<AplicationUser> _userManager;
         private readonly EuroPlitkaDbContext _db;
-      
+        private readonly IUserRepository _userRepository;
 
-
-        public UserController(UserManager<AplicationUser> userManager, EuroPlitkaDbContext db)
+        public UserController(UserManager<AplicationUser> userManager, EuroPlitkaDbContext db, IUserRepository userRepository)
         {
             _userManager = userManager;
             _db = db;
+            _userRepository = userRepository;
+        }
+
+
+
+
+        [HttpGet("users")]
+        public async Task<IActionResult> Index()
+        {
+
+            var users = _userRepository.GetAll();
 
           
 
-        }
-        public IActionResult Index()
-        {
-            return View();
+
+            return View(users);
         }
 
 
@@ -57,7 +67,7 @@ namespace EuroPlitka.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> EditProfile(AplicationUser editVM, byte[]imgbyte=null)
+        public async Task<IActionResult> EditProfile(AplicationUser editVM)
         {
          
             if (!ModelState.IsValid)
@@ -104,6 +114,8 @@ namespace EuroPlitka.Controllers
             user.City = editVM.City;
             user.StreetAddress = editVM.StreetAddress;
             user.Description = editVM.Description;
+            user.PhoneNumber = editVM.PhoneNumber;
+
             await _userManager.UpdateAsync(user);
 
 
@@ -120,32 +132,31 @@ namespace EuroPlitka.Controllers
 
 
 
-        //[HttpGet]
-        //public async Task<IActionResult> Detail(string id)
-        //{
+        [HttpGet]
+        public async Task<IActionResult> Detail(string id)
+        {
 
-        //    var user = await _userManager.GetUserAsync(id);
-        //    if (user == null)
-        //    {
-        //        return RedirectToAction("Index", "Users");
-        //    }
+            var user = await _userRepository.GetUserById(id);
 
-        //    var userDetailViewModel = new AplicationUser()
-        //    {
-        //        Id = user.Id,
-        //        FullName = user.FullName,
-        //        StreetAddress = user.StreetAddress,
-        //        City = user.City,
-        //        Description = user.Description,
-        //        Email = user.Email,
-        //        imgUserAva = user.imgUserAva
-               
-                
-               
-              
-        //    };
-        //    return View(userDetailViewModel);
-        //}
+          
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Users");
+            }
+
+            var userDetailViewModel = new AplicationUser()
+            {
+                Id = user.Id,
+                FullName = user.FullName,
+                StreetAddress = user.StreetAddress,
+                City = user.City,
+                Description = user.Description,
+                Email = user.Email,
+                imgUserAva = user.imgUserAva
+
+            };
+            return View(userDetailViewModel);
+        }
 
 
 

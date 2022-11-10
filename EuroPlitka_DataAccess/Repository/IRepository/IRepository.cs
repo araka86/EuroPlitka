@@ -24,6 +24,9 @@ namespace EuroPlitka_DataAccess.Repository.IReposotory
         void Remove (T entity);
 
         void RemoveRange(IEnumerable<T> entity);
+
+      
+
         void Save();
     }
 }

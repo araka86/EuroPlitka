@@ -1,0 +1,94 @@
+﻿@using EuroPlitka_Services;
+@model EuroPlitka_Model.AplicationUser
+
+<div class="main-container">
+
+
+
+    <nav aria-label="breadcrumb" role="navigation" class="bg-primary text-white">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="#">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="#">Runners</a>
+                        </li>
+
+                        <li class="breadcrumb-item active" aria-current="page">Profile</li>
+                    </ol>
+                </div>
+                <!--end of col-->
+            </div>
+            <!--end of row-->
+        </div>
+        <!--end of container-->
+    </nav>
+
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8">
+                <div class="media">
+                    <img alt="Image" src="@string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(Model.imgUserAva).ToString())" class="mr-md-5 avatar avatar-xlg">
+                    <div class="media-body">
+                        <div class="mb-3">
+                            <h1 class="h2 mb-2">@Model.UserName</h1>
+
+                        </div>
+                        <p class="text-muted">FullName: @Model.FullName</p>
+
+
+                        <p class="text-muted">City: @Model.City</p>
+                        <p class="text-muted">StreetAddress: @Model.StreetAddress</p>
+                        <p class="text-muted">Email: @Model.Email</p>
+                        <p class="text-muted">PhoneNumber: @Model.PhoneNumber</p>
+                        <div class="m-4 ">
+                            <h6>About me</h6>
+                            <p class="text-muted">@Model.Description</p>
+                        </div>
+                       
+
+                            <div class="form-group row py-2">
+                            @if (User.IsInRole(WebConstanta.AdminRole))
+                            {
+                                <p class="text-muted">Id: @Model.Id</p>
+
+
+                                <div class="col">
+                                    <input type="submit" class="btn btn-info w-100" value="Edit" >
+                                </div>
+                                <div class="col">
+                                    <input type="submit" class="btn btn-danger w-100" value="Delete" >
+                                </div>
+                               
+
+                            }
+                            <div class="col">
+                                <a asp-controller="Home" asp-action="Index" class="btn btn-primary  w-100">
+                                    <i class="fa-solid fa-rotate-left"></i>
+                                </a>
+                            </div>
+
+                            </div>
+                        
+
+
+                    </div>
+                </div>
+            </div>
+            <!--end of col-->
+        </div>
+        <!--end of row-->
+    </div>
+
+
+
+
+
+
+
+
+</div>

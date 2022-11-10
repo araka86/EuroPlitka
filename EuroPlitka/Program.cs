@@ -25,6 +25,7 @@ builder.Services.AddScoped<IProductTypeRepository, ProductTypeRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
 builder.Services.AddScoped<IOrderHeaderRepository, OrderHeaderRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 //builder.Services.AddTransient<AplicationUserRepo>();
 
 
