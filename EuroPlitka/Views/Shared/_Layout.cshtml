@@ -9,7 +9,11 @@
 
 
 @{
+  
     var currentUser = await UserManager.GetUserAsync(User);
+    string img = currentUser == null ? "/images/avatar-male-3.jpg" : currentUser.imgUserAva == null ?
+                                                                     "/images/avatar-male-3.jpg" :
+                                                                    $"{string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(currentUser.imgUserAva).ToString())}";
 }
 
 <!DOCTYPE html>
@@ -105,7 +109,7 @@
                                     <li class="nav-item dropdown">
                                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
 
-                                            <img alt="Image" src="@string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(currentUser.imgUserAva).ToString())" class="avatar avatar-xs">
+                                            <img alt="Image" src="@img" class="avatar avatar-xs">
 
                                         </a>
 

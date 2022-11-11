@@ -8,7 +8,11 @@ using EuroPlitka_Model.ViewModels;
 using EuroPlitka_Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Syncfusion.EJ2.FileManager;
+using System.Data;
 using System.Security.Claims;
 
 namespace EuroPlitka.Controllers
@@ -16,26 +20,42 @@ namespace EuroPlitka.Controllers
     public class UserController : Controller
     {
         private readonly UserManager<AplicationUser> _userManager;
+      
         private readonly EuroPlitkaDbContext _db;
         private readonly IUserRepository _userRepository;
 
-        public UserController(UserManager<AplicationUser> userManager, EuroPlitkaDbContext db, IUserRepository userRepository)
+
+        public UserController(UserManager<AplicationUser> userManager, EuroPlitkaDbContext db, IUserRepository userRepository )
         {
             _userManager = userManager;
             _db = db;
             _userRepository = userRepository;
+          
         }
 
+     
 
-
-
-        [HttpGet("users")]
+            [HttpGet("users")]
         public async Task<IActionResult> Index()
         {
 
             var users = _userRepository.GetAll();
 
+            var userIdentity = (ClaimsIdentity)User.Identity;
+            var claims = userIdentity.Claims;
+            var roleClaimType = userIdentity.RoleClaimType;
+
+            var roles = claims.Where(c => c.Type == ClaimTypes.Role).ToList();
+
+            foreach (var item in users)
+            {
+                var roless = await _userManager.GetRolesAsync(item);
+
+            }
+
           
+
+            
 
 
             return View(users);
