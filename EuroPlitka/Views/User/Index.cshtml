@@ -1,50 +1,42 @@
 ﻿@using EuroPlitka_Model
 @using EuroPlitka_Services;
-@model List<EuroPlitka_Model.AplicationUser>
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<AplicationUser> UserManager
+@inject RoleManager<IdentityRole> _roleManager
+@model IEnumerable<EuroPlitka_Model.AplicationUser>
+
+
+
+    @{
+
+    var roleList = _roleManager.Roles.ToList();
+
+    }
 
 
 <section class="flush-with-above">
     <div class="container">
+        <div class="text-center">
+            <button class="btn btn-dark filter-button" data-filter="all">All</button>  <!-- data-filter - attribute name for javascript-->
+            @foreach (var obj in roleList)
+            {
+                <button class="btn btn-outline-secondary filter-button" data-filter="@obj"> @obj </button>
+            }
+        </div>
+
+
+
         <div class="row">
             <div class="col">
                 <table class="table table-hover align-items-center table-borderless">
                     <tbody>
                         @foreach (var user in Model)
                         {
-                            <tr class="bg-white">
-                                <th scope="row">
-                                    <div class="media align-items-center">
-                                        @{
-
-                                            var img = user.imgUserAva == null ?
-                                            "/images/avatar-male-3.jpg" :
-                                            $"{string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(user.imgUserAva).ToString())}";
-
-                                            var role = User.IsInRole(WebConstanta.AdminRole) ? "Admin" : "Customer";
-                                          
-                                        }
-
-                                        <img alt="Image profile avatar" src="@img" class="avatar">
-                                        <div class="media-body">
-                                            <span class="h6 mb-0">@user.UserName</span>
-                                        </div>
-                                    </div>
-                                </th>
-                                <td>
-                                    <a class="btn btn-outline-primary" asp-controller="User" asp-action="Detail" asp-route-id="@user.Id">
-                                        View Profile
-                                    </a>
-                                </td>
 
 
-                                <td>@user.FullName </td>
-                                <td>@role</td>
+                            <partial name="_AllUsersPartial" model="user" />
 
-                            </tr>
-                            <tr class="table-divider">
-                                <th></th>
-                                <td></td>
-                            </tr>
+
                         }
                     </tbody>
                 </table>
@@ -55,3 +47,25 @@
     </div>
     <!--end of container-->
 </section>
+
+
+@section Scripts
+    {
+    <!--for filter main menu-->
+    <script>
+        $(document).ready(function () {
+
+            $(".filter-button").click(function () {
+
+                var value = $(this).attr('data-filter');
+                if (value == "all") {
+                    $('.filter').show('1000');
+                }
+                else {
+                    $(".filter").not('.' + value).hide('3000');
+                    $(".filter").filter('.' + value).show('3000');
+                }
+            });
+        });
+    </script>
+}

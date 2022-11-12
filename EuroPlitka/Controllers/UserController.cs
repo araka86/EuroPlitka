@@ -20,26 +20,28 @@ namespace EuroPlitka.Controllers
     public class UserController : Controller
     {
         private readonly UserManager<AplicationUser> _userManager;
-      
+        private readonly RoleManager<IdentityRole> _roleManager;
+
         private readonly EuroPlitkaDbContext _db;
         private readonly IUserRepository _userRepository;
 
 
-        public UserController(UserManager<AplicationUser> userManager, EuroPlitkaDbContext db, IUserRepository userRepository )
+        public UserController(UserManager<AplicationUser> userManager, EuroPlitkaDbContext db, IUserRepository userRepository,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _db = db;
             _userRepository = userRepository;
-          
+            _roleManager = roleManager;
         }
 
-     
 
-            [HttpGet("users")]
+
+        [HttpGet("users")]
         public async Task<IActionResult> Index()
         {
 
-            var users = _userRepository.GetAll();
+            IEnumerable<AplicationUser> users = _userRepository.GetAll();
 
             var userIdentity = (ClaimsIdentity)User.Identity;
             var claims = userIdentity.Claims;
@@ -47,15 +49,23 @@ namespace EuroPlitka.Controllers
 
             var roles = claims.Where(c => c.Type == ClaimTypes.Role).ToList();
 
+            var rolesss = ((ClaimsIdentity)User.Identity).Claims
+                .Where(c => c.Type == ClaimTypes.Role)
+                .Select(c => c.Value);
+
+            var rolesssdf = _roleManager.Roles.ToList();
+
+
+
             foreach (var item in users)
             {
                 var roless = await _userManager.GetRolesAsync(item);
 
             }
 
-          
 
-            
+
+
 
 
             return View(users);
@@ -89,7 +99,7 @@ namespace EuroPlitka.Controllers
         [Authorize]
         public async Task<IActionResult> EditProfile(AplicationUser editVM)
         {
-         
+
             if (!ModelState.IsValid)
             {
                 ModelState.AddModelError("", "Failed to edit profile");
@@ -128,7 +138,7 @@ namespace EuroPlitka.Controllers
                 var photoResult = await PhotoService.FileToByte(getFile, _db); //get byte
                 user.imgUserAva = photoResult;
 
-               
+
             }
             user.FullName = editVM.FullName;
             user.City = editVM.City;
@@ -144,7 +154,7 @@ namespace EuroPlitka.Controllers
 
 
 
-        
+
 
             return RedirectToAction("Detail", "User", new { user.Id });
         }
@@ -158,7 +168,7 @@ namespace EuroPlitka.Controllers
 
             var user = await _userRepository.GetUserById(id);
 
-          
+
             if (user == null)
             {
                 return RedirectToAction("Index", "Users");

@@ -46,6 +46,7 @@ builder.Services.AddIdentity<AplicationUser, IdentityRole>()
                     .AddDefaultUI()
                     .AddEntityFrameworkStores<EuroPlitkaDbContext>();
 
+
 //identity Path
 builder.Services.ConfigureApplicationCookie(option =>
 {
