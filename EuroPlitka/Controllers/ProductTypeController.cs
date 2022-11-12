@@ -14,9 +14,9 @@ namespace EuroPlitka.Controllers
             _productTypeRepository = productTypeRepository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            IEnumerable<ProductType> objtList = _productTypeRepository.GetAll();
+            IEnumerable<ProductType> objtList = await _productTypeRepository.GetAll();
             return View(objtList);
         }
 
@@ -96,9 +96,9 @@ namespace EuroPlitka.Controllers
         //Post - Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult DeletePost(int? id)
+        public async Task<IActionResult> DeletePost(int? id)
         {
-            var obj = _productTypeRepository.Find(id.GetValueOrDefault());
+            var obj = await _productTypeRepository.Find(id.GetValueOrDefault());
             if (obj == null)
                 return NotFound();
 

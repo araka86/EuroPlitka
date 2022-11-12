@@ -47,7 +47,9 @@ namespace EuroPlitka.Controllers
                     if (User.IsInRole(WebConstanta.AdminRole))
                     {
                         await _userManager.AddToRoleAsync(user, WebConstanta.AdminRole);
-                        return RedirectToAction("Index");
+                        TempData[WebConstanta.Success] = "Admin Create successfully";
+                        return RedirectToAction("Index", "Home");
+
                     }
                     else
                     {

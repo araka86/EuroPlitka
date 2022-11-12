@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using EuroPlitka_DataAccess.Repository;
 using EuroPlitka_DataAccess.Repository.IRepository;
 using EuroPlitka_Model;
 using EuroPlitka_DataAccess.Data;
@@ -18,12 +17,12 @@ namespace EuroPlitka_DataAccess.Repository
             _db = db;
         }
 
-        public IEnumerable<SelectListItem> GetAllDropdownList(string obj)
+        public  async Task<IEnumerable<SelectListItem>> GetAllDropdownList(string obj)
         {
             //DropDownList
            if(obj == WebConstanta.CategoryName)
             {
-                return _db.Categorys.Select(u => new SelectListItem
+                return  _db.Categorys.Select(u => new SelectListItem
                 {
                     Text = u.Name,
                     Value = u.Id.ToString()
@@ -31,7 +30,7 @@ namespace EuroPlitka_DataAccess.Repository
             }
             if (obj == WebConstanta.ProductTypeName)
             {
-                return _db.ProductTypes.Select(u => new SelectListItem
+                return  _db.ProductTypes.Select(u => new SelectListItem
                 {
                     Text = u.Name,
                     Value = u.Id.ToString()
@@ -42,7 +41,7 @@ namespace EuroPlitka_DataAccess.Repository
             return null;
         }
 
-        public IEnumerable<Product> GetProductCategory(Expression<Func<Product, bool>>? filter = null, string? includeProperties = null, bool isTracking = true)
+        public async Task<IEnumerable<Product>> GetProductCategory(Expression<Func<Product, bool>>? filter = null, string? includeProperties = null, bool isTracking = true)
         {
             IQueryable<Product> query = dbSet;
             if (filter != null)
@@ -61,7 +60,7 @@ namespace EuroPlitka_DataAccess.Repository
             {
                 query = query.AsNoTracking();
             }
-            return query.ToList();
+            return  await query.ToListAsync();
         }
 
 
@@ -72,7 +71,6 @@ namespace EuroPlitka_DataAccess.Repository
 
         public void Update(Product obj)
         {
-         
             _db.Product.Update(obj);
         }
 

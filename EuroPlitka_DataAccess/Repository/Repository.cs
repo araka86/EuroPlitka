@@ -21,12 +21,12 @@ namespace EuroPlitka_DataAccess.Repository
             dbSet.Add(entity);
         }
 
-        public T Find(int id)
+        public async Task<T> Find(int id)
         {
             return dbSet.Find(id);
         }
 
-        public T FirstOrDefault(Expression<Func<T, bool>>? filter = null, 
+        public async Task<T> FirstOrDefault(Expression<Func<T, bool>>? filter = null, 
                                 string? includeProperties = null,
                                 bool isTracking = true)
         {
@@ -47,10 +47,10 @@ namespace EuroPlitka_DataAccess.Repository
             {
                 query = query.AsNoTracking(); // don't tracking query
             }
-            return query.FirstOrDefault();
+            return  query.FirstOrDefault();
         }
 
-        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null,
+        public  async Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>>? filter = null,
                                     Func<IQueryable<T>,
                                     IOrderedQueryable<T>>? orderBy = null,
                                     string? includeProperties = null,

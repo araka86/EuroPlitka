@@ -14,9 +14,9 @@ namespace EuroPlitka.Controllers
             _catRepo = catRepo;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            IEnumerable<Category> objtList = _catRepo.GetAll();
+            IEnumerable<Category> objtList = await _catRepo.GetAll();
             return View(objtList);
         }
         //Get - Greate
@@ -99,9 +99,9 @@ namespace EuroPlitka.Controllers
         //Post - Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult DeletePost(int? id)
+        public async Task<IActionResult> DeletePost(int? id)
         {
-            var obj = _catRepo.Find(id.GetValueOrDefault());
+            var obj = await  _catRepo.Find(id.GetValueOrDefault());
             if (obj == null)
                 return NotFound();
 

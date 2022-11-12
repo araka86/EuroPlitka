@@ -26,12 +26,12 @@ namespace EuroPlitka.Controllers
 
 
 
-        public IActionResult Index(string searchName = null, string searchEmail = null, string searchPhone = null, string Status = null, string IsReset = null)
+        public async Task<IActionResult> Index(string searchName = null, string searchEmail = null, string searchPhone = null, string Status = null, string IsReset = null)
         {
 
             OrderListVm orderListVm = new OrderListVm()
             {
-                OrderHeaderList = _orderHRepo.GetAll()
+                OrderHeaderList = await _orderHRepo.GetAll()
             };
             if (IsReset == null)
             {
@@ -59,13 +59,13 @@ namespace EuroPlitka.Controllers
         }
 
 
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
             OrderVM orderVM = new OrderVM()
             {
-                OrderHeader = _orderHRepo.FirstOrDefault(u => u.Id == id),
+                OrderHeader = await _orderHRepo.FirstOrDefault(u => u.Id == id),
              
-                OrderDetails = _orderDRepo.GetAll(o => o.OrderHeaderId == id, includeProperties: "Product")
+                OrderDetails =await _orderDRepo.GetAll(o => o.OrderHeaderId == id, includeProperties: "Product")
 
             };
             return View(orderVM);

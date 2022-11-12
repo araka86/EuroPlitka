@@ -10,7 +10,7 @@ namespace EuroPlitka_Services
 
 
 
-        public  static async Task<byte[]> FileToByte<T>(IFormFileCollection file, T db) where T : DbContext
+        public  static async Task<byte[]> FileToByte(IFormFileCollection file) 
         {
            
             string PublicPictureFolder = GetFolderPath(SpecialFolder.CommonPictures);

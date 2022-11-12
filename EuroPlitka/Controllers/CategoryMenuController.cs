@@ -68,20 +68,21 @@ namespace EuroPlitka.Controllers
 
                 // if category is -1 (All) dont filter else filter by selected category
                 var countToConditionProduct = await _productRepository.GetSliceAsync((page - 1) * pageSize, pageSize, id);
-                var countAllCurrentCategory = _productRepository.GetProductCategory(u => u.CategoryId == id, includeProperties: "Category,ProductType").Count();
+                var countAllCurrentCategory = await _productRepository.GetProductCategory(u => u.CategoryId == id, includeProperties: "Category,ProductType");
                 homeVm = new CategoryMenuVM()
                 {
-                    Products = _productRepository.GetAll(includeProperties: "Category,ProductType"),
-                    Categories = _categoryRepository.GetAll(),
-                    ProductsCat = _productRepository.GetProductCategory(u => u.CategoryId == id, includeProperties: "Category,ProductType"),
-                    CategoryProduct = _categoryRepository.FirstOrDefault(x => x.Id == id),
+                    Products = await _productRepository.GetAll(includeProperties: "Category,ProductType"),
+                    Categories = await _categoryRepository.GetAll(),
+                    ProductsCat = await _productRepository.GetProductCategory(u => u.CategoryId == id, includeProperties: "Category,ProductType"),
+                    CategoryProduct = await _categoryRepository.FirstOrDefault(x => x.Id == id),
 
                     ConditionProducts = countToConditionProduct,
                     Page = page,
                     PageSize = pageSize,
-                    TotalCountAllCurrentCategory = countAllCurrentCategory,
-                    TotalPages = (int)Math.Ceiling(countAllCurrentCategory / (double)pageSize),
+                    TotalCountAllCurrentCategory = countAllCurrentCategory.Count(),
+                    TotalPages = (int)Math.Ceiling(countAllCurrentCategory.Count() / (double)pageSize),
                     AllPage = allResultPage
+
 
                 };
             }
@@ -90,10 +91,10 @@ namespace EuroPlitka.Controllers
 
                 homeVm = new CategoryMenuVM()
                 {
-                    Products = _productRepository.GetAll(includeProperties: "Category,ProductType"),
-                    Categories = _categoryRepository.GetAll(),
-                    ProductsCat = _productRepository.GetProductCategory(u => u.CategoryId == id, includeProperties: "Category,ProductType"),
-                    CategoryProduct = _categoryRepository.FirstOrDefault(x => x.Id == id),
+                    Products = await _productRepository.GetAll(includeProperties: "Category,ProductType"),
+                    Categories = await _categoryRepository.GetAll(),
+                    ProductsCat = await _productRepository.GetProductCategory(u => u.CategoryId == id, includeProperties: "Category,ProductType"),
+                    CategoryProduct = await _categoryRepository.FirstOrDefault(x => x.Id == id),
                     AllPage = allResultPage
 
                 };

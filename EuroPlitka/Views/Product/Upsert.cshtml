@@ -33,8 +33,6 @@
                         <label asp-for="Product.CategoryId"></label>
                     </div>
                     <div class="col-md-8">
-                        @*   <select asp-for="CategoryId" asp-items="@ViewBag.CategoryDropDown" class="form-control">*@
-                        @* as IEnumerable<SelectListItem> - обязательное приведение типа*@
                         <select asp-for="Product.CategoryId" asp-items="@Model.CategorySelectList" class="form-select">
                             <option disabled selected>--Select Category--</option>  @* disabled - не разрешает установить выборку по умолчанию (--Select Category--)  *@
                         </select>
@@ -47,8 +45,6 @@
                         <label asp-for="Product.ProductTypeId"></label>
                     </div>
                     <div class="col-md-8">
-                        @*   <select asp-for="CategoryId" asp-items="@ViewBag.CategoryDropDown" class="form-control">*@
-                        @* as IEnumerable<SelectListItem> - обязательное приведение типа*@
                         <select asp-for="Product.ProductTypeId" asp-items="@Model.ProductTypeSelectList" class="form-select">
                             <option disabled selected>--Select AplicationType--</option>  @* disabled - не разрешает установить выборку по умолчанию (--Select Category--)  *@
                         </select>
@@ -130,7 +126,6 @@
             @if (Model.Product.imagebyte != null)
             {
                 <div class="col-md-4 ">
-                    @*  <img src="@ViewBag.Image" class="w-100" style="border-radius:15px; border:1px solid #bbb; " />*@
                     <img src="@string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(Model.Product.imagebyte).ToString())" class="w-100" style="border-radius:15px; border:1px solid #bbb; " />
                 </div>
             }

@@ -22,15 +22,15 @@ namespace EuroPlitka.Controllers
         private readonly UserManager<AplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        private readonly EuroPlitkaDbContext _db;
+       
         private readonly IUserRepository _userRepository;
 
 
-        public UserController(UserManager<AplicationUser> userManager, EuroPlitkaDbContext db, IUserRepository userRepository,
+        public UserController(UserManager<AplicationUser> userManager, IUserRepository userRepository,
             RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
-            _db = db;
+           
             _userRepository = userRepository;
             _roleManager = roleManager;
         }
@@ -41,7 +41,7 @@ namespace EuroPlitka.Controllers
         public async Task<IActionResult> Index()
         {
 
-            IEnumerable<AplicationUser> users = _userRepository.GetAll();
+            IEnumerable<AplicationUser> users = await _userRepository.GetAll();
 
             var userIdentity = (ClaimsIdentity)User.Identity;
             var claims = userIdentity.Claims;
@@ -135,7 +135,7 @@ namespace EuroPlitka.Controllers
 
             if (getFile.Count() > 0)
             {
-                var photoResult = await PhotoService.FileToByte(getFile, _db); //get byte
+                var photoResult = await PhotoService.FileToByte(getFile); //get byte
                 user.imgUserAva = photoResult;
 
 

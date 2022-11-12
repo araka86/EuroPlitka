@@ -13,9 +13,9 @@ namespace EuroPlitka_DataAccess.Repository
             _db = db;
         }
 
-        public void Update(Category obj)
+        public async void Update(Category obj)
         {
-           var objFromDb = base.FirstOrDefault(u=>u.Id == obj.Id);
+           var objFromDb = await FirstOrDefault(u=>u.Id == obj.Id);
             if(objFromDb != null)
             {
                 objFromDb.Name = obj.Name;

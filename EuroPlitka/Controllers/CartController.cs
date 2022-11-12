@@ -38,7 +38,7 @@ namespace EuroPlitka.Controllers
 
 
         //CART INDEX
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             List<ShoppingCart> shoppingCarts = new List<ShoppingCart>();
             if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstanta.SessionCart) != null &&
@@ -49,7 +49,7 @@ namespace EuroPlitka.Controllers
             }
             List<int> productCart = shoppingCarts.Select(x => x.ProductId).ToList();
 
-            IEnumerable<Product> productsListTemp = _productRepository.GetAll(u => productCart.Contains(u.Id)); //временный список
+            IEnumerable<Product> productsListTemp = await _productRepository.GetAll(u => productCart.Contains(u.Id)); //временный список
             IList<Product> productsList = new List<Product>(); //финальный список для передачи во View
 
 
@@ -100,7 +100,7 @@ namespace EuroPlitka.Controllers
 
 
         //continue button 2
-        public IActionResult Summary()
+        public async Task<IActionResult> Summary()
         {
 
             AplicationUser aplicationUser;
@@ -114,7 +114,7 @@ namespace EuroPlitka.Controllers
                     //cart has been loaded using an inquiry
 
 
-                    OrderHeader orderHeader =  _orderHeaderRepository.FirstOrDefault(u => u.Id == HttpContext.Session.Get<int>(WebConstanta.SessionInquiryId));
+                    OrderHeader orderHeader =  await _orderHeaderRepository.FirstOrDefault(u => u.Id == HttpContext.Session.Get<int>(WebConstanta.SessionInquiryId));
 
                     //заполнения корзины на основании текущего запроса
                     aplicationUser = new AplicationUser()
@@ -182,7 +182,7 @@ namespace EuroPlitka.Controllers
             //обновление данных (кол-тва)(вытаскиваем колличество)
             foreach (var cartObj in shoppingCartList)
             {
-                Product prodTemp = _productRepository.FirstOrDefault(u => u.Id == cartObj.ProductId);
+                Product prodTemp = await _productRepository.FirstOrDefault(u => u.Id == cartObj.ProductId);
                 prodTemp.TempSqFt = cartObj.Sqft;
                 productuserViewModel.ProductList.Add(prodTemp);
             }
@@ -303,9 +303,9 @@ namespace EuroPlitka.Controllers
 
         //View Confirm
         //эсли  id имеет валидное значение - то значит  метод визивается для ситуации с размещенным заказом (в случае с админом)
-        public IActionResult InquiryConfirmation(int id = 0)
+        public async Task<IActionResult> InquiryConfirmation(int id = 0)
         {
-            OrderHeader orderHeader = _orderHeaderRepository.FirstOrDefault(u => u.Id == id);
+            OrderHeader orderHeader = await _orderHeaderRepository.FirstOrDefault(u => u.Id == id);
 
             // очистка данных текущей сессий. Т.к для текущей сесии, все товары которые интересовали клиента уже попали в запрос
             HttpContext.Session.Clear();

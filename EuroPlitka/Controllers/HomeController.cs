@@ -34,7 +34,7 @@ namespace EuroPlitka.Controllers
 
 
 
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
             //take session
             List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
@@ -46,7 +46,7 @@ namespace EuroPlitka.Controllers
 
             DetailsVM DetailsVM = new DetailsVM()
             {
-                Product = _productRepository.FirstOrDefault(u => u.Id == id, includeProperties: "Category,ProductType"),
+                Product = await _productRepository.FirstOrDefault(u => u.Id == id, includeProperties: "Category,ProductType"),
                 ExistInCart = false
             };
 
@@ -62,7 +62,7 @@ namespace EuroPlitka.Controllers
 
         //Add Datail to cart
         [HttpPost, ActionName("Details")]
-        public IActionResult DetailsPost(int id, DetailsVM detailsVM)
+        public async Task<IActionResult> DetailsPost(int id, DetailsVM detailsVM)
         {
 
             List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
@@ -78,7 +78,7 @@ namespace EuroPlitka.Controllers
 
           
 
-            var productCat = _productRepository.FirstOrDefault(x => x.Id == shoppingCartList.LastOrDefault().ProductId);
+            var productCat = await _productRepository.FirstOrDefault(x => x.Id == shoppingCartList.LastOrDefault().ProductId);
             return RedirectToAction("Index", "CategoryMenu", new { id = productCat.CategoryId });
 
 
@@ -96,7 +96,7 @@ namespace EuroPlitka.Controllers
 
 
         //Delete Detail
-        public IActionResult RemoveFromCart(int id)
+        public async Task<IActionResult> RemoveFromCart(int id)
         {
 
             List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
@@ -121,12 +121,12 @@ namespace EuroPlitka.Controllers
             //return RedirectToAction(nameof(Index));
             if(shoppingCartList.Count > 0)
             {
-                var productCat = _productRepository.FirstOrDefault(x => x.Id == shoppingCartList.LastOrDefault().ProductId);
+                var productCat = await _productRepository.FirstOrDefault(x => x.Id == shoppingCartList.LastOrDefault().ProductId);
                 return RedirectToAction("Index", "CategoryMenu", new { id = productCat.CategoryId });
             }
 
 
-            var productCatLast = _productRepository.FirstOrDefault(x => x.Id == itemToRemove.ProductId);
+            var productCatLast = await _productRepository.FirstOrDefault(x => x.Id == itemToRemove.ProductId);
             return RedirectToAction("Index", "CategoryMenu", new { id = productCatLast.CategoryId });
         }
 
