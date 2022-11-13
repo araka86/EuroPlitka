@@ -1,5 +1,6 @@
 ﻿using EuroPlitka_DataAccess.Repository.IRepository;
 using EuroPlitka_Model;
+using EuroPlitka_Model.ViewModels;
 using EuroPlitka_Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -13,17 +14,23 @@ namespace EuroPlitka.Controllers
     {
         private readonly UserManager<AplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-     
+
+        private readonly IOrderHeaderRepository _orderHRepo;
+        private readonly IOrderDetailRepository _orderDRepo;
+
 
         private readonly IUserRepository _userRepository;
+      
 
-
-        public UserController(UserManager<AplicationUser> userManager, IUserRepository userRepository,
+        public UserController(UserManager<AplicationUser> userManager, IUserRepository userRepository, 
+            IOrderHeaderRepository orderHeaderRepository, IOrderDetailRepository orderDetailRepository,
             RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
 
             _userRepository = userRepository;
+            _orderHRepo = orderHeaderRepository;
+            _orderDRepo = orderDetailRepository;
             _roleManager = roleManager;
         }
 
@@ -65,7 +72,7 @@ namespace EuroPlitka.Controllers
         {
             var user = new AplicationUser();
 
-            if (id == null) 
+            if (id == null)
             {
                 user = await _userManager.GetUserAsync(User); //singin admin or user
                 if (user == null) return View("Error");
@@ -77,7 +84,7 @@ namespace EuroPlitka.Controllers
                 if (user == null) return View("Error");
             }
 
-           
+
 
             var editMV = new AplicationUser()
             {
@@ -103,7 +110,7 @@ namespace EuroPlitka.Controllers
                 return View("EditProfile", editVM);
             }
 
-         
+
             var usr = await _userManager.FindByIdAsync(editVM.Id); //get exsist record
 
             if (usr == null)
@@ -194,25 +201,46 @@ namespace EuroPlitka.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ChangePassword(string? id)
+        public async Task<IActionResult> ChangePassword(AplicationUser changePassUser)
         {
+
             var user = await _userManager.GetUserAsync(User);
-            var finduser = await _userManager.FindByIdAsync("d4a9ccc9-e8ee-44fb-ba3b-fb0978668538");
+
+            var finduser = await _userManager.FindByIdAsync(changePassUser.Id);
 
             string resetToken = await _userManager.GeneratePasswordResetTokenAsync(finduser);
-            var reset = await _userManager.ResetPasswordAsync(finduser, resetToken, "123!@#QWEqwe");
 
 
-            var res =  await _userManager.CheckPasswordAsync(finduser, "123!@#QWEqwe");
+            var reset = await _userManager.ResetPasswordAsync(finduser, resetToken, changePassUser.Password);
 
 
-           var res2 =     await _userManager.ChangePasswordAsync(user, "123!@#QWEqwe", "123!@#QWEasd");
+            // var res =  await _userManager.CheckPasswordAsync(finduser, "123!@#QWEqwe");
+
+
+            //var res2 =     await _userManager.ChangePasswordAsync(user, "123!@#QWEqwe", "123!@#QWEasd");
 
 
 
-        
+            TempData[WebConstanta.Success] = "Password change successfully";
 
-            return View();
+            return RedirectToAction("Index", "Home");
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> OrdersUser(AplicationUser changePassUser)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+
+
+            OrderListVm orderListVm = new OrderListVm()
+            {
+                OrderHeaderList = await _orderHRepo.GetAll(x => x.CreatedByUserId == user.Id)
+            };
+
+
+            return View(orderListVm;
         }
 
 
