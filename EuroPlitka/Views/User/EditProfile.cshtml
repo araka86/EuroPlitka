@@ -1,177 +1,213 @@
 ﻿@using EuroPlitka_Model
 @model EuroPlitka_Model.AplicationUser
 
-<form asp-action="EditProfile" method="post" class="row" enctype="multipart/form-data">
-    <div class="main-container">
-        <section class="bg-white space-sm pb-4">
-            <div class="container">
-                <div class="row justify-content-between align-items-center">
-                    <div class="col-auto">
-                        <h1 class="h2">Account Settings</h1>
-                    </div>
-                    <!--end of col-->
-                    <!--end of col-->
-                </div>
-                <!--end of row-->
-            </div>
-            <!--end of container-->
-        </section>
+@using EuroPlitka_Services;
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AplicationUser> SignInManager
+@inject UserManager<AplicationUser> UserManager
 
 
+@{
+
+    string img = Model.imgUserAva == null ? "/images/avatar-male-3.jpg" : $"{string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(Model.imgUserAva).ToString())}";
+}
+
+
+<div class="main-container">
+    <section class="bg-white space-sm pb-4">
         <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="media flex-wrap mb-0 align-items-center">
-
-                        <img id="imagePreview" alt="Image" src="@string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(Model.imgUserAva).ToString())" class="avatar avatar-lg mb-3 mb-md-0" />
-
-
-                        <div class="media-body">
-
-                            <label asp-for="Image" class="custom-file mb-2" for="file2">
-                                <input asp-for="Image" type="file" id="file2" class="custom-file-input height-0" />
-                                <span class="btn btn-primary"><i class="icon-upload-to-cloud">&nbsp;</i>Upload</span>
-                                <span asp-validation-for="Image" class="text-danger"></span>
-                            </label>
-
-                            <div class="mt-2">
-                                <small>For best results, use an image at least 256px by 256px in either .jpg or .png format</small>
-                                </divc>
-
-
-
-                            </div>
-                        </div>
-                    </div>
-                    <!--end of col-->
+            <div class="row justify-content-between align-items-center">
+                <div class="col-auto">
+                    <h1 class="h2">Account Settings</h1>
                 </div>
-
-                <!--end of row-->
-                <hr />
-                <div class="row mb-4">
-                    <div class="col">
-                        <h5>Profile Information</h5>
-                    </div>
-                    <!--end of col-->
-                </div>
-                <!--end of row-->
-
-
-
-
-                <div class="row">
-
-
-
-
-                    <div class="col-md-8 ">
-
-
-
-                        <div class="form-group row py-2">
-
-                            <div class="col-md-2">
-                                <label asp-for="FullName">Full Name:</label>
-                            </div>
-
-
-                            <div class="col-md-8">
-                                <input asp-for="FullName" type="text" class="form-control form-control-lg" />
-                                <span asp-validation-for="FullName" class="text-danger"></span>
-                            </div>
-                        </div>
-
-
-                        <div class="form-group row py-2">
-
-                            <div class="col-md-2">
-                                <label asp-for="City">City:</label>
-                            </div>
-
-
-                            <div class="col-md-8">
-                                <input asp-for="City" type="text" class="form-control form-control-lg" />
-                                <span asp-validation-for="City" class="text-danger"></span>
-                            </div>
-                        </div>
-
-                        <div class="form-group row py-2">
-
-                            <div class="col-md-2">
-                                <label asp-for="StreetAddress">StreetAddress:</label>
-                            </div>
-
-
-                            <div class="col-md-8">
-                                <input asp-for="StreetAddress" type="text" class="form-control form-control-lg" />
-                                <span asp-validation-for="StreetAddress" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="form-group row py-2">
-
-                            <div class="col-md-2">
-                                <label asp-for="PhoneNumber">Phone Number:</label>
-                            </div>
-
-
-                            <div class="col-md-8">
-                                <input asp-for="PhoneNumber" type="text" class="form-control form-control-lg" />
-                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label>About me:</label>
-                                <textarea class="form-control form-control-lg" name="Description" rows="4"> @Model.Description</textarea>
-                            </div>
-                        </div>
-
-
-
-                        <div class="form-group row py-2">
-
-                            <div class="col">
-                                <input type="submit" class="btn btn-success w-100" value="Save changes" onclick="myFunction()">
-                            </div>
-
-                            <div class="col">
-                                <a asp-controller="Home" asp-action="Index" class="btn btn-primary  w-100">
-                                    <i class="fa-solid fa-rotate-left"></i>
-                                </a>
-                            </div>
-
-
-
-                        </div>
-
-
-
-
-
-
-
-                    </div>
-                    <!--end of col-->
-
-
-
-
-                </div>
-                <!--end of row-->
-
-
-
-
-
-
-
-
+         
             </div>
-            <!--end of container-->
-
-
+ 
         </div>
-</form>
+  
+    </section>
+
+    <section class="flush-with-above space-0">
+        <div class="bg-white">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active"
+                                   id="overview-tab"
+                                   data-toggle="tab"
+                                   href="#profile"
+                                   role="tab"
+                                   aria-selected="true">Profile</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   id="security-tab"
+                                   data-toggle="tab"
+                                   href="#security"
+                                   role="tab"
+                                   aria-selected="false">Change Password</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   id="security-tab2"
+                                   data-toggle="tab"
+                                   href="#security2"
+                                   role="tab"
+                                   aria-selected="false">Reset Password</a>
+                            </li>
+                          
+                        </ul>
+                    </div>
+               
+                </div>
+            
+            </div>
+        
+        </div>
+    </section>
+    <form asp-action="EditProfile" method="post" class="row" enctype="multipart/form-data">
+    <input asp-for="Id" hidden />
+    <section class="flush-with-above height-80 d-block">
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="profile" role="tabpanel">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="media flex-wrap mb-4 align-items-center">
+
+                                    <img id ="imagePreview" alt="Image" src="@img" class="avatar avatar-lg mb-3 mb-md-0" />
+
+                                <div class="media-body">
+
+                                    <label asp-for="Image" class="custom-file mb-2" for="file2">
+                                        <input asp-for="Image" type="file" id="file2" class="custom-file-input height-0" />
+                                        <span class="btn btn-primary"><i class="icon-upload-to-cloud">&nbsp;</i>Upload</span>
+                                        <span asp-validation-for="Image" class="text-danger"></span>
+                                    </label>
+
+                                    <div class="mt-2">
+                                        <small>For best results, use an image at least 256px by 256px in either .jpg or .png format</small>
+                                        </divc>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end of col-->
+                    </div>
+                    <!--end of row-->
+                    <hr />
+                    <div class="row mb-4">
+                        <div class="col">
+                            <h5>Profile Information</h5>
+                        </div>
+                        <!--end of col-->
+                    </div>
+                    <!--end of row-->
+                    <div class="row">
+                        <!--end of col-->
+                        <div class="col-12 col-md-8 order-md-1">
+                          
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label asp-for="FullName">FullName:</label>
+                                        <input asp-for="FullName" type="text" class="form-control form-control-lg" />
+                                        <span asp-validation-for="FullName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label asp-for="City">City:</label>
+                                        <input asp-for="City" type="text" class="form-control form-control-lg" />
+                                        <span asp-validation-for="City" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label asp-for="StreetAddress">StreetAddress:</label>
+                                        <input asp-for="StreetAddress" type="text" class="form-control form-control-lg" />
+                                        <span asp-validation-for="StreetAddress" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label asp-for="PhoneNumber">PhoneNumber:</label>
+                                        <input asp-for="PhoneNumber" type="text" class="form-control form-control-lg" />
+                                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label>About me:</label>
+                                        <textarea class="form-control form-control-lg" name="Description" rows="4"> @Model.Description</textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row py-2">
+                                    <div class="col">
+                                        <input type="submit" class="btn btn-success w-100" value="Save changes" onclick="myFunction()">
+                                    </div>
+                                    @if (User.IsInRole(WebConstanta.AdminRole))
+                                    {
+                                        <div class="col">
+                                            <a asp-controller="User" asp-action="Index" class="btn btn-primary  w-100">
+                                                List User
+                                            </a>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="col">
+                                            <a asp-controller="Home" asp-action="Index" class="btn btn-primary  w-100">
+                                                <i class="fa-solid fa-rotate-left"></i>
+                                            </a>
+                                        </div>
+                                    }
+                                </div>
+                          
+                        </div>
+                        <!--end of col-->
+                    </div>
+                    <!--end of row-->
+                </div>
+                <!--end of container-->
+            </div>
+            <!--end of tab pane-->
+            <div class="tab-pane fade" id="security" role="tabpanel">
+                <div class="container">
+
+
+
+                        <partial name="_ChangePassword" />
+                   
+
+                </div>
+           
+            </div>
+                <div class="tab-pane fade" id="security2" role="tabpanel">
+                    <div class="container">
+
+
+
+                      <h5>reset password</h5>
+
+
+                    </div>
+
+                </div>
+         
+        
+        </div>
+    </form>
+        <!--end of tabs content-->
+    </section>
+    <!--end of section-->
+</div>
+
 
 
 <script type="text/javascript">

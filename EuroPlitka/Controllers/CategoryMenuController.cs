@@ -33,20 +33,20 @@ namespace EuroPlitka.Controllers
 
     public class CategoryMenuController : Controller
     {
-        private readonly EuroPlitkaDbContext _euroPlitkaDbContext;
+      
         private readonly IProductRepository _productRepository;
         private readonly ICategoryRepository _categoryRepository;
 
-        public CategoryMenuController(EuroPlitkaDbContext euroPlitkaDbContext, IProductRepository productRepository, ICategoryRepository categoryRepository)
+        public CategoryMenuController(IProductRepository productRepository, ICategoryRepository categoryRepository)
         {
-            _euroPlitkaDbContext = euroPlitkaDbContext;
+          
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
         }
 
 
 
-        public async Task<IActionResult> Index(int id, int category = -1, int page = 1, int pageSize = 3, bool allResultPage = false)
+        public async Task<IActionResult> Index(int id, int page = 1, int pageSize = 3, bool allResultPage = false)
         {
             CategoryMenuVM homeVm;
 
@@ -66,7 +66,6 @@ namespace EuroPlitka.Controllers
                     return NotFound();
                 }
 
-                // if category is -1 (All) dont filter else filter by selected category
                 var countToConditionProduct = await _productRepository.GetSliceAsync((page - 1) * pageSize, pageSize, id);
                 var countAllCurrentCategory = await _productRepository.GetProductCategory(u => u.CategoryId == id, includeProperties: "Category,ProductType");
                 homeVm = new CategoryMenuVM()
@@ -120,5 +119,14 @@ namespace EuroPlitka.Controllers
 
             return View(homeVm);
         }
+
+        public async Task<IActionResult> AllCategory()
+        {
+            return View();
+        }
+
+
+
+
     }
 }

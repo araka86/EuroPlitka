@@ -36,14 +36,13 @@
             <div class="row">
                 @if (@Model.AllPage)
                 {
-                    @foreach (var prod in Model.ProductsCat)
+                    @foreach (var prod in Model.Products)
                     {
                         <partial name="_IndividualProductCard" model="prod" />
                     }
                 }
                 else
                 {
-
                     @foreach (var prod in Model.ConditionProducts)
                     {
                         <partial name="_IndividualProductCard" model="prod" />

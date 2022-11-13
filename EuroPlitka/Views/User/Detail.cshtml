@@ -1,5 +1,17 @@
-﻿@using EuroPlitka_Services;
+﻿@using EuroPlitka_Model;
+@using EuroPlitka_Services;
 @model EuroPlitka_Model.AplicationUser
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AplicationUser> SignInManager
+@inject UserManager<AplicationUser> UserManager
+
+
+@{
+    string img = Model.imgUserAva == null ? "/images/avatar-male-3.jpg" : $"{string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(Model.imgUserAva).ToString())}";
+}
+
+
+
 
 <div class="main-container">
 
@@ -32,7 +44,7 @@
         <div class="row justify-content-center">
             <div class="col-12 col-md-8">
                 <div class="media">
-                    <img alt="Image" src="@string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(Model.imgUserAva).ToString())" class="mr-md-5 avatar avatar-xlg">
+                    <img alt="Image" src="@img" class="mr-md-5 avatar avatar-xlg">
                     <div class="media-body">
                         <div class="mb-3">
                             <h1 class="h2 mb-2">@Model.UserName</h1>
@@ -58,19 +70,29 @@
 
 
                                 <div class="col">
-                                    <input type="submit" class="btn btn-info w-100" value="Edit" >
+                                    <a asp-controller="User" asp-route-id="@Model.Id" asp-action="EditProfile" class="btn btn-primary w-100">
+                                        Edit
+                                    </a>
                                 </div>
                                 <div class="col">
                                     <input type="submit" class="btn btn-danger w-100" value="Delete" >
                                 </div>
-                               
+
+                                <div class="col">
+                                    <a asp-controller="User" asp-action="Index" class="btn btn-primary  w-100">
+                                        List User
+                                    </a>
+                                </div>
+                            }else{
+
+                                <div class="col">
+                                    <a asp-controller="Home" asp-action="Index" class="btn btn-primary  w-100">
+                                        <i class="fa-solid fa-rotate-left"></i>
+                                    </a>
+                                </div>
 
                             }
-                            <div class="col">
-                                <a asp-controller="Home" asp-action="Index" class="btn btn-primary  w-100">
-                                    <i class="fa-solid fa-rotate-left"></i>
-                                </a>
-                            </div>
+                          
 
                             </div>
                         

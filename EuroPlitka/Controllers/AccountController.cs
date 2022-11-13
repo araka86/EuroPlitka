@@ -76,7 +76,7 @@ namespace EuroPlitka.Controllers
                 var user = await _userManager.FindByEmailAsync(Input.Email);
                 if (user != null)
                 {
-                    var result = await _signInManager.PasswordSignInAsync(user.FullName, Input.Password, Input.RememberMe, false);
+                    var result = await _signInManager.PasswordSignInAsync(user.UserName, Input.Password, Input.RememberMe, false);
                     //  var usertest = await _userManager.FindByNameAsync("testUser");
                     if (result.Succeeded)
                     {

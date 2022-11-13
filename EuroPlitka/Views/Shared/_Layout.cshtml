@@ -2,14 +2,14 @@
 @using EuroPlitka_Services;
 @using static EuroPlitka_Model.AplicationUser
 @inject IHttpContextAccessor HttpContextAccessor
-@using Microsoft.AspNetCore.Identity
 
+@using Microsoft.AspNetCore.Identity
 @inject SignInManager<AplicationUser> SignInManager
 @inject UserManager<AplicationUser> UserManager
 
 
 @{
-  
+
     var currentUser = await UserManager.GetUserAsync(User);
     string img = currentUser == null ? "/images/avatar-male-3.jpg" : currentUser.imgUserAva == null ?
                                                                      "/images/avatar-male-3.jpg" :
@@ -78,6 +78,7 @@
                                 </li>
                                 <li class="nav-item dropdown">
                                     @await Component.InvokeAsync("Category")
+                                  
                                 </li>
 
                                 <!-- Chek session-->
@@ -117,18 +118,24 @@
 
                                             @if (User.IsInRole(WebConstanta.AdminRole))
                                             {
-                                                <a class="dropdown-item" asp-controller="User" asp-action="Detail" asp-route-id="@currentUser.Id"><span class="h6 mb-0">View Profile</span> </a>
-                                                <a class="dropdown-item" asp-controller="User" asp-action="EditProfile"><span class="h6 mb-0">Edit Profile</span> </a>
-                                                <a class="dropdown-item" asp-controller="User" asp-action="Index"><span class="h6 mb-0">Users</span> </a>
+                                                
+
+                                                <a class="dropdown-item" asp-controller="User" asp-action="Index"><span class="h6 mb-0">Manage Users</span> </a>
                                                 <a class="dropdown-item" asp-controller="Account" asp-action="Register">Create Admin User</a>
-                                                <a class="dropdown-item" asp-area="" asp-controller="Category" asp-action="Index">Category</a>
-                                                <a class="dropdown-item" asp-controller="ProductType" asp-action="Index">ProductType</a>
-                                                <a class="dropdown-item" asp-controller="Product" asp-action="Index">Product</a>
-                                                <a class="nav-link text-dark" asp-controller="Order" asp-action="Index">History Order</a>
+                                                <a class="dropdown-item" asp-area="" asp-controller="Category" asp-action="Index"> Manage Category</a>
+                                                <a class="dropdown-item" asp-controller="ProductType" asp-action="Index">Manage ProductType</a>
+                                                <a class="dropdown-item" asp-controller="Product" asp-action="Index">Manage Product</a>
+                                                <a class="dropdown-item" asp-controller="Order" asp-action="Index">Manage History Order</a>
 
-                                                <div class="dropdown-divider"></div>
-
+                                            }else{
+                                                <a class="dropdown-item" asp-controller="User" asp-action="Order"> History Order</a>
                                             }
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" asp-controller="User" asp-action="Detail" asp-route-id="@currentUser.Id"><span class="h6 mb-0">View Profile</span> </a>
+                                            <a class="dropdown-item" asp-controller="User" asp-action="EditProfile"><span class="h6 mb-0">Edit Profile</span> </a>
+                                           
+
+                                        
                                             <form method="post" asp-controller="Account" asp-action="Logout">
                                                 <input type="submit" class="btn form-control" value="Logout" />
                                             </form>

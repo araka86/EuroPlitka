@@ -1,17 +1,9 @@
-﻿using CloudinaryDotNet;
-using CloudinaryDotNet.Actions;
-using EuroPlitka_DataAccess.Data;
-using EuroPlitka_DataAccess.Repository;
-using EuroPlitka_DataAccess.Repository.IRepository;
+﻿using EuroPlitka_DataAccess.Repository.IRepository;
 using EuroPlitka_Model;
-using EuroPlitka_Model.ViewModels;
 using EuroPlitka_Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Syncfusion.EJ2.FileManager;
 using System.Data;
 using System.Security.Claims;
 
@@ -21,8 +13,8 @@ namespace EuroPlitka.Controllers
     {
         private readonly UserManager<AplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+     
 
-       
         private readonly IUserRepository _userRepository;
 
 
@@ -30,7 +22,7 @@ namespace EuroPlitka.Controllers
             RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
-           
+
             _userRepository = userRepository;
             _roleManager = roleManager;
         }
@@ -63,24 +55,29 @@ namespace EuroPlitka.Controllers
 
             }
 
-
-
-
-
-
             return View(users);
         }
 
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> EditProfile()
+        public async Task<IActionResult> EditProfile(string? id)
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = new AplicationUser();
 
-            if (user == null)
-                return View("Error");
+            if (id == null) 
+            {
+                user = await _userManager.GetUserAsync(User); //singin admin or user
+                if (user == null) return View("Error");
+            }
+            else
+            {
+                //user = await _userRepository.FirstOrDefault(x => x.Id == id);
+                user = await _userManager.FindByIdAsync(id);
+                if (user == null) return View("Error");
+            }
 
+           
 
             var editMV = new AplicationUser()
             {
@@ -89,9 +86,9 @@ namespace EuroPlitka.Controllers
                 Description = user.Description,
                 imgUserAva = user.imgUserAva,
                 StreetAddress = user.StreetAddress
-
             };
-            return View(editMV);
+
+            return View(user);
         }
 
 
@@ -106,57 +103,30 @@ namespace EuroPlitka.Controllers
                 return View("EditProfile", editVM);
             }
 
-            var user = await _userManager.GetUserAsync(User);
+         
+            var usr = await _userManager.FindByIdAsync(editVM.Id); //get exsist record
 
-            if (user == null)
+            if (usr == null)
                 return View("Error");
 
-
-
-
-
-
-
-
-
-            //if (editVM.Image != null)
-            //{
-            //    var getFile2 = HttpContext.Request.Form.Files;
-            //    var photoResult = await PhotoService.FileToByte(getFile2, _db); //get byte
-            //    user.imgUserAva = photoResult;// temp
-            //    return View(user);
-
-            //}
-
-
-
             var getFile = HttpContext.Request.Form.Files;
-
-
             if (getFile.Count() > 0)
             {
                 var photoResult = await PhotoService.FileToByte(getFile); //get byte
-                user.imgUserAva = photoResult;
-
-
+                usr.imgUserAva = photoResult;
             }
-            user.FullName = editVM.FullName;
-            user.City = editVM.City;
-            user.StreetAddress = editVM.StreetAddress;
-            user.Description = editVM.Description;
-            user.PhoneNumber = editVM.PhoneNumber;
+            usr.FullName = editVM.FullName;
+            usr.City = editVM.City;
+            usr.StreetAddress = editVM.StreetAddress;
+            usr.Description = editVM.Description;
+            usr.PhoneNumber = editVM.PhoneNumber;
 
-            await _userManager.UpdateAsync(user);
+            await _userManager.UpdateAsync(usr);
 
 
 
             TempData[WebConstanta.Success] = "User Update successfully";
-
-
-
-
-
-            return RedirectToAction("Detail", "User", new { user.Id });
+            return RedirectToAction("Detail", "User", new { usr.Id });
         }
 
 
@@ -167,8 +137,6 @@ namespace EuroPlitka.Controllers
         {
 
             var user = await _userRepository.GetUserById(id);
-
-
             if (user == null)
             {
                 return RedirectToAction("Index", "Users");
@@ -190,6 +158,62 @@ namespace EuroPlitka.Controllers
 
 
 
+        [HttpGet("users/{Id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var findUser = _userRepository.FirstOrDefault(x => x.Id == id);
+            if (findUser == null)
+                return NotFound();
+
+
+
+            var delUser = new AplicationUser()
+            {
+                FullName = findUser.Result.FullName,
+                City = findUser.Result.City,
+                Description = findUser.Result.Description,
+                imgUserAva = findUser.Result.imgUserAva,
+                StreetAddress = findUser.Result.StreetAddress
+            };
+            return View(delUser);
+        }
+
+
+        [HttpPost("users/{Id}"), ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeletePost(string? id)
+        {
+            var findUser = _userRepository.FirstOrDefault(x => x.Id == id);
+            if (findUser == null)
+                return NotFound();
+
+            _userRepository.Remove(findUser.Result);
+            _userRepository.Save();
+            TempData[WebConstanta.Success] = "User Delete successfully";
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(string? id)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var finduser = await _userManager.FindByIdAsync("d4a9ccc9-e8ee-44fb-ba3b-fb0978668538");
+
+            string resetToken = await _userManager.GeneratePasswordResetTokenAsync(finduser);
+            var reset = await _userManager.ResetPasswordAsync(finduser, resetToken, "123!@#QWEqwe");
+
+
+            var res =  await _userManager.CheckPasswordAsync(finduser, "123!@#QWEqwe");
+
+
+           var res2 =     await _userManager.ChangePasswordAsync(user, "123!@#QWEqwe", "123!@#QWEasd");
+
+
+
+        
+
+            return View();
+        }
 
 
 
