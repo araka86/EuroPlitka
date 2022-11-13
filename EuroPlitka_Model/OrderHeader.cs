@@ -23,6 +23,9 @@ namespace EuroPlitka_Model
         public DateTime ShippingDate { get; set; }
         [Required]
         public double FinalOrderTotal { get; set; } //общая цена
+
+        
+        public int countItem { get; set; }
     
   
        

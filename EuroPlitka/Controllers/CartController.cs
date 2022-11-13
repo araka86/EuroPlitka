@@ -228,7 +228,9 @@ namespace EuroPlitka.Controllers
                     FullName = productuserViewModel.AplicationUser.FullName,
                     Email = productuserViewModel.AplicationUser.Email,
                     PhoneNumber = productuserViewModel.AplicationUser.PhoneNumber,
-                    OrderDate = DateTime.Now
+                    OrderDate = DateTime.Now,
+                    countItem = productuserViewModel.ProductList.Count()
+
                 };
                 //добавление orderHeader в БД
                 _orderHeaderRepository.Add(orderHeader);

@@ -228,7 +228,7 @@ namespace EuroPlitka.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> OrdersUser(AplicationUser changePassUser)
+        public async Task<IActionResult> OrdersUser()
         {
             var user = await _userManager.GetUserAsync(User);
 
@@ -236,11 +236,25 @@ namespace EuroPlitka.Controllers
 
             OrderListVm orderListVm = new OrderListVm()
             {
-                OrderHeaderList = await _orderHRepo.GetAll(x => x.CreatedByUserId == user.Id)
+                OrderHeaderList = await _orderHRepo.GetAll(x => x.CreatedByUserId == user.Id),
+                
+                
             };
+            
 
+            return View(orderListVm);
+        }
 
-            return View(orderListVm;
+        public async Task<IActionResult> DetailsOrder(int id)
+        {
+            OrderVM orderVM = new OrderVM()
+            {
+                OrderHeader = await _orderHRepo.FirstOrDefault(u => u.Id == id),
+
+                OrderDetails = await _orderDRepo.GetAll(o => o.OrderHeaderId == id, includeProperties: "Product")
+
+            };
+            return View(orderVM);
         }
 
 
