@@ -69,10 +69,10 @@ namespace EuroPlitka_DataAccess.Repository
 
 
 
-        public void Update(Product obj)
-        {
-            _db.Product.Update(obj);
-        }
+        //public void Update(Product obj)
+        //{
+        //    _db.Product.Update(obj);
+        //}
 
 
 

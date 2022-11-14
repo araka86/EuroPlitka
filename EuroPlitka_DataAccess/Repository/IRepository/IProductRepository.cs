@@ -8,7 +8,7 @@ namespace EuroPlitka_DataAccess.Repository.IRepository
 {
     public interface IProductRepository : IRepository<Product>
     {
-        void Update(Product obj);
+        //void Update(Product obj);
 
        Task<IEnumerable<SelectListItem>> GetAllDropdownList(string obj);
       Task<IEnumerable<Product>> GetProductCategory(

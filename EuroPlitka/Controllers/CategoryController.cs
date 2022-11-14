@@ -1,17 +1,21 @@
-﻿using EuroPlitka_DataAccess.Repository.IReposotory;
+﻿using EuroPlitka_DataAccess.Repository;
+using EuroPlitka_DataAccess.Repository.IReposotory;
 using EuroPlitka_Model;
 using EuroPlitka_Services;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Protocol.Core.Types;
 
 namespace EuroPlitka.Controllers
 {
     public class CategoryController : Controller
     {
         private readonly ICategoryRepository _catRepo;
+     
 
         public CategoryController(ICategoryRepository catRepo)
         {
             _catRepo = catRepo;
+          
         }
 
         public async Task<IActionResult> Index()
@@ -35,7 +39,7 @@ namespace EuroPlitka.Controllers
             if (ModelState.IsValid)
             {
                 _catRepo.Add(obj);
-                _catRepo.Save();
+              
                 TempData[WebConstanta.Success] = "Catogory created successfully";
                 return Redirect("Index");
             }
@@ -47,13 +51,13 @@ namespace EuroPlitka.Controllers
 
 
         //Get - Edit
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || id == 0)
                 return NotFound();
 
 
-            var obj = _catRepo.Find(id.GetValueOrDefault());
+            var obj = await _catRepo.Find(id.GetValueOrDefault());
 
 
             if (obj == null)
@@ -74,7 +78,7 @@ namespace EuroPlitka.Controllers
             if (ModelState.IsValid)
             {
                 _catRepo.Update(obj);
-                _catRepo.Save();
+               
                 TempData[WebConstanta.Success] = "Catogory update successfully";
                 return RedirectToAction("Index");
             }
@@ -101,13 +105,13 @@ namespace EuroPlitka.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeletePost(int? id)
         {
-            var obj = await  _catRepo.Find(id.GetValueOrDefault());
+            var obj = await _catRepo.Find(id.GetValueOrDefault());
             if (obj == null)
                 return NotFound();
 
 
-            _catRepo.Remove(obj);
-            _catRepo.Save();
+            _catRepo.Delete(obj);
+         
             TempData[WebConstanta.Success] = "Catogory Delete successfully";
             return RedirectToAction("Index");
         }

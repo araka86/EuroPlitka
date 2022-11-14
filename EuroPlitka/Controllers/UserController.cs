@@ -143,7 +143,9 @@ namespace EuroPlitka.Controllers
         public async Task<IActionResult> Detail(string id)
         {
 
-            var user = await _userRepository.GetUserById(id);
+        
+            var user = await _userRepository.FirstOrDefault(x=>x.Id == id);
+
             if (user == null)
             {
                 return RedirectToAction("Index", "Users");
@@ -194,8 +196,8 @@ namespace EuroPlitka.Controllers
             if (findUser == null)
                 return NotFound();
 
-            _userRepository.Remove(findUser.Result);
-            _userRepository.Save();
+            _userRepository.Delete(findUser.Result);
+        
             TempData[WebConstanta.Success] = "User Delete successfully";
             return RedirectToAction("Index");
         }

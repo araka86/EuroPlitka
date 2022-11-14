@@ -83,7 +83,7 @@ namespace EuroPlitka.Controllers
                     _prodRepo.Update(prodoctVM.Product);
                 }
            
-                _prodRepo.Save();
+             
                 return RedirectToAction("Index"); //return to Action
             }
             //if no valid
@@ -124,8 +124,7 @@ namespace EuroPlitka.Controllers
 
 
 
-            _prodRepo.Remove(obj);
-            _prodRepo.Save();
+            _prodRepo.Delete(obj);         
             TempData[WebConstanta.Success] = "Prodoct Delete successfully";
             return RedirectToAction("Index");
         }

@@ -10,12 +10,12 @@ namespace EuroPlitka_DataAccess.Repository
         {
         }
 
-        public async void Update(ProductType obj)
-        {
-            var objFromDb = await FirstOrDefault(u => u.Id == obj.Id);
-            if (objFromDb != null)
-                objFromDb.Name = obj.Name;
+        //public async void Update(ProductType obj)
+        //{
+        //    var objFromDb = await FirstOrDefault(u => u.Id == obj.Id);
+        //    if (objFromDb != null)
+        //        objFromDb.Name = obj.Name;
 
-        }
+        //}
     }
 }

@@ -5,6 +5,6 @@ namespace EuroPlitka_DataAccess.Repository.IReposotory
 {
     public interface ICategoryRepository: IRepository<Category>
     {
-        void Update(Category obj);
+        //void Update(Category obj);
     }
 }

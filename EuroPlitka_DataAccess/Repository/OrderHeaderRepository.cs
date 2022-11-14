@@ -14,10 +14,10 @@ namespace EuroPlitka_DataAccess.Repository
             _db = db;
         }
 
-        public void Update(OrderHeader obj)
-        {
-            _db.OrderHeader.Update(obj);
-        }
+        //public void Update(OrderHeader obj)
+        //{
+        //    _db.OrderHeader.Update(obj);
+        //}
 
     }
 }

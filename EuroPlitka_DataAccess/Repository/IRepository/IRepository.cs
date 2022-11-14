@@ -20,17 +20,20 @@ namespace EuroPlitka_DataAccess.Repository.IReposotory
             bool isTracking = true
             );
 
-        void Add(T entity);
-        void Remove (T entity);
+        //void Add(T entity);
+        //void Remove (T entity);
 
-        void RemoveRange(IEnumerable<T> entity);
-
-      
-
-        void Save();
-        
+        //void RemoveRange(IEnumerable<T> entity);
+        //void Save();
 
 
+        bool Add(T entity);
+
+        bool Update(T entity);
+
+        bool Delete(T entity);
+
+        bool Save();
 
 
     }

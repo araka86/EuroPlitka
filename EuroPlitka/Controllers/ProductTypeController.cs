@@ -31,7 +31,6 @@ namespace EuroPlitka.Controllers
             if (ModelState.IsValid)
             {
                 _productTypeRepository.Add(obj);
-                _productTypeRepository.Save();
                 TempData[WebConstanta.Success] = "Product Type create successfully";
                 return Redirect("Index");
             }
@@ -42,12 +41,12 @@ namespace EuroPlitka.Controllers
 
 
         //Get - Edit
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || id == 0)
                 return NotFound();
 
-            var obj = _productTypeRepository.Find(id.GetValueOrDefault());
+            var obj = await _productTypeRepository.Find(id.GetValueOrDefault());
 
             if (obj == null)
                 return NotFound();
@@ -65,7 +64,6 @@ namespace EuroPlitka.Controllers
             if (ModelState.IsValid)
             {
                 _productTypeRepository.Update(obj);
-                _productTypeRepository.Save();
                 TempData[WebConstanta.Success] = "Product Type Update successfully";
                 return RedirectToAction("Index");
             }
@@ -103,8 +101,7 @@ namespace EuroPlitka.Controllers
                 return NotFound();
 
 
-            _productTypeRepository.Remove(obj);
-            _productTypeRepository.Save();
+            _productTypeRepository.Delete(obj);
             TempData[WebConstanta.Success] = "Product Type Delete successfully";
             return RedirectToAction("Index");
         }

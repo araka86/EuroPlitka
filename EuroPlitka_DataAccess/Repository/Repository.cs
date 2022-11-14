@@ -16,14 +16,16 @@ namespace EuroPlitka_DataAccess.Repository
             dbSet = _db.Set<T>();
         }
 
-        public void Add(T entity)
-        {
-            dbSet.Add(entity);
-        }
+        //public void Add(T entity)
+        //{
+        //    dbSet.Add(entity);
+        //}
+
+       
 
         public async Task<T> Find(int id)
         {
-            return dbSet.Find(id);
+            return  dbSet.Find(id);
         }
 
         public async Task<T> FirstOrDefault(Expression<Func<T, bool>>? filter = null, 
@@ -79,10 +81,10 @@ namespace EuroPlitka_DataAccess.Repository
             return query.ToList();
         }
 
-        public void Remove(T entity)
-        {
-            dbSet.Remove(entity);
-        }
+        //public void Remove(T entity)
+        //{
+        //    dbSet.Remove(entity);
+        //}
 
         public void RemoveRange(IEnumerable<T> entity)
         {
@@ -90,11 +92,39 @@ namespace EuroPlitka_DataAccess.Repository
 
         }
 
-        public void Save()
+        //public void Save()
+        //{
+        //    _db.SaveChanges();
+        //}
+
+
+
+
+
+        public bool Add(T entity)
         {
-            _db.SaveChanges();
+            _db.Add(entity);
+            return Save();
         }
 
-      
+        public bool Delete(T entity)
+        {
+            _db.Remove(entity);
+            return Save();
+        }
+
+
+
+        public bool Save()
+        {
+            var saved = _db.SaveChanges();
+            return saved > 0;
+        }
+
+        public bool Update(T entity)
+        {
+           _db.Update(entity);
+          return  Save();
+        }
     }
 }

@@ -20,13 +20,12 @@
                 <div class="col-auto">
                     <h1 class="h2">Account Settings</h1>
                 </div>
-         
-            </div>
- 
-        </div>
-  
-    </section>
 
+            </div>
+
+        </div>
+
+    </section>
     <section class="flush-with-above space-0">
         <div class="bg-white">
             <div class="container">
@@ -38,7 +37,7 @@
                                    id="overview-tab"
                                    data-toggle="tab"
                                    href="#profile"
-                                   role="tab" 
+                                   role="tab"
                                    aria-selected="true">Profile</a>
                             </li>
                             <li class="nav-item">
@@ -49,75 +48,89 @@
                                    role="tab"
                                    aria-selected="false">Change Password</a>
                             </li>
-                         
-                          
+                            @if (User.IsInRole(WebConstanta.AdminRole))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                       id="role-tab"
+                                       data-toggle="tab"
+                                       href="#role"
+                                       role="tab"
+                                       aria-selected="false">Manage Role</a>
+                                </li>
+                            }
+
                         </ul>
                     </div>
-               
+
                 </div>
-            
+
             </div>
-        
+
         </div>
     </section>
-    <form asp-action="EditProfile" method="post" class="row" enctype="multipart/form-data">
-    <input asp-for="Id" hidden />
     <section class="flush-with-above height-80 d-block">
-        <div class="tab-content">
-            <div class="tab-pane fade show active" id="profile" role="tabpanel">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="media flex-wrap mb-4 align-items-center">
+        <form asp-action="EditProfile" method="post" class="m-2" enctype="multipart/form-data">
+            <input asp-for="Id" hidden />
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="profile" role="tabpanel">
+                    <div class="container">
+                        <div class="row">
 
-                                    <img id ="imagePreview" alt="Image" src="@img" class="avatar avatar-lg mb-3 mb-md-0" />
+                            <div class="col-12">
 
-                                <div class="media-body">
+                                <div class="media flex-wrap mb-4 align-items-center">
 
-                                    <label asp-for="Image" class="custom-file mb-2" for="file2">
-                                        <input asp-for="Image" type="file" id="file2" class="custom-file-input height-0" />
-                                        <span class="btn btn-primary"><i class="icon-upload-to-cloud">&nbsp;</i>Upload</span>
-                                        <span asp-validation-for="Image" class="text-danger"></span>
-                                    </label>
+                                    <img id="imagePreview" alt="Image" src="@img" class="avatar avatar-lg mb-3 mb-md-0" />
 
-                                    <div class="mt-2">
-                                        <small>For best results, use an image at least 256px by 256px in either .jpg or .png format</small>
-                                        </divc>
+                                    <div class="media-body">
 
+                                        <label asp-for="Image" class="custom-file mb-2" for="file2">
+                                            <input asp-for="Image" type="file" id="file2" class="custom-file-input height-0" />
+                                            <span class="btn btn-primary"><i class="icon-upload-to-cloud">&nbsp;</i>Upload</span>
+                                            <span asp-validation-for="Image" class="text-danger"></span>
+                                        </label>
 
+                                        <div class="mt-2">
+                                            <small>For best results, use an image at least 256px by 256px in either .jpg or .png format</small>
+                                        </div>
 
                                     </div>
                                 </div>
+
+
                             </div>
+
+
                         </div>
-                        <!--end of col-->
-                    </div>
-                    <!--end of row-->
-                    <hr />
-                    <div class="row mb-4">
-                        <div class="col">
-                            <h5>Profile Information</h5>
+                        <hr />
+                        <div class="row mb-4">
+                            <div class="col">
+                                <h5>Profile Information</h5>
+                            </div>
+
                         </div>
-                        <!--end of col-->
-                    </div>
-                    <!--end of row-->
-                    <div class="row">
-                        <!--end of col-->
-                        <div class="col-12 col-md-8 order-md-1">
-                          
+                        <div class="row">
+
+                            <div class="col-12 col-md-8 order-md-1">
+
                                 <div class="col-6">
+
                                     <div class="form-group">
                                         <label asp-for="FullName">FullName:</label>
                                         <input asp-for="FullName" type="text" class="form-control form-control-lg" />
                                         <span asp-validation-for="FullName" class="text-danger"></span>
                                     </div>
+
                                 </div>
                                 <div class="col-6">
+
                                     <div class="form-group">
                                         <label asp-for="City">City:</label>
                                         <input asp-for="City" type="text" class="form-control form-control-lg" />
                                         <span asp-validation-for="City" class="text-danger"></span>
                                     </div>
+
                                 </div>
                                 <div class="col-6">
                                     <div class="form-group">
@@ -161,34 +174,25 @@
                                         </div>
                                     }
                                 </div>
-                          
+
+                            </div>
+
                         </div>
-                        <!--end of col-->
                     </div>
-                    <!--end of row-->
                 </div>
-                <!--end of container-->
-            </div>
-            <!--end of tab pane-->
-            <div class="tab-pane fade" id="security" role="tabpanel">
-                <div class="container">
-
-
-
+                <div class="tab-pane fade" id="role" role="tabpanel">
+                    <div class="container">
+                        <p>Role</p>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="security" role="tabpanel">
+                    <div class="container">
                         <partial name="_ChangePassword" />
-                   
-
+                    </div>
                 </div>
-           
             </div>
-           
-         
-        
-        </div>
-    </form>
-        <!--end of tabs content-->
+        </form>
     </section>
-    <!--end of section-->
 </div>
 
 
@@ -217,6 +221,6 @@
 
     </script>
 
-    
+
 
 }

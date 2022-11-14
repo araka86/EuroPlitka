@@ -13,15 +13,15 @@ namespace EuroPlitka_DataAccess.Repository
             _db = db;
         }
 
-        public async void Update(Category obj)
-        {
-           var objFromDb = await FirstOrDefault(u=>u.Id == obj.Id);
-            if(objFromDb != null)
-            {
-                objFromDb.Name = obj.Name;
-                objFromDb.DisplayOrder = obj.DisplayOrder;
-            }
-        }
+        //public   async  void Update(Category obj)
+        //{
+        //   var objFromDb = await FirstOrDefault(u=>u.Id == obj.Id);
+        //    if(objFromDb != null)
+        //    {
+        //        objFromDb.Name = obj.Name;
+        //        objFromDb.DisplayOrder = obj.DisplayOrder;
+        //    }
+        //}
 
         
     }

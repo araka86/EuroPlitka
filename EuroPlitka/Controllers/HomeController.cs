@@ -81,7 +81,6 @@ namespace EuroPlitka.Controllers
             var productCat = await _productRepository.FirstOrDefault(x => x.Id == shoppingCartList.LastOrDefault().ProductId);
             return RedirectToAction("Index", "CategoryMenu", new { id = productCat.CategoryId });
 
-
         }
 
 

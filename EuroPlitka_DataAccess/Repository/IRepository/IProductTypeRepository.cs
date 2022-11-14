@@ -5,6 +5,6 @@ namespace EuroPlitka_DataAccess.Repository.IRepository
 {
     public interface IProductTypeRepository : IRepository<ProductType>
     {
-        void Update(ProductType obj);
+        //void Update(ProductType obj);
     }
 }
