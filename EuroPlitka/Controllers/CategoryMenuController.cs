@@ -46,7 +46,7 @@ namespace EuroPlitka.Controllers
 
 
 
-        public async Task<IActionResult> Index(int id, int page = 1, int pageSize = 3, bool allResultPage = false)
+        public async Task<IActionResult> Index(int id, int page = 1, int pageSize = 6, bool allResultPage = false)
         {
             CategoryMenuVM homeVm;
 

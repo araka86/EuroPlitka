@@ -246,8 +246,6 @@ namespace EuroPlitka.Controllers
             OrderListVm orderListVm = new OrderListVm()
             {
                 OrderHeaderList = await _orderHRepo.GetAll(x => x.CreatedByUserId == user.Id),
-                
-                
             };
             
 

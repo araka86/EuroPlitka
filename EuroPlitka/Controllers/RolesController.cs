@@ -1,5 +1,7 @@
-﻿using EuroPlitka_Model;
+﻿using CloudinaryDotNet.Actions;
+using EuroPlitka_Model;
 using EuroPlitka_Model.ViewModels;
+using EuroPlitka_Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -107,11 +109,39 @@ namespace EuroPlitka.Controllers
         [HttpGet("/Roles/EditRole/{id}")]
         public async Task<IActionResult> EditRole(string id)
         {
-
-
-
-            return View();
+            IdentityRole identityRole = _roleManager.Roles.Where(x => x.Id == id).FirstOrDefault();
+            return View(identityRole);
         }
+
+        [HttpPost]
+        [ActionName("EditRole")]
+        public async Task<IActionResult> EditRolePost(IdentityRole identityRole)
+        {
+
+
+            var role = await _roleManager.FindByIdAsync(identityRole.Id);
+
+            if (role != null)
+            {
+                role.NormalizedName = identityRole.Name;
+                role.Id = identityRole.Id;
+                role.Name = identityRole.Name;
+                var idResult = await _roleManager.UpdateAsync(role);
+                if (!idResult.Succeeded)
+                {
+                    TempData[WebConstanta.Error] = "Role update Error";
+                    return RedirectToAction("Index", "Roles");
+
+                }
+                   
+            }
+            TempData[WebConstanta.Success] = "Role Update successfully";
+
+
+            return RedirectToAction("Index", "Roles");
+
+        }
+
 
 
 

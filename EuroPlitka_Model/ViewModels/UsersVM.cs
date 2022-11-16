@@ -6,6 +6,6 @@
         public ChangeRoleViewModel ChangeRoles { get; set; }
         public IEnumerable<AplicationUser> aplicationUsers { get; set; }
 
-
+        
     }
 }
