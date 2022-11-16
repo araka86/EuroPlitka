@@ -42,6 +42,10 @@ namespace EuroPlitka.Controllers
 
             IEnumerable<AplicationUser> users = await _userRepository.GetAll();
 
+
+
+
+
             var userIdentity = (ClaimsIdentity)User.Identity;
             var claims = userIdentity.Claims;
             var roleClaimType = userIdentity.RoleClaimType;
@@ -56,12 +60,6 @@ namespace EuroPlitka.Controllers
 
 
 
-            foreach (var item in users)
-            {
-                var roless = await _userManager.GetRolesAsync(item);
-
-            }
-
             return View(users);
         }
 
@@ -70,30 +68,39 @@ namespace EuroPlitka.Controllers
         [Authorize]
         public async Task<IActionResult> EditProfile(string? id)
         {
-            var user = new AplicationUser();
+            var user = new UsersVM();
 
             if (id == null)
             {
-                user = await _userManager.GetUserAsync(User); //singin admin or user
-                if (user == null) return View("Error");
+                user.aplicationUser = await _userManager.GetUserAsync(User); //singin admin or user
+                if (user.aplicationUser == null) return View("Error");
             }
             else
             {
                 //user = await _userRepository.FirstOrDefault(x => x.Id == id);
-                user = await _userManager.FindByIdAsync(id);
-                if (user == null) return View("Error");
+                user.aplicationUser = await _userManager.FindByIdAsync(id);
+                if (user.aplicationUser == null) return View("Error");
             }
+            var userRoles = await _userManager.GetRolesAsync(user.aplicationUser);
+            var allRoles = _roleManager.Roles.ToList();
 
 
 
-            var editMV = new AplicationUser()
+            user.ChangeRoles = new ChangeRoleViewModel()
             {
-                FullName = user.FullName,
-                City = user.City,
-                Description = user.Description,
-                imgUserAva = user.imgUserAva,
-                StreetAddress = user.StreetAddress
+                UserId = user.aplicationUser.Id,
+                UserEmail = user.aplicationUser.Email,
+                UserRoles = userRoles,
+                AllRoles = allRoles
             };
+
+           
+
+
+
+
+
+
 
             return View(user);
         }

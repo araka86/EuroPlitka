@@ -32,6 +32,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 
 
+
 //session
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession(options =>

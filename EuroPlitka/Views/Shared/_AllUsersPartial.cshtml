@@ -4,10 +4,10 @@
 @using Microsoft.AspNetCore.Identity;
 @inject UserManager<AplicationUser> UserManager
 
-    @{
 
-    var role = (UserManager.GetRolesAsync(@Model).Result[0] == WebConstanta.AdminRole) ? WebConstanta.AdminRole : WebConstanta.CustomerRole;
-    }
+@{
+    var role = UserManager.GetRolesAsync(@Model).Result[0];
+}
 
 <tr class="bg-white   filter  @role">
     <th scope="row">

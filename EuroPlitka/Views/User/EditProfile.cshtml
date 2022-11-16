@@ -1,15 +1,15 @@
-﻿@using EuroPlitka_Model
-@model EuroPlitka_Model.AplicationUser
+﻿
+@model EuroPlitka_Model.ViewModels.UsersVM
 
 @using EuroPlitka_Services;
-@using Microsoft.AspNetCore.Identity
-@inject SignInManager<AplicationUser> SignInManager
-@inject UserManager<AplicationUser> UserManager
+@*@using Microsoft.AspNetCore.Identity*@
+@*@inject SignInManager<AplicationUser> SignInManager*@
+@*@inject UserManager<AplicationUser> UserManager*@
 
 
 @{
 
-    string img = Model.imgUserAva == null ? "/images/avatar-male-3.jpg" : $"{string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(Model.imgUserAva).ToString())}";
+    string img = Model.aplicationUser.imgUserAva == null ? "/images/avatar-male-3.jpg" : $"{string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(Model.aplicationUser.imgUserAva).ToString())}";
 }
 
 
@@ -71,7 +71,7 @@
     </section>
     <section class="flush-with-above height-80 d-block">
         <form asp-action="EditProfile" method="post" class="m-2" enctype="multipart/form-data">
-            <input asp-for="Id" hidden />
+            <input asp-for="aplicationUser.Id" hidden />
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="profile" role="tabpanel">
                     <div class="container">
@@ -85,10 +85,10 @@
 
                                     <div class="media-body">
 
-                                        <label asp-for="Image" class="custom-file mb-2" for="file2">
-                                            <input asp-for="Image" type="file" id="file2" class="custom-file-input height-0" />
+                                        <label asp-for="aplicationUser.Image" class="custom-file mb-2" for="file2">
+                                            <input asp-for="aplicationUser.Image" type="file" id="file2" class="custom-file-input height-0" />
                                             <span class="btn btn-primary"><i class="icon-upload-to-cloud">&nbsp;</i>Upload</span>
-                                            <span asp-validation-for="Image" class="text-danger"></span>
+                                            <span asp-validation-for="aplicationUser.Image" class="text-danger"></span>
                                         </label>
 
                                         <div class="mt-2">
@@ -117,39 +117,39 @@
                                 <div class="col-6">
 
                                     <div class="form-group">
-                                        <label asp-for="FullName">FullName:</label>
-                                        <input asp-for="FullName" type="text" class="form-control form-control-lg" />
-                                        <span asp-validation-for="FullName" class="text-danger"></span>
+                                        <label asp-for="aplicationUser.FullName">FullName:</label>
+                                        <input asp-for="aplicationUser.FullName" type="text" class="form-control form-control-lg" />
+                                        <span asp-validation-for="aplicationUser.FullName" class="text-danger"></span>
                                     </div>
 
                                 </div>
                                 <div class="col-6">
 
                                     <div class="form-group">
-                                        <label asp-for="City">City:</label>
-                                        <input asp-for="City" type="text" class="form-control form-control-lg" />
-                                        <span asp-validation-for="City" class="text-danger"></span>
+                                        <label asp-for="aplicationUser.City">City:</label>
+                                        <input asp-for="aplicationUser.City" type="text" class="form-control form-control-lg" />
+                                        <span asp-validation-for="aplicationUser.City" class="text-danger"></span>
                                     </div>
 
                                 </div>
                                 <div class="col-6">
                                     <div class="form-group">
-                                        <label asp-for="StreetAddress">StreetAddress:</label>
-                                        <input asp-for="StreetAddress" type="text" class="form-control form-control-lg" />
-                                        <span asp-validation-for="StreetAddress" class="text-danger"></span>
+                                        <label asp-for="aplicationUser.StreetAddress">StreetAddress:</label>
+                                        <input asp-for="aplicationUser.StreetAddress" type="text" class="form-control form-control-lg" />
+                                        <span asp-validation-for="aplicationUser.StreetAddress" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="form-group">
-                                        <label asp-for="PhoneNumber">PhoneNumber:</label>
-                                        <input asp-for="PhoneNumber" type="text" class="form-control form-control-lg" />
-                                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                        <label asp-for="aplicationUser.PhoneNumber">PhoneNumber:</label>
+                                        <input asp-for="aplicationUser.PhoneNumber" type="text" class="form-control form-control-lg" />
+                                        <span asp-validation-for="aplicationUser.PhoneNumber" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label>About me:</label>
-                                        <textarea class="form-control form-control-lg" name="Description" rows="4"> @Model.Description</textarea>
+                                        <textarea class="form-control form-control-lg" name="Description" rows="4"> @Model.aplicationUser.Description</textarea>
                                     </div>
                                 </div>
 
@@ -182,7 +182,7 @@
                 </div>
                 <div class="tab-pane fade" id="role" role="tabpanel">
                     <div class="container">
-                        <p>Role</p>
+                        <partial name="EditRoleUser" />
                     </div>
                 </div>
                 <div class="tab-pane fade" id="security" role="tabpanel">
