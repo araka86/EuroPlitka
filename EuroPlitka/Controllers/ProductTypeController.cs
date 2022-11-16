@@ -38,8 +38,6 @@ namespace EuroPlitka.Controllers
             return View(obj);
         }
 
-
-
         //Get - Edit
         public async Task<IActionResult> Edit(int? id)
         {
@@ -71,10 +69,6 @@ namespace EuroPlitka.Controllers
             return View(obj);
         }
 
-
-
-
-
         //Get - Delete
         public IActionResult Delete(int? id)
         {
@@ -105,10 +99,6 @@ namespace EuroPlitka.Controllers
             TempData[WebConstanta.Success] = "Product Type Delete successfully";
             return RedirectToAction("Index");
         }
-
-
-
-
 
     }
 }

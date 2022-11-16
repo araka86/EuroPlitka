@@ -9,42 +9,32 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EuroPlitka.Controllers
 {
-
-
     public class CategoryViewComponent : ViewComponent
     {
-        private readonly EuroPlitkaDbContext _applicationDbContext;
-
-        public CategoryViewComponent(EuroPlitkaDbContext applicationDbContext)
+     
+        private readonly ICategoryRepository _catRepo;
+        public CategoryViewComponent( ICategoryRepository catRepo)
         {
-            _applicationDbContext = applicationDbContext;
+            _catRepo = catRepo;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var result = await _applicationDbContext.Categorys.ToListAsync();
+            var result = await _catRepo.GetAll();
             return View(result);
         }
-
     }
-
-
-
 
     public class CategoryMenuController : Controller
     {
       
         private readonly IProductRepository _productRepository;
         private readonly ICategoryRepository _categoryRepository;
-
         public CategoryMenuController(IProductRepository productRepository, ICategoryRepository categoryRepository)
-        {
-          
+        {         
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
         }
-
-
 
         public async Task<IActionResult> Index(int id, int page = 1, int pageSize = 6, bool allResultPage = false)
         {
@@ -57,7 +47,6 @@ namespace EuroPlitka.Controllers
             {
                 shoppingCartList = HttpContext.Session.Get<List<ShoppingCart>>(WebConstanta.SessionCart);
             }
-
 
             if (!allResultPage)
             {
@@ -81,8 +70,6 @@ namespace EuroPlitka.Controllers
                     TotalCountAllCurrentCategory = countAllCurrentCategory.Count(),
                     TotalPages = (int)Math.Ceiling(countAllCurrentCategory.Count() / (double)pageSize),
                     AllPage = allResultPage
-
-
                 };
             }
             else
@@ -95,15 +82,10 @@ namespace EuroPlitka.Controllers
                     ProductsCat = await _productRepository.GetProductCategory(u => u.CategoryId == id, includeProperties: "Category,ProductType"),
                     CategoryProduct = await _categoryRepository.FirstOrDefault(x => x.Id == id),
                     AllPage = allResultPage
-
                 };
-
             }
 
-
             //check item session
-
-
             foreach (var itemProd in homeVm.Products)
             {
                 foreach (var ses in shoppingCartList)
@@ -114,9 +96,6 @@ namespace EuroPlitka.Controllers
                     }
                 }
             }
-
-
-
             return View(homeVm);
         }
 
@@ -124,9 +103,5 @@ namespace EuroPlitka.Controllers
         {
             return View();
         }
-
-
-
-
     }
 }

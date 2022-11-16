@@ -14,49 +14,37 @@ namespace EuroPlitka.Controllers
     {
         private readonly UserManager<AplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-
         private readonly IOrderHeaderRepository _orderHRepo;
         private readonly IOrderDetailRepository _orderDRepo;
-
-
         private readonly IUserRepository _userRepository;
-      
 
         public UserController(UserManager<AplicationUser> userManager, IUserRepository userRepository, 
             IOrderHeaderRepository orderHeaderRepository, IOrderDetailRepository orderDetailRepository,
             RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
-
             _userRepository = userRepository;
             _orderHRepo = orderHeaderRepository;
             _orderDRepo = orderDetailRepository;
             _roleManager = roleManager;
         }
 
-
-
         [HttpGet("users")]
         public async Task<IActionResult> Index()
         {
 
             IEnumerable<AplicationUser> users = await _userRepository.GetAll();
+            //var userIdentity = (ClaimsIdentity)User.Identity;
+            //var claims = userIdentity.Claims;
+            //var roleClaimType = userIdentity.RoleClaimType;
 
+            //var roles = claims.Where(c => c.Type == ClaimTypes.Role).ToList();
 
+            //var rolesss = ((ClaimsIdentity)User.Identity).Claims
+            //    .Where(c => c.Type == ClaimTypes.Role)
+            //    .Select(c => c.Value);
 
-
-
-            var userIdentity = (ClaimsIdentity)User.Identity;
-            var claims = userIdentity.Claims;
-            var roleClaimType = userIdentity.RoleClaimType;
-
-            var roles = claims.Where(c => c.Type == ClaimTypes.Role).ToList();
-
-            var rolesss = ((ClaimsIdentity)User.Identity).Claims
-                .Where(c => c.Type == ClaimTypes.Role)
-                .Select(c => c.Value);
-
-            var rolesssdf = _roleManager.Roles.ToList();
+            //var rolesssdf = _roleManager.Roles.ToList();
 
 
 
@@ -69,7 +57,6 @@ namespace EuroPlitka.Controllers
         public async Task<IActionResult> EditProfile(string? id)
         {
             var user = new UsersVM();
-
             if (id == null)
             {
                 user.aplicationUser = await _userManager.GetUserAsync(User); //singin admin or user
@@ -83,9 +70,6 @@ namespace EuroPlitka.Controllers
             }
             var userRoles = await _userManager.GetRolesAsync(user.aplicationUser);
             var allRoles = _roleManager.Roles.ToList();
-
-
-
             user.ChangeRoles = new ChangeRoleViewModel()
             {
                 UserId = user.aplicationUser.Id,
@@ -93,19 +77,8 @@ namespace EuroPlitka.Controllers
                 UserRoles = userRoles,
                 AllRoles = allRoles
             };
-
-           
-
-
-
-
-
-
-
             return View(user);
         }
-
-
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> EditProfile(AplicationUser editVM)
@@ -116,10 +89,7 @@ namespace EuroPlitka.Controllers
                 ModelState.AddModelError("", "Failed to edit profile");
                 return View("EditProfile", editVM);
             }
-
-
             var usr = await _userManager.FindByIdAsync(editVM.Id); //get exsist record
-
             if (usr == null)
                 return View("Error");
 
@@ -134,30 +104,18 @@ namespace EuroPlitka.Controllers
             usr.StreetAddress = editVM.StreetAddress;
             usr.Description = editVM.Description;
             usr.PhoneNumber = editVM.PhoneNumber;
-
             await _userManager.UpdateAsync(usr);
-
-
-
             TempData[WebConstanta.Success] = "User Update successfully";
             return RedirectToAction("Detail", "User", new { usr.Id });
         }
-
-
-
-
         [HttpGet]
         public async Task<IActionResult> Detail(string id)
         {
-
-        
             var user = await _userRepository.FirstOrDefault(x=>x.Id == id);
-
             if (user == null)
             {
                 return RedirectToAction("Index", "Users");
             }
-
             var userDetailViewModel = new AplicationUser()
             {
                 Id = user.Id,
@@ -167,12 +125,9 @@ namespace EuroPlitka.Controllers
                 Description = user.Description,
                 Email = user.Email,
                 imgUserAva = user.imgUserAva
-
             };
             return View(userDetailViewModel);
         }
-
-
 
         [HttpGet("users/{Id}")]
         public async Task<IActionResult> Delete(string id)
@@ -193,8 +148,6 @@ namespace EuroPlitka.Controllers
             };
             return View(delUser);
         }
-
-
         [HttpPost("users/{Id}"), ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeletePost(string? id)
@@ -214,41 +167,21 @@ namespace EuroPlitka.Controllers
         {
 
             var user = await _userManager.GetUserAsync(User);
-
             var finduser = await _userManager.FindByIdAsync(changePassUser.Id);
-
             string resetToken = await _userManager.GeneratePasswordResetTokenAsync(finduser);
-
-
             var reset = await _userManager.ResetPasswordAsync(finduser, resetToken, changePassUser.Password);
-
-
-            // var res =  await _userManager.CheckPasswordAsync(finduser, "123!@#QWEqwe");
-
-
-            //var res2 =     await _userManager.ChangePasswordAsync(user, "123!@#QWEqwe", "123!@#QWEasd");
-
-
-
             TempData[WebConstanta.Success] = "Password change successfully";
-
             return RedirectToAction("Index", "Home");
         }
-
 
         [HttpGet]
         public async Task<IActionResult> OrdersUser()
         {
             var user = await _userManager.GetUserAsync(User);
-
-
-
             OrderListVm orderListVm = new OrderListVm()
             {
                 OrderHeaderList = await _orderHRepo.GetAll(x => x.CreatedByUserId == user.Id),
             };
-            
-
             return View(orderListVm);
         }
 
@@ -257,15 +190,9 @@ namespace EuroPlitka.Controllers
             OrderVM orderVM = new OrderVM()
             {
                 OrderHeader = await _orderHRepo.FirstOrDefault(u => u.Id == id),
-
                 OrderDetails = await _orderDRepo.GetAll(o => o.OrderHeaderId == id, includeProperties: "Product")
-
             };
             return View(orderVM);
         }
-
-
-
-
     }
 }

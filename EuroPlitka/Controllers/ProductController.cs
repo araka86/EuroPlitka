@@ -3,20 +3,15 @@ using EuroPlitka_Model;
 using EuroPlitka_Model.ViewModels;
 using EuroPlitka_Services;
 using Microsoft.AspNetCore.Mvc;
-
-
 namespace EuroPlitka.Controllers
 {
     public class ProductController : Controller
     {
-
         private readonly IProductRepository _prodRepo;
-
         public ProductController(IProductRepository prodRepo)
         {
             _prodRepo = prodRepo;
         }
-
         public async Task<IActionResult> Index()
         {
             IEnumerable<Product> objtList = await _prodRepo.GetAll(includeProperties: "Category,ProductType");
@@ -26,7 +21,6 @@ namespace EuroPlitka.Controllers
         //Get - Upsert(Views-->Index (create/update))
         public async Task<IActionResult> Upsert(int? id)
         {
-
             ProdoctVM prodoctVM = new ProdoctVM()
             {
                 Product = new Product(),
@@ -44,13 +38,11 @@ namespace EuroPlitka.Controllers
                 prodoctVM.Product = await _prodRepo.Find(id.GetValueOrDefault());
                 if (prodoctVM == null)
                     return NotFound();
-                
-                    
+
+
                 return View(prodoctVM);
             }
         }
-     
-
         //Post - Upsert (Views-->Upsert(only UPDATE) )
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -61,14 +53,13 @@ namespace EuroPlitka.Controllers
                 var files = HttpContext.Request.Form.Files; //get image
                 if (prodoctVM.Product.Id == 0)//create
                 {
-                    byte[] resultToByte = await  PhotoService.FileToByte(files); //get byte
+                    byte[] resultToByte = await PhotoService.FileToByte(files); //get byte
                     prodoctVM.Product.imagebyte = resultToByte;
-                     _prodRepo.Add(prodoctVM.Product);
+                    _prodRepo.Add(prodoctVM.Product);
                     TempData[WebConstanta.Success] = "Prodoct Create successfully";
                 }
                 else  ////////////////////////////////////updating if need to change images//////////////////////////////////
                 {
-                   
                     var objFromDB = await _prodRepo.FirstOrDefault(u => u.Id == prodoctVM.Product.Id, isTracking: false);
                     if (files.Count > 0)
                     {
@@ -82,8 +73,6 @@ namespace EuroPlitka.Controllers
                     TempData[WebConstanta.Success] = "Prodoct Update successfully";
                     _prodRepo.Update(prodoctVM.Product);
                 }
-           
-             
                 return RedirectToAction("Index"); //return to Action
             }
             //if no valid
@@ -91,10 +80,6 @@ namespace EuroPlitka.Controllers
             prodoctVM.ProductTypeSelectList = await _prodRepo.GetAllDropdownList(WebConstanta.ProductTypeName);
             return View(prodoctVM);
         }
-
-
-
-
         //Get - Delete
         public async Task<IActionResult> Delete(int? id)
         {
@@ -111,8 +96,6 @@ namespace EuroPlitka.Controllers
 
             return View(product);
         }
-
-
         //Post - Delete
         [HttpPost, ActionName("Delete")] //from  Product/Delete.cshtml
         [ValidateAntiForgeryToken]
@@ -124,7 +107,7 @@ namespace EuroPlitka.Controllers
 
 
 
-            _prodRepo.Delete(obj);         
+            _prodRepo.Delete(obj);
             TempData[WebConstanta.Success] = "Prodoct Delete successfully";
             return RedirectToAction("Index");
         }

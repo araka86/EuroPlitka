@@ -17,8 +17,6 @@ namespace EuroPlitka.Controllers
             _signInManager = signInManager;
         }
 
-
-
         [BindProperty]
         public LoginRegistrViewModel Input { get; set; }
         [HttpGet]
@@ -69,7 +67,6 @@ namespace EuroPlitka.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login()
         {
-            //  ModelState.SetModelValue("ConfirmPassword", new ValueProviderResult(Output.Password,  CultureInfo.InvariantCulture)); //change modelstate
 
             if (ModelState.IsValid)
             {
@@ -77,7 +74,6 @@ namespace EuroPlitka.Controllers
                 if (user != null)
                 {
                     var result = await _signInManager.PasswordSignInAsync(user.UserName, Input.Password, Input.RememberMe, false);
-                    //  var usertest = await _userManager.FindByNameAsync("testUser");
                     if (result.Succeeded)
                     {
                         if (!string.IsNullOrEmpty(Input.ReturnUrl) && Url.IsLocalUrl(Input.ReturnUrl))
@@ -109,10 +105,5 @@ namespace EuroPlitka.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
-
-
-
-
-
     }
 }
