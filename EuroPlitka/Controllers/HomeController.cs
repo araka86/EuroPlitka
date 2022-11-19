@@ -96,6 +96,16 @@ namespace EuroPlitka.Controllers
             return RedirectToAction("Index", "CategoryMenu", new { id = productCatLast.CategoryId });
         }
 
+        public ActionResult Privacy()
+        {
+            return View();
+        }
+
+        public ActionResult Modal(int id)
+        {
+            return PartialView();
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

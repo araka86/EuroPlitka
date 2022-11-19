@@ -1,0 +1,149 @@
+﻿@using EuroPlitka_Model;
+@using EuroPlitka_Services;
+@model EuroPlitka_Model.AplicationUser
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AplicationUser> SignInManager
+@inject UserManager<AplicationUser> UserManager
+
+
+@{
+    string img = Model.imgUserAva == null ? "/images/avatar-male-3.jpg" : $"{string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(Model.imgUserAva).ToString())}";
+}
+
+
+
+@*
+<div class="modal-content">
+    <div class="modal-header">
+        <button class="btn btn-close" data-bs-dismiss="modal" area-hidden="true"></button>
+
+    </div>
+
+    <div class="modal-body">
+        <div class="main-container">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-8">
+                        <div class="media">
+                            <img alt="Image" src="@img" class="mr-md-5 avatar avatar-xlg">
+                            <div class="media-body">
+                                <div class="col-md-4">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-center">@Model.FullName</h5>
+                                        <p class="card-text"><b>Описание: </b>@Model?.Description</p>
+                                        <p class="card-text"><b>Стоимость: </b>@Model?.City ₽</p>
+                                        <p class="card-text"><b>Тип: </b>@Model?.StreetAddress</p>
+                                        <p class="card-text"><b>Модель: </b>@Model.Email</p>
+                                        <p class="card-text"><small class="text-muted">Дата выпуска - @Model?.PhoneNumber</small></p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="form-group row py-2">
+            @if (User.IsInRole(WebConstanta.AdminRole))
+            {
+                <p class="text-muted">Id: @Model.Id</p>
+
+
+                <div class="col">
+                    <a asp-controller="User" asp-route-id="@Model.Id" asp-action="EditProfile" class="btn btn-primary w-100">
+                        Edit
+                    </a>
+                </div>
+                <div class="col">
+                    <input type="submit" class="btn btn-danger w-100" value="Delete">
+                </div>
+
+                <div class="col">
+                    <a asp-controller="User" asp-action="Index" class="btn btn-primary  w-100">
+                        List User
+                    </a>
+                </div>
+            }
+            else
+            {
+
+                <div class="col">
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-primary  w-100">
+                        <i class="fa-solid fa-rotate-left"></i>
+                    </a>
+                </div>
+
+            }
+
+
+        </div>
+
+
+    </div>
+</div>*@
+
+<div class="modal-content">
+    <div class="modal-header">
+        <button class="btn btn-close" data-bs-dismiss="modal" area-hidden="true"></button>
+
+    </div>
+    <div class="modal-body">
+        <div style="padding: 10px;"></div>
+        <div class="card mb-3">
+            <div class="row ">
+                <div class="card-body">
+                    <div class="col-md-12 ">
+                        <img alt="Image" src="@img" class="mr-md-8 avatar avatar-xlg rounded mx-auto d-block">
+                    </div>
+                    <div class="col-md-12">
+                        <h5 class="card-title text-center">@Model?.FullName</h5>
+                        <p class="card-text">Id: @Model.Id</p>
+                        <p class="card-text"><b>About: </b>@Model?.Description</p>
+                        <p class="card-text"><b>Email: </b>@Model?.Email ₽</p>
+                        <p class="card-text"><b>City </b>@Model?.City</p>
+                        <p class="card-text"><b>Address: </b>@Model.StreetAddress</p>
+                        <p class="card-text">Phone Number: @Model?.PhoneNumber</p>
+                    </div>
+                  
+                </div>
+
+                <div class="modal-footer">
+                    <div class="form-group row py-2 ">
+                        @if (User.IsInRole(WebConstanta.AdminRole))
+                        {
+                            <div class="col">
+                                <a asp-controller="User" asp-route-id="@Model.Id" asp-action="EditProfile" class="btn btn-primary w-100">Edit</a>
+                            </div>
+                            <div class="col">
+                                <input type="submit" class="btn btn-danger w-100" value="Delete">
+                            </div>
+                            <div class="col">
+                                <a asp-controller="User" asp-action="Index" class="btn btn-primary  w-100">
+                                    <i class="fa-solid fa-rotate-left"></i>
+
+                                </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col">
+                                <a asp-controller="Home" asp-action="Index" class="btn btn-primary  w-100">
+                                    <i class="fa-solid fa-rotate-left"></i>
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+

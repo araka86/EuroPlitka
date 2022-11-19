@@ -9,6 +9,7 @@
     var role = UserManager.GetRolesAsync(@Model).Result[0];
 }
 
+
 <tr class="bg-white   filter  @role">
     <th scope="row">
         <div class="media align-items-center">
@@ -29,9 +30,7 @@
         </div>
     </th>
     <td>
-        <a class="btn btn-outline-primary" asp-controller="User" asp-action="Detail" asp-route-id="@Model.Id">
-            View Profile
-        </a>
+        <a class="btn btn-outline-primary compItem" asp-controller="User" asp-action="DetailModal" asp-route-id="@Model.Id">View Profile </a>
     </td>
 
 

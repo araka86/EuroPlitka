@@ -5,13 +5,9 @@
 @inject RoleManager<IdentityRole> _roleManager
 @model IEnumerable<EuroPlitka_Model.AplicationUser>
 
-
-
-    @{
-
+@{
     var roleList = _roleManager.Roles.ToList();
-
-    }
+}
 
 
 <section class="flush-with-above">
@@ -24,28 +20,23 @@
             }
         </div>
 
-
-
         <div class="row">
             <div class="col">
                 <table class="table table-hover align-items-center table-borderless">
                     <tbody>
                         @foreach (var user in Model)
                         {
-
-
                             <partial name="_AllUsersPartial" model="user" />
-
-
                         }
                     </tbody>
                 </table>
             </div>
-            <!--end of col-->
         </div>
-        <!--end of row-->
+        <div id="modDialog" class="modal fade">
+            <div id="dialogContent" class="modal-dialog"></div>
+        </div>
     </div>
-    <!--end of container-->
+
 </section>
 
 
@@ -67,5 +58,17 @@
                 }
             });
         });
+
+        $(function () {
+            $.ajaxSetup({ cache: false });
+            $(".compItem").click(function (e) {
+
+                e.preventDefault();
+                $.get(this.href, function (data) {
+                    $('#dialogContent').html(data);
+                    $('#modDialog').modal('show');
+                });
+            });
+        })
     </script>
 }

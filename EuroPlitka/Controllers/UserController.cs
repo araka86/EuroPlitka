@@ -77,11 +77,19 @@ namespace EuroPlitka.Controllers
                 UserRoles = userRoles,
                 AllRoles = allRoles
             };
+
+            user.EditUserVM.Id = user.aplicationUser.Id;
+            user.EditUserVM.FullName = user.aplicationUser.FullName;
+            user.EditUserVM.PhoneNumber = user.aplicationUser.PhoneNumber;
+            user.EditUserVM.City = user.aplicationUser.City;
+            user.EditUserVM.StreetAddress = user.aplicationUser.StreetAddress;
+            user.EditUserVM.imgUserAva = user.aplicationUser.imgUserAva;
+
             return View(user);
         }
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> EditProfile(AplicationUser editVM)
+        public async Task<IActionResult> EditProfile(UsersVM editVM)
         {
 
             if (!ModelState.IsValid)
@@ -89,7 +97,7 @@ namespace EuroPlitka.Controllers
                 ModelState.AddModelError("", "Failed to edit profile");
                 return View("EditProfile", editVM);
             }
-            var usr = await _userManager.FindByIdAsync(editVM.Id); //get exsist record
+            var usr = await _userManager.FindByIdAsync(editVM.EditUserVM.Id); //get exsist record
             if (usr == null)
                 return View("Error");
 
@@ -99,19 +107,40 @@ namespace EuroPlitka.Controllers
                 var photoResult = await PhotoService.FileToByte(getFile); //get byte
                 usr.imgUserAva = photoResult;
             }
-            usr.FullName = editVM.FullName;
-            usr.City = editVM.City;
-            usr.StreetAddress = editVM.StreetAddress;
-            usr.Description = editVM.Description;
-            usr.PhoneNumber = editVM.PhoneNumber;
+            usr.FullName = editVM.EditUserVM.FullName;
+            usr.City = editVM.EditUserVM.City;
+            usr.StreetAddress = editVM.EditUserVM.StreetAddress;
+            usr.Description = editVM.EditUserVM.Description;
+            usr.PhoneNumber = editVM.EditUserVM.PhoneNumber;
             await _userManager.UpdateAsync(usr);
             TempData[WebConstanta.Success] = "User Update successfully";
             return RedirectToAction("Detail", "User", new { usr.Id });
         }
+   
+        [HttpGet]
+        public async Task<IActionResult> DetailModal(string id)
+        {
+            var user = await _userRepository.FirstOrDefault(x => x.Id == id);
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Users");
+            }
+            var userDetailViewModel = new AplicationUser()
+            {
+                Id = user.Id,
+                FullName = user.FullName,
+                StreetAddress = user.StreetAddress,
+                City = user.City,
+                Description = user.Description,
+                Email = user.Email,
+                imgUserAva = user.imgUserAva
+            };
+            return PartialView(userDetailViewModel);
+        }
         [HttpGet]
         public async Task<IActionResult> Detail(string id)
         {
-            var user = await _userRepository.FirstOrDefault(x=>x.Id == id);
+            var user = await _userRepository.FirstOrDefault(x => x.Id == id);
             if (user == null)
             {
                 return RedirectToAction("Index", "Users");
@@ -128,6 +157,7 @@ namespace EuroPlitka.Controllers
             };
             return View(userDetailViewModel);
         }
+
 
         [HttpGet("users/{Id}")]
         public async Task<IActionResult> Delete(string id)
