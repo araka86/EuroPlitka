@@ -22,6 +22,7 @@ namespace EuroPlitka_DataAccess.Data
         public DbSet<AplicationUser> AplicationUser { get; set; }
         public DbSet<OrderHeader> OrderHeader { get; set; }
         public DbSet<OrderDetail> OrderDetail { get; set; }
+        //public DbSet<Categoriya> Categoriyas { get; set; }
 
 
 

@@ -1,11 +1,9 @@
-﻿using EuroPlitka_DataAccess.Data;
-using EuroPlitka_DataAccess.Repository.IRepository;
+﻿using EuroPlitka_DataAccess.Repository.IRepository;
 using EuroPlitka_DataAccess.Repository.IReposotory;
 using EuroPlitka_Model;
 using EuroPlitka_Model.ViewModels;
 using EuroPlitka_Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace EuroPlitka.Controllers
 {
@@ -30,10 +28,13 @@ namespace EuroPlitka.Controllers
       
         private readonly IProductRepository _productRepository;
         private readonly ICategoryRepository _categoryRepository;
-        public CategoryMenuController(IProductRepository productRepository, ICategoryRepository categoryRepository)
+        private readonly IProductTypeRepository _productTypeRepository;
+
+        public CategoryMenuController(IProductRepository productRepository, ICategoryRepository categoryRepository, IProductTypeRepository productTypeRepository )
         {         
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
+            _productTypeRepository = productTypeRepository;
         }
 
         public async Task<IActionResult> Index(int id, int page = 1, int pageSize = 6, bool allResultPage = false)
@@ -81,6 +82,8 @@ namespace EuroPlitka.Controllers
                     Categories = await _categoryRepository.GetAll(),
                     ProductsCat = await _productRepository.GetProductCategory(u => u.CategoryId == id, includeProperties: "Category,ProductType"),
                     CategoryProduct = await _categoryRepository.FirstOrDefault(x => x.Id == id),
+                    ProductTypes = await _productTypeRepository.GetAll(),
+               
                     AllPage = allResultPage
                 };
             }

@@ -8,10 +8,12 @@ namespace EuroPlitka.Controllers
     public class ProductTypeController : Controller
     {
         private readonly IProductTypeRepository _productTypeRepository;
+        private readonly IProductRepository _productRepository;
 
-        public ProductTypeController(IProductTypeRepository productTypeRepository)
+        public ProductTypeController(IProductTypeRepository productTypeRepository, IProductRepository productRepository)
         {
             _productTypeRepository = productTypeRepository;
+            _productRepository = productRepository;
         }
 
         public async Task<IActionResult> Index()
@@ -70,12 +72,12 @@ namespace EuroPlitka.Controllers
         }
 
         //Get - Delete
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || id == 0)
                 return NotFound();
 
-            var obj = _productTypeRepository.Find(id.GetValueOrDefault());
+            var obj = await _productTypeRepository.Find(id.GetValueOrDefault());
 
             if (obj == null)
                 return NotFound();
@@ -86,13 +88,22 @@ namespace EuroPlitka.Controllers
 
 
         //Post - Delete
-        [HttpPost]
+        [HttpPost,ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeletePost(int? id)
         {
             var obj = await _productTypeRepository.Find(id.GetValueOrDefault());
             if (obj == null)
                 return NotFound();
+
+
+            var findReference = await _productRepository.FirstOrDefault(x => x.ProductTypeId == obj.Id);
+            if (findReference != null)
+            {
+                TempData[WebConstanta.Error] = "Product Type can't  be  Delete, because he has a product!!!!";
+                return RedirectToAction("Delete", new { obj.Id });
+            }
+
 
 
             _productTypeRepository.Delete(obj);

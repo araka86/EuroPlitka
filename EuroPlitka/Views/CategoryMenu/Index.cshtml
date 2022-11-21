@@ -3,13 +3,17 @@
 <!--Filter-->
 @{
     string[] prodType = new string[Model.ProductsCat.Count()];
+    
+ 
     int i = 0;
     foreach (var obj in Model.ProductsCat)
     {
         prodType[i] += @obj.ProductType.Name;
         i++;
     }
+
     string[] originalItemsProductTypest = WebConstanta.RemoteDuplicates(prodType);
+   
 
 
     int resultStart = ((Model.Page - 1) * Model.PageSize) + 1;
@@ -26,12 +30,30 @@
     <div class="container pb-5">
         <div class="text-center">
             <button class="btn btn-dark filter-button" data-filter="all">All</button>  <!-- data-filter - attribute name for javascript-->
-            @foreach (var obj in originalItemsProductTypest)
+
+            @if (@Model.AllPage)
             {
-                <button class="btn btn-outline-secondary filter-button" data-filter="@obj.Replace(' ','_')"> @obj </button>
+                @foreach (var obj in Model.ProductTypes)
+                {
+                    <button class="btn btn-outline-secondary filter-button" data-filter="@obj.Name.Replace(' ','_')"> @obj.Name </button>
+                }
             }
+            else
+            {
+                @foreach (var obj in originalItemsProductTypest)
+                {
+                    <button class="btn btn-outline-secondary filter-button" data-filter="@obj.Replace(' ','_')"> @obj </button>
+                }
+
+            }
+           
+
+
         </div>
         <br />
+
+
+
         <form method="post">
             <div class="row">
                 @if (@Model.AllPage)

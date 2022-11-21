@@ -1,4 +1,5 @@
-﻿using EuroPlitka_DataAccess.Repository.IReposotory;
+﻿using EuroPlitka_DataAccess.Repository.IRepository;
+using EuroPlitka_DataAccess.Repository.IReposotory;
 using EuroPlitka_Model;
 using EuroPlitka_Services;
 using Microsoft.AspNetCore.Mvc;
@@ -8,9 +9,12 @@ namespace EuroPlitka.Controllers
     public class CategoryController : Controller
     {
         private readonly ICategoryRepository _catRepo;
-        public CategoryController(ICategoryRepository catRepo)
+        private readonly IProductRepository _productRepository;
+
+        public CategoryController(ICategoryRepository catRepo, IProductRepository productRepository)
         {
             _catRepo = catRepo;
+            _productRepository = productRepository;
         }
         public async Task<IActionResult> Index()
         {
@@ -65,12 +69,12 @@ namespace EuroPlitka.Controllers
         }
 
         //Get - Delete
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || id == 0)
                 return NotFound();
 
-            var obj = _catRepo.Find(id.GetValueOrDefault());
+            var obj = await _catRepo.Find(id.GetValueOrDefault());
 
             if (obj == null)
                 return NotFound();
@@ -84,8 +88,23 @@ namespace EuroPlitka.Controllers
         public async Task<IActionResult> DeletePost(int? id)
         {
             var obj = await _catRepo.Find(id.GetValueOrDefault());
+
+
             if (obj == null)
                 return NotFound();
+
+
+
+            var findReference = await _productRepository.FirstOrDefault(x => x.CategoryId == obj.Id);
+            if (findReference != null)
+            {
+                TempData[WebConstanta.Error] = "Catogory Can't be  Delete, because he has a product!!!!";
+                return RedirectToAction("Delete",new { obj.Id });
+            }
+                
+
+
+
 
 
             _catRepo.Delete(obj);

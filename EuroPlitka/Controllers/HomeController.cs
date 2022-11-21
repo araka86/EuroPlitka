@@ -101,10 +101,22 @@ namespace EuroPlitka.Controllers
             return View();
         }
 
+        public ActionResult About()
+        {
+            return View();
+        }
+
+
+
+
         public ActionResult Modal(int id)
         {
             return PartialView();
         }
+
+
+
+
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
