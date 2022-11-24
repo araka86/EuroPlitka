@@ -4,6 +4,7 @@ using EuroPlitka_DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EuroPlitka_DataAccess.Migrations
 {
     [DbContext(typeof(EuroPlitkaDbContext))]
-    partial class EuroPlitkaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221124085821_initNewsModelDateTime")]
+    partial class initNewsModelDateTime
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,9 +52,6 @@ namespace EuroPlitka_DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("CreatedByUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
 
@@ -61,9 +60,6 @@ namespace EuroPlitka_DataAccess.Migrations
 
                     b.Property<byte[]>("Image")
                         .HasColumnType("varbinary(max)");
-
-                    b.Property<bool>("IsMainMenu")
-                        .HasColumnType("bit");
 
                     b.Property<string>("ShortDescription")
                         .IsRequired()
@@ -76,8 +72,6 @@ namespace EuroPlitka_DataAccess.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CreatedByUserId");
 
                     b.ToTable("News");
                 });
@@ -451,15 +445,6 @@ namespace EuroPlitka_DataAccess.Migrations
                         .HasColumnType("varbinary(max)");
 
                     b.HasDiscriminator().HasValue("AplicationUser");
-                });
-
-            modelBuilder.Entity("EuroPlitka_Model.News", b =>
-                {
-                    b.HasOne("EuroPlitka_Model.AplicationUser", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedByUserId");
-
-                    b.Navigation("CreatedBy");
                 });
 
             modelBuilder.Entity("EuroPlitka_Model.OrderDetail", b =>

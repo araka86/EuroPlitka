@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace EuroPlitka_Model
 {
-    public class News
+    public class News 
     {
 
         [Key]
@@ -18,8 +19,20 @@ namespace EuroPlitka_Model
         public string? Description { get; set; } = string.Empty;
 
         public byte[]? Image { get; set; }
+        [Required]
+        public DateTime DateTime { get; set; }
 
-       
+
+        public bool IsMainMenu { get; set; } = false;
+
+        [NotMapped]
+        public string checkedState { get; set; } = string.Empty;
+
+        public string? CreatedByUserId { get; set; } 
+        [ForeignKey("CreatedByUserId")]
+        public AplicationUser? CreatedBy { get; set; }
+
+
 
     }
 }

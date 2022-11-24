@@ -1,5 +1,165 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model List<EuroPlitka_Model.News>
+
+<div class="container p-md-3 table-responsive-md bg-white">
+    <div class="row pt-md-4">
+        <div class="col-md-6">
+            <h2 class="text-primary">News List</h2>
+        </div>
+
+        <div class="col-md-6 text-right">
+            <a asp-controller="Product" asp-action="Upsert" class="btn btn-primary">
+                <i class="fa-solid fa-circle-plus"></i> &nbsp;
+                Create News
+            </a>
+        </div>
+    </div>
+
+    @if (Model.Count() > 0)
+    {
+        <form method="post" asp-action="Upsert">
+            <table class="table table-bordered table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Titile News</th>
+                        <th>Short Description</th>
+
+
+                        <th>DateTime</th>
+                        <th></th>
+                        <th>For Main</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @*                    @foreach (var obj in Model)
+                {
+                <tr>
+                <td> <input asp-for="@obj.Id"  /></td>
+
+                <td><input type="text" name="@obj.Title"/> </td>
+                <td width="10%" aria-label="Short Description">@obj.ShortDescription</td>
+
+
+                <td width="20%" aria-label="DateTime">@obj.DateTime.ToShortDateString()</td>
+                <td class="text-center">
+
+
+                <div class="w-75 btn-group" role="group">
+                <a asp-controller="News"  asp-action="Upsert" class="btn btn-primary mx-2">
+                <i class="fa-solid fa-pen-to-square"></i>
+                </a>
+
+
+
+                <a asp-controller="News" asp-route-Id="@obj.Id" asp-action="Delete" class="btn btn-danger mx-2">
+                <i class="fa-solid fa-trash-can"></i>
+                </a>
+                </div>
+
+
+
+
+
+                </td>
+                <td>
+                <label class="form-check-label">
+                <input type="checkbox" name="checkedState"
+                @((obj.IsMainMenu) ? "checked=\"checked\"" : "") />
+                Show
+                </label>
+
+
+
+                </td>
+
+
+                </tr>
+                }*@
+
+
+                    @for (int i = 0; i < Model.Count(); i++)
+                    {
+
+
+                      
+                        <tr>
+                            @{
+                                var date = Model[i].DateTime.ToShortDateString();
+                            }
+
+                            <td> <input asp-for="@Model[i].Id" readonly hidden />@Model[i].Id </td>
+                            <td><input asp-for="@Model[i].Title" readonly hidden />@Model[i].Title </td>
+                            <td><input asp-for="@Model[i].ShortDescription" readonly hidden />@Model[i].ShortDescription </td>
+
+
+
+                            <td>
+                                <input  asp-for="@date" readonly hidden/>
+                                @Model[i].DateTime.ToShortDateString()
+                            </td>
+
+                            <td class="text-center">
+
+
+                                <div class="w-75 btn-group" role="group">
+                                    <a asp-controller="News" asp-action="Upsert" class="btn btn-primary mx-2">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </a>
+
+
+
+
+                                </div>
+
+
+
+
+
+                            </td>
+
+                               <td>
+                    <label class="form-check-label">
+                                    <input type="checkbox" name="[@i].checkedState"
+                                    @((Model[i].IsMainMenu) ? "checked=\"checked\"" : "")  />
+                    Show
+                    </label>
+
+
+
+                    </td>
+
+
+                        </tr>
+                    }
+
+
+
+                </tbody>
+            </table>
+            <div class="form-group row py-2">
+                <div class="col-8 offset-4 row">
+
+                    <div class="col mt-1 ">
+                        <input type="submit" class="btn btn-info w-100 rounded-pill" value="Create" />
+                    </div>
+                    <div class="col mt-1">
+                        <a asp-controller="Category" asp-action="Index" class="btn btn-success  w-100 rounded-pill">
+                            <i class="fa-solid fa-rotate-left"></i>
+
+                        </a>
+
+
+                        <button type="submit" class="btn btn-info w-100 rounded-pill">Submit</button>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+    }
+    else
+    {
+        <p>No News exist!!</p>
+    }
+</div>
