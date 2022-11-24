@@ -93,7 +93,7 @@ await app.InitializeDatabase<EuroPlitkaDbContext>().ConfigureAwait(false);//run 
 var dbInitializer = app.Services.CreateScope();
 var ini = dbInitializer.ServiceProvider.GetRequiredService<IDbSeed>();
 ini.Initialize(); //Role
-ini.InitializeData(app); //Data
+//ini.InitializeData(app); //Data
 
 //add session для обработки сеансов или сессий
 app.UseSession();

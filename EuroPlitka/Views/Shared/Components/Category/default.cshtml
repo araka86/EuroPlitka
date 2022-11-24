@@ -1,7 +1,9 @@
 ﻿@model IEnumerable<EuroPlitka_Model.Category>
 
 
-<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"> Catalog </a>
+<a class="nav-link dropdown-toggle clr" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"> 
+    <i class="fa-sharp fa-solid fa-list"></i>
+    Каталог товарів </a>
 <div class="dropdown-menu">
     @foreach (var cat in Model)
     {

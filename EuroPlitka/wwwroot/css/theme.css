@@ -7545,7 +7545,7 @@ section {
   padding-bottom: 1.5rem; }
 
 .space-sm {
-  padding-top: 3rem;
+  padding-top: 5rem;
   padding-bottom: 3rem; }
 
 @media (min-width: 992px) {
@@ -10521,4 +10521,9 @@ img.zoom-img {
     -moz-box-shadow: 0px 1px 20px 4px rgb(22 116 188 / 67%);
     box-shadow: 0px 1px 20px 4px rgb(22 116 188 / 67%);
     border-radius: 5px;
+}
+.clr {
+    color: black;
+    background: gainsboro;
+    border-radius: 20px;
 }
