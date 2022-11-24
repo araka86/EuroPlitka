@@ -11,21 +11,34 @@ namespace EuroPlitka.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+      
         private readonly IProductRepository _productRepository;
-        private readonly ICategoryRepository _categoryRepository;
+        private readonly INewsRepositoriy _newsRepositoriy;
 
-
-        public HomeController(ILogger<HomeController> logger, IProductRepository productRepository, ICategoryRepository categoryRepository)
+        public HomeController( IProductRepository productRepository, INewsRepositoriy newsRepositoriy)
         {
-            _logger = logger;
+          
             _productRepository = productRepository;
-            _categoryRepository = categoryRepository;
+            _newsRepositoriy = newsRepositoriy;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+           var currentNews = await _newsRepositoriy.GetAll(x=>x.IsMainMenu==true);
+
+           foreach (var item in currentNews)
+            {
+                if (item.IsFirst)
+                {
+                    return View(currentNews.OrderBy(x => x.DateTime));
+                }
+
+              
+                    
+            }
+            currentNews = await _newsRepositoriy.MarkItem(currentNews.OrderByDescending(x=>x.DateTime));
+          
+            return View(currentNews);
         }
 
         public async Task<IActionResult> Details(int id)

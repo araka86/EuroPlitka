@@ -5,5 +5,8 @@ namespace EuroPlitka_DataAccess.Repository.IRepository
 {
     public interface INewsRepositoriy : IRepository<News>
     {
+
+       public Task<IEnumerable<News>> MarkItem(IEnumerable<News> items);
+       public bool UpdateRange(IEnumerable<News> items);
     }
 }

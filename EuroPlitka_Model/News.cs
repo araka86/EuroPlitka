@@ -28,6 +28,9 @@ namespace EuroPlitka_Model
         [NotMapped]
         public string checkedState { get; set; } = string.Empty;
 
+        [NotMapped]
+        public bool IsFirst { get; set; }
+
         public string? CreatedByUserId { get; set; } 
         [ForeignKey("CreatedByUserId")]
         public AplicationUser? CreatedBy { get; set; }
