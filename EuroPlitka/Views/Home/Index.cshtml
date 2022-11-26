@@ -67,16 +67,29 @@
                             {
                                 <div class="carousel-item active">
                                     <H1>@news.Title</H1>
-                                    <img class="d-block w-100" style="height: 300px;" src="http://cdn.bigenergy.com.ua/images/955/1132101-reklama-v-interneti---top-10-populyarnix-vidiv-reklami.jpg" alt="Second slide">
-                                    <button class="form-control">continue</button>
+                                    <img class="d-block w-100" style="height: 300px;" src="@string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(news.Image).ToString())" alt="Second slide">
+                                   
+                                    <button class="form-control">
+
+                                        <span class="b-footer">
+                                            <span class="description">@news.ShortDescription</span>
+                                            <span class="button py-2 px-3"> &gt; </span>
+                                        </span>
+                                    </button>
                                 </div>
                             }
                             else
                             {
                                 <div class="carousel-item text-center">
                                     <H1>@news.Title</H1>
-                                    <img class="d-block w-100" style="height: 300px;" src="https://webtune.com.ua/wp-content/uploads/2021/07/banerna-reklama.png" alt="Second slide">
-                                    <button class="form-control">continue</button>
+                                    <img class="d-block w-100" style="height: 300px;" src="@string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(news.Image).ToString())" alt="Second slide">
+                                    <button class="form-control">
+
+                                        <span class="b-footer">
+                                            <span class="description">@news.ShortDescription</span>
+                                            <span class="button py-2 px-3"> &gt; </span>
+                                        </span>
+                                    </button>
                                 </div>
                             }
                            

@@ -31,6 +31,9 @@ namespace EuroPlitka_Model
         [NotMapped]
         public bool IsFirst { get; set; }
 
+        [NotMapped]
+        public string? NameUser { get; set; }
+
         public string? CreatedByUserId { get; set; } 
         [ForeignKey("CreatedByUserId")]
         public AplicationUser? CreatedBy { get; set; }

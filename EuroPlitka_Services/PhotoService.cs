@@ -9,6 +9,9 @@ namespace EuroPlitka_Services
 
 
 
+       
+
+
 
         public  static async Task<byte[]> FileToByte(IFormFileCollection file) 
         {

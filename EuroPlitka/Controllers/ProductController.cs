@@ -50,6 +50,11 @@ namespace EuroPlitka.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (prodoctVM.Product.Description.Contains("<img"))
+                {
+                    //logical for summrnote img
+                }
+
                 var files = HttpContext.Request.Form.Files; //get image
                 if (prodoctVM.Product.Id == 0)//create
                 {
