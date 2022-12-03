@@ -30,6 +30,18 @@ namespace EuroPlitka_DataAccess.Repository
             return items;
         }
 
+        public async Task<INewsRepositoriy> ChkMarkItem(IEnumerable<News> items)
+        {
+            foreach (var item in items)
+            {
+                item.IsFirst = true;
+                break;
+            }
+
+            return await Task.FromResult(this);
+        }
+
+
         public bool UpdateRange(IEnumerable<News> items)
         {
             foreach (var item in items)

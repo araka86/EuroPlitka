@@ -1,4 +1,5 @@
-﻿using EuroPlitka_Model;
+﻿using EuroPlitka_DataAccess.Repository.IRepository;
+using EuroPlitka_Model;
 using EuroPlitka_Model.ViewModels;
 using EuroPlitka_Services;
 using Microsoft.AspNetCore.Identity;
@@ -11,10 +12,12 @@ namespace EuroPlitka.Controllers
 
         private readonly UserManager<AplicationUser> _userManager;
         private readonly SignInManager<AplicationUser> _signInManager;
-        public AccountController(UserManager<AplicationUser> userManager, SignInManager<AplicationUser> signInManager)
+        private readonly IBasketRepo _basketRepo;
+        public AccountController(UserManager<AplicationUser> userManager, SignInManager<AplicationUser> signInManager,IBasketRepo basketRepo)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _basketRepo = basketRepo;
         }
 
         [BindProperty]
@@ -82,6 +85,34 @@ namespace EuroPlitka.Controllers
                         }
                         else
                         {
+
+                            var getbasketUser = _basketRepo.GetAll(x => x.CreatedByUserId == user.Id).Result;
+
+                            if (getbasketUser!=null)
+                            {
+                                List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
+
+                                if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstanta.SessionCart) != null &&
+                                   HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstanta.SessionCart).Any())
+                                {
+                                    shoppingCartList = HttpContext.Session.Get<List<ShoppingCart>>(WebConstanta.SessionCart);
+                                }
+                                foreach (var item in getbasketUser)
+                                {
+                                    shoppingCartList.Add(new ShoppingCart { ProductId = (int)item.ProductId, Sqft = item.Sqft });
+                                }
+                                HttpContext.Session.Set(WebConstanta.SessionCart, shoppingCartList);
+                            }
+
+                         
+
+
+
+
+
+
+
+
                             return RedirectToAction("Index", "Home");
                         }
                     }
@@ -95,6 +126,7 @@ namespace EuroPlitka.Controllers
                     ModelState.AddModelError("", "A user with this address is not registered");
                 }
             }
+
             return View(Input);
         }
 

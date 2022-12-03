@@ -181,7 +181,7 @@
                             @if (User.IsInRole(WebConstanta.AdminRole))
                             {
                                 <button class="btn btn-success form-control" id="submit-button" onclick="validateInput()">Submit Order</button>
-                                // submit контоль переходит в обраблтчик скрипта Braintree
+                             
                             }
                             else
                             {
@@ -245,12 +245,6 @@
                 })
                 return false;
             }
-
-
-
-
-
-
             // и эсли валидация форми пройденна успешно, то эти данные могут быть переданны из формы
             return true;
         }

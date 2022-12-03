@@ -4,6 +4,7 @@ using EuroPlitka_DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EuroPlitka_DataAccess.Migrations
 {
     [DbContext(typeof(EuroPlitkaDbContext))]
-    partial class EuroPlitkaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221203104626_addTableBasket")]
+    partial class addTableBasket
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,9 +39,6 @@ namespace EuroPlitka_DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Sqft")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

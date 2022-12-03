@@ -27,6 +27,7 @@ builder.Services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
 builder.Services.AddScoped<IOrderHeaderRepository, OrderHeaderRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<INewsRepositoriy, NewsRepositoriy>();
+builder.Services.AddScoped<IBasketRepo, BasketRepo>();
 
 //builder.Services.AddTransient<AplicationUserRepo>();
 

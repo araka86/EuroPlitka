@@ -1,7 +1,5 @@
-﻿using EuroPlitka_DataAccess.Data;
-using EuroPlitka_DataAccess.Repository.IRepository;
+﻿using EuroPlitka_DataAccess.Repository.IRepository;
 using EuroPlitka_Model;
-using EuroPlitka_Model.ViewModels;
 using EuroPlitka_Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -29,11 +27,11 @@ namespace EuroPlitka.Controllers
         public async Task<IActionResult> Index()
         {
             newses = await _newsRepositoriy.GetAll();
-            foreach(var item in newses)
+            foreach (var item in newses)
             {
                 if (item.CreatedByUserId != null)
                     item.CreatedBy = await _userManager.FindByIdAsync(item.CreatedByUserId);
-                
+
             }
 
 
@@ -54,7 +52,7 @@ namespace EuroPlitka.Controllers
         {
 
             var news = new News();
-            
+
 
             if (id == null)
             {
@@ -73,7 +71,7 @@ namespace EuroPlitka.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert()
+        public async Task<IActionResult> Upsert() //bind property
         {
 
 
@@ -115,7 +113,8 @@ namespace EuroPlitka.Controllers
                             TempData[WebConstanta.Success] = "News Update successfully";
                             _newsRepositoriy.Update(news);
                         }
-                    }else 
+                    }
+                    else
                     {
                         if (string.IsNullOrEmpty(news.Description))
                         {
@@ -124,21 +123,7 @@ namespace EuroPlitka.Controllers
                                 byte[] resultToByte = await PhotoService.FileToByte(files); //get byte
                                 news.Image = resultToByte;
                                 news.CreatedByUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-
-
-
-
-
-
                                 //    news.CreatedBy = await _userManager.GetUserAsync(User);
-                              
-
-
-
-
-
-
                                 _newsRepositoriy.Add(news);
                                 TempData[WebConstanta.Success] = "News Create successfully";
                             }
@@ -222,29 +207,37 @@ namespace EuroPlitka.Controllers
                 }
                 else
                 {
-                    news.CreatedByUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    if (!string.IsNullOrEmpty(news.Description))
+                    {
+
+                        if (news.Description.Contains("<img"))
+                        {
+                        }
+                        else
+                        {
+                            var objFromDB = await _newsRepositoriy.FirstOrDefault(u => u.Id == news.Id, isTracking: false);
+                            news.CreatedByUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                            news.Image = objFromDB.Image;
+                            _newsRepositoriy.Update(news);
+                        }
+
+                    }
+                    else
+                    {
+                        var objFromDB = await _newsRepositoriy.FirstOrDefault(u => u.Id == news.Id, isTracking: false);
+                        news.CreatedByUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                        news.Image = objFromDB.Image;
+                        _newsRepositoriy.Update(news);
+                    }
+
+                    
 
 
-                   
 
-                    _newsRepositoriy.Update(news);
-                }            
+
+                }
                 return RedirectToAction("Index"); //return to Action
-
-
-
-
-
             }
-
-
-
-
-
-
-
-
-
 
 
             return View();

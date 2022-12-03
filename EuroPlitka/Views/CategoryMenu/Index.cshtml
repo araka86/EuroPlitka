@@ -29,10 +29,16 @@
 <section class="space-sm flush-with-above">
     <div class="container pb-5">
         <div class="text-center">
+            <input type="search"   class="search form-control" placeholder="Live search..." />
+            <hr />
+
+           
+
             <button class="btn btn-dark filter-button" data-filter="all">All</button>  <!-- data-filter - attribute name for javascript-->
 
             @if (@Model.AllPage)
             {
+               
                 @foreach (var obj in Model.ProductTypes)
                 {
                     <button class="btn btn-outline-secondary filter-button" data-filter="@obj.Name.Replace(' ','_')"> @obj.Name </button>
@@ -54,12 +60,13 @@
 
 
 
-        <form method="post">
+        <form method="post" >
             <div class="row">
                 @if (@Model.AllPage)
                 {
                     @foreach (var prod in Model.Products)
                     {
+                  
                         <partial name="_IndividualProductCard" model="prod" />
                     }
                 }
@@ -67,6 +74,7 @@
                 {
                     @foreach (var prod in Model.ConditionProducts)
                     {
+                       
                         <partial name="_IndividualProductCard" model="prod" />
                     }
                 }
@@ -111,5 +119,29 @@
                 }
             });
         });
+
+
+        $(document).ready(function()
+        {
+            $('.search').on('keyup', function ()
+            {
+                var datasearch = $(this).val().toLowerCase();
+                $('#table1 .card').each(function () 
+                {
+
+                    var stringdata = $(this).text().toLowerCase();
+                    if(stringdata.indexOf(datasearch) === -1)
+                    {
+                        $(this).hide();
+                    }else{
+                        $(this).show();
+                    }
+
+                });
+
+            });
+        });
+        
+
     </script>
 }

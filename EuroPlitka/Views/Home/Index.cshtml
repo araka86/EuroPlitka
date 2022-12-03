@@ -1,4 +1,5 @@
-﻿@model IEnumerable<EuroPlitka_Model.News>
+﻿@model EuroPlitka_Model.ViewModels.NewsProducstHomeVM
+
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -6,6 +7,16 @@
 <div class="text-center">
     <h1 class="display-4">Інтернет-магазин керамічної плитки</h1>
 </div>
+
+<div id="resultsTable"></div>
+
+
+
+
+
+
+
+
 <section class="bg-dark space-lg" data-jarallax data-speed="0.2">
     <img alt="Image" src="/images/mainLogo.jpg" class="bg-image position-absolute opacity-20" />
     <div class="container">
@@ -16,16 +27,6 @@
                     У нашому каталозі Ви можете підібрати за потрібними параметрами плитку на будь-який смак з доставкою по всій Україні.
                 </span>
             </div>
-
-
-
-
-
-
-
-
-
-
           <div class="col-12 col-md-6 col-lg-5  ">
                 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                     <div class="controls">
@@ -38,14 +39,12 @@
                             <span class="sr-only">Next</span>
                         </a>
                     </div>
-
-
-                  
+                 
                    <ol class="carousel-indicators">
                         @{
                             int i = 0;
                         }
-                        @foreach (var ind in Model)
+                        @foreach (var ind in Model.News)
                         {
                             @if (ind.Id == 2)
                             {
@@ -60,7 +59,7 @@
 
 
                     <div class="carousel-inner text-center">
-                        @foreach (var news in Model)
+                        @foreach (var news in Model.News)
                         {
 
                             if (news.IsFirst)
@@ -68,9 +67,8 @@
                                 <div class="carousel-item active">
                                     <H1>@news.Title</H1>
                                     <img class="d-block w-100" style="height: 300px;" src="@string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(news.Image).ToString())" alt="Second slide">
-                                   
+                                    <i>@news.DateTime.ToShortDateString()</i>
                                     <button class="form-control">
-
                                         <span class="b-footer">
                                             <span class="description">@news.ShortDescription</span>
                                             <span class="button py-2 px-3"> &gt; </span>
@@ -83,65 +81,77 @@
                                 <div class="carousel-item text-center">
                                     <H1>@news.Title</H1>
                                     <img class="d-block w-100" style="height: 300px;" src="@string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(news.Image).ToString())" alt="Second slide">
+                                    <i>@news.DateTime.ToShortDateString()</i>
                                     <button class="form-control">
-
+                                       
                                         <span class="b-footer">
                                             <span class="description">@news.ShortDescription</span>
                                             <span class="button py-2 px-3"> &gt; </span>
                                         </span>
                                     </button>
                                 </div>
-                            }
-                           
-
+                            }         
                         }
                     </div>
-
-
-
-                   @*   <ol class="carousel-indicators">
-
-                    <li data-target="" data-slide-to="0" class="active"></li>
-                    <li data-target="" data-slide-to="1"></li>
-                    <li data-target="" data-slide-to="2"></li>
-                    </ol>
-
-                      <div class="carousel-inner text-center">
-                    <div class="carousel-item active">
-                    <H1>Happy New Years</H1>
-                    <img class="d-block w-100" style="height: 300px;" src="http://cdn.bigenergy.com.ua/images/955/1132101-reklama-v-interneti---top-10-populyarnix-vidiv-reklami.jpg" alt="Second slide">
-                    <button class="form-control">continue</button>
-                    </div>
-                    <div class="carousel-item text-center">
-                    <H1>Acsiya</H1>
-                    <img class="d-block w-100" style="height: 300px;" src="https://webtune.com.ua/wp-content/uploads/2021/07/banerna-reklama.png" alt="Second slide">
-                    <button class="form-control">continue</button>
-                    </div>
-                    <div class="carousel-item text-center">
-                    <H1>News</H1>
-                    <img class="d-block w-100" style="height: 300px;" src="https://images.pexels.com/photos/139309/pexels-photo-139309.jpeg?auto=compress&cs=tinysrgb" alt="Second slide">
-                    <button class="form-control">continue</button>
-                    </div>
-                    </div>
-*@
-
-
-
-
-
-
-
                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+<div class="col-12">
+    <div class="row">
+        @foreach (var item in Model.Products)
+        {
+
+        <div class="col-lg-3 col-md-3 pt-3">        
+            <div class="card bg-white rounded shadow-sm" style="border:1px solid #222">
+                <div class="card-body px-3 pt-3 pb-1 row">
+                    <div class="col-7"><label class="float-left">@item.Name</label></div>
+                    <div class="col-5"><label class="float-right"><span class="text-info h5">@string.Format("{0:C0}",item.Price)</span></label> </div>
+                </div>
+                <img class=" d-block mx-auto mb-2" width="320" height="250" src="@string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(item.imagebyte).ToString())" alt="Card image cap">
+                <div class="card-body p-1 px-3 row">
+                    <div class="col-6">
+                        <a asp-route-id ="@item.Id" asp-controller="CategoryMenu" asp-action="Index"> 
+                            <span class="badge p-2 border w-100 text-dark " style="background-color:lavenderblush;">@item.Category.Name</span> 
+                         </a>
+                    </div>
+                    <div class="col-6 border-0">
+                         <span class="badge p-2 border w-100 text-dark" style="background-color:aliceblue">@item.ProductType.Name</span>
+                    </div>
+
+                        <div class="col-6 border-0">
+                            <span class="badge p-2 border w-100 text-dark" style="background-color:aliceblue">@item.Category.Name</span>
+                        </div>
+
+
+
+                    <div class="col-12 pt-2" style="font-size:13px; text-align:justify">
+                        <p>@item.shortDesc</p>
+                    </div>
+
+
+                    <div class="col-12 p-1">
+                        <a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id" class="btn btn-dark form-control btn-sm p-2" style="height:40px">View Details</a>
+                    </div>
+                </div>
             </div>
 
 
 
-
-
-
         </div>
+
+            
+        }
+
+
     </div>
-</section>
+
+</div>
 
 
 
@@ -222,89 +232,45 @@
         </div>
     </div>
 </div>
-@*<style>
-            .card {
-            background-color: #adb5bd;
-            height: 300px;
-            margin: 0 auto;
-            width: 500px;
-            }
 
-            .e-carousel .slide-content {
-            align-items: center;
-            display: flex;
-            font-size: 1.25rem;
-            height: 100%;
-            justify-content: center;
-            }
-            </style>*@
-<style type="text/css">
-    .bg-light {
-        border-block: 1px solid #CFD6DD;
-    }
+@section Scripts
+    {
+    <!--for filter main menu-->
+    <script>
 
-    .form-inline {
-        border: 1px solid #ced4da;
-        background-color: white;
-    }
+        $(function () {
 
-    input .form-control {
-        border: 0px solid #ced4da;
-    }
+            $("#Name,#SurName").keyup(function (e) {
+                var n = $("#Name").val();
 
-    .testSpan {
-        width: 60px;
-        height: 100%;
-        justify-content: center;
-        align-items: center;
-        margin: 0 !important;
-    }
+                $.get("/Home/SearchPartialModal?Name=" + n, function (r) {
+                    //update ui with results
+                   $("#resultsTable").html(r);
+                   
+                    
+                                   //$('#dialogContent').html(r);
+                                   // $('#modDialog').modal('show');
+                              
 
-    .carousel-indicators {
-        bottom: -55px !important;
-    }
 
-    body .carousel-indicators li {
-        background-color: none;
-        opacity: 0.4;
-        width: 10px;
-        height: 10px;
-        border: 1px solid #4F008C;
-    }
+                });
 
-    body .carousel-indicators .active {
-        background-color: #7d7d7d;
-        opacity: 1;
-    }
+            });
 
-    body .carousel-control-prev-icon,
-    body .carousel-control-next-icon {
-        background-color: #7d7d7d
-    }
+        });
 
-    .carousel-control-prev {
-        background-color: #7d7d7d;
-    }
 
-    .controls {
-        position: absolute;
-        bottom: -50px;
-        left: 50%;
-        z-index: 99;
-        transform: translateX(-50%);
-        width: 180px;
-        height: 20px;
-    }
+        //$(function () {
+        //    $.ajaxSetup({ cache: false });
+        //    $(".compItem").keyup(function (e) {
 
-        .controls .next {
-            position: absolute;
-            right: -20px;
-        }
-</style>
-@section Scripts{
-
-    <script type="text/javascript">
-
+        //        e.preventDefault();
+        //        $.get(this.href, function (data) {
+        //            $('#dialogContent').html(data);
+        //            $('#modDialog').modal('show');
+        //        });
+        //    });
+        //})
 
     </script>
-            }
+}

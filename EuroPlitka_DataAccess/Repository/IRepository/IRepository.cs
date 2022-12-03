@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using EuroPlitka_Model;
+using System.Linq.Expressions;
 
 namespace EuroPlitka_DataAccess.Repository.IReposotory
 {
@@ -34,7 +35,6 @@ namespace EuroPlitka_DataAccess.Repository.IReposotory
         bool Delete(T entity);
 
         bool Save();
-
-
+     
     }
 }

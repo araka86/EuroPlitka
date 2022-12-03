@@ -23,6 +23,7 @@ namespace EuroPlitka_DataAccess.Data
         public DbSet<OrderHeader> OrderHeader { get; set; }
         public DbSet<OrderDetail> OrderDetail { get; set; }
         public DbSet<News> News { get; set; }
+        public DbSet<Basket> Baskets { get; set; }
 
 
 

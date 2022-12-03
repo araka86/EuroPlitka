@@ -15,6 +15,7 @@ namespace EuroPlitka_Model.ViewModels
 
         public ProductType? ProductType { get; set; }
 
+       
 
 
 

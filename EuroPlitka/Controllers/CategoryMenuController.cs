@@ -7,21 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EuroPlitka.Controllers
 {
-    public class CategoryViewComponent : ViewComponent
-    {
-     
-        private readonly ICategoryRepository _catRepo;
-        public CategoryViewComponent( ICategoryRepository catRepo)
-        {
-            _catRepo = catRepo;
-        }
-
-        public async Task<IViewComponentResult> InvokeAsync()
-        {
-            var result = await _catRepo.GetAll();
-            return View(result);
-        }
-    }
 
     public class CategoryMenuController : Controller
     {

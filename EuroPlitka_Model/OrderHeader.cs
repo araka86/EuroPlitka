@@ -27,8 +27,6 @@ namespace EuroPlitka_Model
         
         public int countItem { get; set; }
     
-  
-       
 
         [Required]
         public string? PhoneNumber { get; set; }

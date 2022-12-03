@@ -137,6 +137,9 @@ namespace EuroPlitka.Controllers
             };
             return PartialView(userDetailViewModel);
         }
+
+
+
         [HttpGet]
         public async Task<IActionResult> Detail(string id)
         {

@@ -1,0 +1,35 @@
+﻿@using EuroPlitka_Model;
+@using EuroPlitka_Services;
+@model IEnumerable<EuroPlitka_Model.Product>
+
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+
+
+<form>
+
+@if(Model.Count()>0){
+<div class="modal-content">
+    <div class="modal-header">
+        <button class="btn btn-close" data-bs-dismiss="modal" area-hidden="true"></button>
+
+    </div>
+    <div class="modal-body">
+                @foreach (var item in Model)
+                {
+                    <a class="dropdown-item" href="/Home/Details/@item.Id">@item.Name</a>
+                }
+    </div>
+
+</div>
+}else{
+   
+    <div class="text-bg-danger">
+        No item
+        <button asp-action="Index" class="btn btn-danger" asp-controller="Home">Close</button>
+        </div>
+  
+}
+    </form>

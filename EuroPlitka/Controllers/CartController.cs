@@ -15,6 +15,7 @@ namespace EuroPlitka.Controllers
         private readonly IProductRepository _productRepository;
         private readonly IOrderDetailRepository _orderDetailRepository;
         private readonly IOrderHeaderRepository _orderHeaderRepository;
+        private readonly IBasketRepo _basketRepo;
         private readonly EuroPlitkaDbContext _euroPlitkaDbContext;
 
         [BindProperty]
@@ -23,13 +24,15 @@ namespace EuroPlitka.Controllers
         public CartController(IProductRepository productRepository,
             IOrderDetailRepository orderDetailRepository,
             IOrderHeaderRepository orderHeaderRepository,
-            EuroPlitkaDbContext euroPlitkaDbContext
+            EuroPlitkaDbContext euroPlitkaDbContext,
+            IBasketRepo basketRepo
             )
         {
             _productRepository = productRepository;
             _orderDetailRepository = orderDetailRepository;
             _orderHeaderRepository = orderHeaderRepository;
             _euroPlitkaDbContext = euroPlitkaDbContext;
+            _basketRepo = basketRepo;
         }
 
 
@@ -38,6 +41,8 @@ namespace EuroPlitka.Controllers
         public async Task<IActionResult> Index()
         {
             List<ShoppingCart> shoppingCarts = new List<ShoppingCart>();
+
+
             if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstanta.SessionCart) != null &&
                HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstanta.SessionCart).Count() > 0)
             {
@@ -193,13 +198,77 @@ namespace EuroPlitka.Controllers
             OrderHeader orderHeader = await _orderHeaderRepository.FirstOrDefault(u => u.Id == id);
             //clearing the data of the current sessions. Because for the current session,
             //all the products that the client was interested in have already been included in the request
+            var claimsIndentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIndentity.FindFirst(ClaimTypes.NameIdentifier);
+            var basketUser = await _basketRepo.GetAll(u => u.CreatedByUserId == claim.Value);
+
+
+            _basketRepo.RemoveRange(basketUser);
+
+
             HttpContext.Session.Clear();
             return View(orderHeader);
         }
 
-        public IActionResult RemoveAll(int id)
+
+
+
+
+
+        public async Task<IActionResult> Remove(int id)
+        {
+            List<ShoppingCart> shoppingCartsList = new List<ShoppingCart>();
+            if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstanta.SessionCart) != null &&
+               HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstanta.SessionCart).Count() > 0)
+            {
+                //session exist
+                shoppingCartsList = HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstanta.SessionCart).ToList();
+            }
+
+            shoppingCartsList.Remove(shoppingCartsList.FirstOrDefault(u => u.ProductId == id));
+            HttpContext.Session.Set(WebConstanta.SessionCart, shoppingCartsList); //установка сесси после удаления
+
+
+            var claimsIndentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIndentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            //Remove Basket
+            var basetUser = await _basketRepo.FirstOrDefault(x => x.ProductId == id && x.CreatedByUserId == claim.Value);
+            _basketRepo.Delete(basetUser);
+
+
+            TempData[WebConstanta.Success] = "Product Remote to cart successfully";
+            return RedirectToAction(nameof(Index));
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public async Task<IActionResult> RemoveAll(int id)
         {
             HttpContext.Session.Clear();
+            var claimsIndentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIndentity.FindFirst(ClaimTypes.NameIdentifier);
+            var basketUser = await _basketRepo.GetAll(u => u.CreatedByUserId == claim.Value);
+
+
+            _basketRepo.RemoveRange(basketUser);
+
             TempData[WebConstanta.Success] = "All Product Remote to cart successfully";
             return RedirectToAction("Index", "Home");
         }
@@ -207,9 +276,11 @@ namespace EuroPlitka.Controllers
         //update Cart
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public IActionResult UpdateCart(IEnumerable<Product> prodList)
+        public async Task<IActionResult> UpdateCart(IEnumerable<Product> prodList)
         {
             List<ShoppingCart> shoppingCartsList = new List<ShoppingCart>();
+            var claimsIndentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIndentity.FindFirst(ClaimTypes.NameIdentifier);
             //enumerate all objects Product from our enumeration
             foreach (Product prod in prodList)
             {
@@ -218,7 +289,27 @@ namespace EuroPlitka.Controllers
                     ProductId = prod.Id,
                     Sqft = prod.TempSqFt
                 });
+
+                List<Basket> basketsList = new List<Basket>
+                {
+                    await _basketRepo.FirstOrDefault(x => x.ProductId == prod.Id) 
+                };
+               
+
+
+                Basket findProd = await _basketRepo.FirstOrDefault(x => x.CreatedByUserId == claim.Value && x.ProductId == prod.Id);
+                if (findProd != null)
+                {
+                    findProd.Sqft = prod.TempSqFt;
+                }
+                _basketRepo.Update(findProd);
+
             }
+          
+
+
+
+
             //set value for current session
             HttpContext.Session.Set(WebConstanta.SessionCart, shoppingCartsList);
             return RedirectToAction(nameof(Index));

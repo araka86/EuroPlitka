@@ -70,24 +70,28 @@
                         </button>
                         <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                             <ul class="navbar-nav flex-grow-1">
-                                <li class="nav-item">
+                                <li class="nav-item ">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Головна</a>
                                 </li>
-                                <li class="nav-item dropdown">
+                                <li class="nav-item dropdown ">
                                     
                                     @await Component.InvokeAsync("Category")
+                                 </li>
+                                       
 
+                                
+                                
+                                <li class="">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">Про компанію</a>
                                 </li>
-                                <li class="nav-item">
+
+                                <li class="nav-item ">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Контакти</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">Про нас</a>
-                                </li>
-                                
 
+                                
                                 <!-- Chek session-->
-                                <li>
+                                <li class="w-15">
                                     @if (HttpContextAccessor.HttpContext.Session.Get<List<ShoppingCart>>(WebConstanta.SessionCart) != null)
                                     {
                                         <a asp-action="Index" asp-controller="Cart" class="nav-link">
@@ -104,7 +108,11 @@
                                         </a>
                                     }
                                 </li>
+                                <li >
+                                    <input type="search" id="Name" class="compItem form-control w-100" placeholder="Search" />
+                                </li>
 
+                            
                             </ul>
 
 
@@ -154,10 +162,10 @@
                                 }
                                 else
                                 {
-                                    <li class="nav-item">
+                                    <li class="nav-item ">
                                         <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">Register</a>
                                     </li>
-                                    <li class="nav-item">
+                                    <li class="nav-item ">
                                         <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Login</a>
                                     </li>
                                 }
@@ -179,7 +187,140 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted " style="background: gainsboro;">
+        <div class="row-1 pt-5 pb-4">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 col-lg-3 text-center">
+                        <h6>EuroPlitka</h6>
+                        <img src="~/images/mozayika-315315-antarctica-astra-white__50.jpeg" class="img-fluid mb-3 mb-lg-5" alt="Etalon" width="250" height="48">
+                        <div class="social pe-4 mb-4 mb-lg-0">
+                            <a href="#" rel="nofollow" class="me-1"><i class="fa-brands fa-facebook"></i></a>
+                            <a href="#" rel="nofollow" class="me-1"><i class="fa-brands fa-telegram"></i></a>
+                            <a href="#" rel="nofollow" style="color:red"><i class="fa-brands fa-youtube"></i></a>
+                            <a href="#" rel="nofollow" class="insta"><i class="fa-brands fa-instagram"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-md-8 col-lg-9">
+                        <div class="row">
+                            <div class="col-sm-6 col-lg-4">
+                                <div class="fs-16px fw-600 mb-2">Каталог товарів</div>
+                                <ul class="ps-0">
+                                    <li class="a-arrow mb-1"><a href="#" class="link-black hover-link-mint no-td">Керамічна плитка</a></li>
+                                    <li class="a-arrow mb-1"><a href="#" class="link-black hover-link-mint no-td">Керамогранітна плитка</a></li>
+                                    <li class="a-arrow mb-1"><a href="#" class="link-black hover-link-mint no-td">Мозаїка</a></li>
+                                    <li class="a-arrow mb-1"><a href="#" class="link-black hover-link-mint no-td">Клінкерна плитка</a></li>
+                                    <li class="a-arrow mb-1"><a href="#" class="link-black hover-link-mint no-td">Сантехніка</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-6 col-lg-4">
+                                <div class="fs-16px fw-600 mb-2">Інформація</div>
+                                <ul class="ps-0">
+                                    <li class="a-arrow mb-1 text-nowrap"><a class="link-black hover-link-mint no-td" href="#" rel="nofollow">Архітекторам та дизайнерам</a></li>
+                                    <li class="a-arrow mb-1"><a href="" class="link-black hover-link-mint no-td">Блог</a></li>
+                                    <li class="a-arrow mb-1"><a href="/Home/About" class="link-black hover-link-mint no-td">Про компанію</a></li>
+                                    <li class="a-arrow mb-1"><a href="#" class="link-black hover-link-mint no-td">Доставка та оплата</a></li>
+                                    <li class="a-arrow mb-1"><a href="#" class="link-black hover-link-mint no-td">Повернення товару</a></li>
+                                    <li class="a-arrow mb-1"><a href="/Home/Privacy" class="link-black hover-link-mint no-td">Контакти</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-8 col-lg-4 mb-3">
+                                <div class="fs-16px fw-600 mb-2">Контактна інформація</div>
+
+                                <div class="mb-2">
+                                    <div class="d-flex align-items-center">
+                                        <div class="me-1">
+                                            <svg width="16" height="22" class="me-1 stroke-black"><use xlink:href="#svg-location"></use></svg>
+                                        </div>
+                                        <div>
+                                            <div class="lh-sm fs-13px">м. Київ, бул. Лесі Українки, 20</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex align-items-center">
+                                        <div class="me-1">
+                                            <svg width="16" height="16" class="me-1 stroke-black" style="fill: #f3f3f3;"><use xlink:href="#svg-calendar"></use></svg>
+                                        </div>
+                                        <div class="text-gray pt-1">Пн. - Сб.: 10:00 - 19:00</div>
+                                    </div>
+                                </div>
+
+                                <div style="border-bottom: 1px solid #dedede;" class="mb-2"></div>
+
+                                <div class="mb-2">
+                                    <div class="d-flex align-items-center">
+                                        <div class="me-1">
+                                            <svg width="16" height="22" class="me-1 stroke-black"><use xlink:href="#svg-location"></use></svg>
+                                        </div>
+                                        <div>
+                                            <div class="lh-sm fs-13px">м. Київ, вул. Дніпровська набер., 17Д/2</div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="me-1">
+                                            <svg width="16" height="16" class="me-1 stroke-black" style="fill: #f3f3f3;"><use xlink:href="#svg-calendar"></use></svg>
+                                        </div>
+                                        <div class="text-gray pt-1">Вт. - Сб.: 10:00 - 18:00</div>
+                                    </div>
+                                </div>
+
+                                <div style="border-bottom: 1px solid #dedede;" class="mb-2"></div>
+
+                                <div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="me-1">
+                                            <svg width="16" height="22" class="me-1 stroke-black"><use xlink:href="#svg-location"></use></svg>
+                                        </div>
+                                        <div>
+                                            <div class="lh-sm fs-13px">м. Львів, вул. Гайдамацька, 12а</div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="me-1">
+                                            <svg width="16" height="16" class="me-1 stroke-black" style="fill: #f3f3f3;"><use xlink:href="#svg-calendar"></use></svg>
+                                        </div>
+                                        <div class="text-gray pt-1">Пн. - Нд..: 10:00 - 19:00</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="fw-600 mb-2">Популярні категорії</div>
+                                <div class="row">
+                                    <div class="col-sm-6 col-lg-4 col-xl-3">
+                                        <ul class="ps-0 mb-0">
+                                            <li class="a-arrow"><a href="#" class="link-black hover-link-mint no-td">Плитка для ванної</a></li>
+                                            <li class="a-arrow"><a href="#" class="link-black hover-link-mint no-td">Плитка для кухні</a></li>
+                                            <li class="a-arrow"><a href="#" class="link-black hover-link-mint no-td">Плитка для підлоги</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-6 col-lg-4 col-xl-3">
+                                        <ul class="ps-0 mb-0">
+                                            <li class="a-arrow"><a href="#" class="link-black hover-link-mint no-td">Плитка під дерево</a></li>
+                                            <li class="a-arrow"><a href="#" class="link-black hover-link-mint no-td">Плитка під мармур</a></li>
+                                            <li class="a-arrow"><a href="#" class="link-black hover-link-mint no-td">Плитка печворк</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-6 col-lg-4 col-xl-3">
+                                        <ul class="ps-0 mb-0">
+                                            <li class="a-arrow"><a href="#" class="link-black hover-link-mint no-td">Іспанська плитка</a></li>
+                                            <li class="a-arrow"><a href="#" class="link-black hover-link-mint no-td">Італійська плитка</a></li>
+                                            <li class="a-arrow"><a href="#" class="link-black hover-link-mint no-td">Плитка 60 на 120</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-6 col-lg-4 col-xl-3">
+                                        <ul class="ps-0 mb-0">
+                                            <li class="a-arrow"><a href="#" class="link-black hover-link-mint no-td">Плитка соти (гексагон)</a></li>
+                                            <li class="a-arrow"><a href="#" class="link-black hover-link-mint no-td">Великоформатна плитка</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="container">
             &copy; 2022 - EuroPlitka  — всі права захищено
         </div>
