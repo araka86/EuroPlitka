@@ -5,6 +5,8 @@ namespace EuroPlitka_Model.ViewModels
     public class CategoryMenuVM
     {
 
+
+
         public IEnumerable<Product>? Products { get; set; }
         public IEnumerable<Category>? Categories { get; set; }
 
@@ -12,6 +14,11 @@ namespace EuroPlitka_Model.ViewModels
 
         public IEnumerable<Product> ProductsCat { get; set; }
         public Category CategoryProduct { get; set; }
+
+
+        
+
+
 
         public ProductType? ProductType { get; set; }
 

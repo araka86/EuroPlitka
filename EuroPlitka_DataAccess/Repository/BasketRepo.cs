@@ -16,6 +16,12 @@ namespace EuroPlitka_DataAccess.Repository
         {
         }
 
+        public bool AddRange(IEnumerable<Basket> items)
+        {
+            dbSet.AddRange(items);
+            return Save();
+        }
+
         public bool RemoveRange(IEnumerable<Basket> items)
         {          
             dbSet.RemoveRange(items);

@@ -15,6 +15,15 @@ namespace EuroPlitka_DataAccess.Repository.IReposotory
                             bool isTracking = true
                             );
 
+
+        Task<IEnumerable<T>> GetAllFilter(
+                           string? includeProperties = null,                           
+                           Expression<Func<T, bool>>? filter = null,                   
+                           bool isTracking = true
+                           );
+
+
+
         Task<T> FirstOrDefault(
             Expression<Func<T, bool>>? filter = null, 
             string? includeProperties = null, 

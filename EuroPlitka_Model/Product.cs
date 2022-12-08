@@ -48,7 +48,6 @@ namespace EuroPlitka_Model
 
         [NotMapped]
         public bool ExistInCart { get; set; }
-       
 
 
     }

@@ -10,13 +10,13 @@ namespace EuroPlitka.Controllers
 
     public class CategoryMenuController : Controller
     {
-      
+
         private readonly IProductRepository _productRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IProductTypeRepository _productTypeRepository;
 
-        public CategoryMenuController(IProductRepository productRepository, ICategoryRepository categoryRepository, IProductTypeRepository productTypeRepository )
-        {         
+        public CategoryMenuController(IProductRepository productRepository, ICategoryRepository categoryRepository, IProductTypeRepository productTypeRepository)
+        {
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
             _productTypeRepository = productTypeRepository;
@@ -25,6 +25,8 @@ namespace EuroPlitka.Controllers
         public async Task<IActionResult> Index(int id, int page = 1, int pageSize = 6, bool allResultPage = false)
         {
             CategoryMenuVM homeVm;
+            if(allResultPage)
+                id = 0;
 
             //take session
             List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
@@ -66,9 +68,9 @@ namespace EuroPlitka.Controllers
                     Products = await _productRepository.GetAll(includeProperties: "Category,ProductType"),
                     Categories = await _categoryRepository.GetAll(),
                     ProductsCat = await _productRepository.GetProductCategory(u => u.CategoryId == id, includeProperties: "Category,ProductType"),
-                    CategoryProduct = await _categoryRepository.FirstOrDefault(x => x.Id == id),
+                    CategoryProduct = await _categoryRepository.FirstOrDefault(x => x.Id == id) ?? new Category(),
                     ProductTypes = await _productTypeRepository.GetAll(),
-               
+
                     AllPage = allResultPage
                 };
             }

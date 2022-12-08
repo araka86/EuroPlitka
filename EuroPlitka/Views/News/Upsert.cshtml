@@ -41,6 +41,26 @@
                         <input type="file" name="files" id="uploadBox" multiple class="form-control" />
                     </div>
                 </div>
+                @*--------->LeftSideInfoPicture <---------*@
+                <div class="form-group row py-2">
+                    <div class="col-md-4">
+                        <label asp-for="LeftSideInfoPicture"></label>
+                    </div>
+                    <div class="col-md-8">
+                        <input asp-for="LeftSideInfoPicture" class="form-control" />
+                        <span asp-validation-for="LeftSideInfoPicture" class="text-danger"></span> @*строка валидации*@
+                    </div>
+                </div>
+                @*--------->RightSideInfoPicture <---------*@
+                <div class="form-group row py-2">
+                    <div class="col-md-4">
+                        <label asp-for="RightSideInfoPicture"></label>
+                    </div>
+                    <div class="col-md-8">
+                        <input asp-for="RightSideInfoPicture" class="form-control" />
+                        <span asp-validation-for="RightSideInfoPicture" class="text-danger"></span> @*строка валидации*@
+                    </div>
+                </div>
                 @*--------->Description <---------*@
                 <div class="form-group row py-2">
                     <div class="col-md-4">

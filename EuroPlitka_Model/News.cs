@@ -22,6 +22,9 @@ namespace EuroPlitka_Model
         [Required]
         public DateTime DateTime { get; set; }
 
+        public string?  LeftSideInfoPicture { get; set; }
+        public string? RightSideInfoPicture { get; set; }
+
 
         public bool IsMainMenu { get; set; } = false;
 
@@ -30,9 +33,6 @@ namespace EuroPlitka_Model
 
         [NotMapped]
         public bool IsFirst { get; set; }
-
-        [NotMapped]
-        public string? NameUser { get; set; }
 
         public string? CreatedByUserId { get; set; } 
         [ForeignKey("CreatedByUserId")]

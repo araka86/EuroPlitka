@@ -13,19 +13,19 @@ namespace EuroPlitka_Model
         [Key]
         public int Id { get; set; }
 
-        public string? CreatedByUserId { get; set; } //указано кто из админов создал эту запись (лог, кто создал заказ)
+        public string? CreatedByUserId { get; set; } 
         [ForeignKey("CreatedByUserId")]
         public AplicationUser? CreatedBy { get; set; }
 
         [Required]
         public DateTime OrderDate { get; set; } //дата заказа
 
-        public DateTime ShippingDate { get; set; }
+      
         [Required]
         public double FinalOrderTotal { get; set; } //общая цена
 
         
-        public int countItem { get; set; }
+        public int СountItem { get; set; }
     
 
         [Required]

@@ -168,7 +168,7 @@ namespace EuroPlitka.Controllers
                 Email = productuserViewModel.AplicationUser.Email,
                 PhoneNumber = productuserViewModel.AplicationUser.PhoneNumber,
                 OrderDate = DateTime.Now,
-                countItem = productuserViewModel.ProductList.Count()
+                СountItem = productuserViewModel.ProductList.Count()
 
             };
             //add orderHeader in DB
@@ -198,6 +198,8 @@ namespace EuroPlitka.Controllers
             OrderHeader orderHeader = await _orderHeaderRepository.FirstOrDefault(u => u.Id == id);
             //clearing the data of the current sessions. Because for the current session,
             //all the products that the client was interested in have already been included in the request
+
+
             var claimsIndentity = (ClaimsIdentity)User.Identity;
             var claim = claimsIndentity.FindFirst(ClaimTypes.NameIdentifier);
             var basketUser = await _basketRepo.GetAll(u => u.CreatedByUserId == claim.Value);

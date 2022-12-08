@@ -45,6 +45,8 @@
 
                             <input asp-for="@Model[i].Image" type="text" value="@Convert.ToBase64String(@Model[i].Image).ToString()" readonly  hidden/>
                             <input asp-for="@Model[i].Description" readonly hidden />
+                            <input asp-for="@Model[i].LeftSideInfoPicture" readonly hidden />
+                            <input asp-for="@Model[i].RightSideInfoPicture" readonly hidden />
 
 
 

@@ -3,8 +3,8 @@
 <!--Filter-->
 @{
     string[] prodType = new string[Model.ProductsCat.Count()];
-    
- 
+
+
     int i = 0;
     foreach (var obj in Model.ProductsCat)
     {
@@ -13,7 +13,7 @@
     }
 
     string[] originalItemsProductTypest = WebConstanta.RemoteDuplicates(prodType);
-   
+
 
 
     int resultStart = ((Model.Page - 1) * Model.PageSize) + 1;
@@ -22,10 +22,27 @@
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 
-
-
+    var breatcrump = (Model.CategoryProduct.Name ==null) ? "Всі товари" : Model.CategoryProduct.Name;
+ 
 
 }
+
+<nav aria-label="breadcrumb" role="navigation" class="bg-gray text-white">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="/">Головна</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">@breatcrump</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</nav>
+
+
 <section class="space-sm flush-with-above">
     <div class="container pb-5">
         <div class="text-center">
@@ -64,6 +81,7 @@
             <div class="row">
                 @if (@Model.AllPage)
                 {
+                    <h5>Категорія: Всі товари</h5>
                     @foreach (var prod in Model.Products)
                     {
                   
@@ -72,6 +90,7 @@
                 }
                 else
                 {
+                    <h5>Категорія: @Model.CategoryProduct.Name</h5>
                     @foreach (var prod in Model.ConditionProducts)
                     {
                        

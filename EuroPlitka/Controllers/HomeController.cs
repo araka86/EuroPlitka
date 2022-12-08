@@ -10,6 +10,7 @@ using EuroPlitka_DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EuroPlitka.Controllers
 {
@@ -23,8 +24,8 @@ namespace EuroPlitka.Controllers
 
 
 
-        public HomeController(IProductRepository productRepository, 
-            INewsRepositoriy newsRepositoriy, 
+        public HomeController(IProductRepository productRepository,
+            INewsRepositoriy newsRepositoriy,
             EuroPlitkaDbContext euroPlitkaDbContext,
             IBasketRepo basketRepo,
             UserManager<AplicationUser> userManager)
@@ -39,8 +40,8 @@ namespace EuroPlitka.Controllers
 
         public async Task<IActionResult> Index()
         {
-           
-        
+
+
 
             var prod = await _productRepository.GetAll(includeProperties: "Category,ProductType");
 
@@ -48,15 +49,14 @@ namespace EuroPlitka.Controllers
 
             var productNews = new NewsProducstHomeVM()
             {
-              News = await _newsRepositoriy.GetAll(x => x.IsMainMenu == true, orderBy: y => y.OrderByDescending(c => c.DateTime)),
-              Products = prod.Take(4)
-
+                News = await _newsRepositoriy.GetAll(x => x.IsMainMenu == true, orderBy: y => y.OrderByDescending(c => c.DateTime)),
+                Products = prod.Take(4)
             };
-            
-           // productNews.News = await _newsRepositoriy.MarkItem(productNews.News);
-           await  _newsRepositoriy.ChkMarkItem(productNews.News);
 
-           
+            // productNews.News = await _newsRepositoriy.MarkItem(productNews.News);
+            await _newsRepositoriy.ChkMarkItem(productNews.News);
+
+
 
 
 
@@ -87,7 +87,7 @@ namespace EuroPlitka.Controllers
                         HttpContext.Session.Set(WebConstanta.SessionCart, shoppingCartList);
 
                     }
-                  
+
 
                 }
             }
@@ -124,7 +124,7 @@ namespace EuroPlitka.Controllers
         }
 
         //Add Datail to cart
-      
+     
         public async Task<IActionResult> DetailsPost(Product product)
         {
             List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
@@ -143,22 +143,30 @@ namespace EuroPlitka.Controllers
             var productCat = await _productRepository.FirstOrDefault(x => x.Id == shoppingCartList.LastOrDefault().ProductId);
 
 
-            //Add to Basket(Backup)
-            //get id user
-            var claimsIndentity = (ClaimsIdentity)User.Identity;
-            var claim = claimsIndentity.FindFirst(ClaimTypes.NameIdentifier);
-
-            Basket basket = new Basket()
+            if (User.Identity.IsAuthenticated)
             {
-                CreatedByUserId = claim.Value,
-                Data = DateTime.Now,
-                ProductId = productCat.Id,
-                Sqft = product.TempSqFt
-            };
 
+                //Add to Basket(Backup)
+                //get id user
+                var claimsIndentity = (ClaimsIdentity)User.Identity;
+                var claim = claimsIndentity.FindFirst(ClaimTypes.NameIdentifier);
+
+
+
+                Basket basket = new Basket()
+                {
+                    CreatedByUserId = claim.Value,
+                    Data = DateTime.Now,
+                    ProductId = productCat.Id,
+                    Sqft = product.TempSqFt
+                };
+
+
+                _basketRepo.Add(basket);
+                _basketRepo.Save();
+
+            }
            
-            _basketRepo.Add(basket);
-            _basketRepo.Save();
 
 
 
@@ -171,7 +179,7 @@ namespace EuroPlitka.Controllers
 
             List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
             if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstanta.SessionCart) != null &&
-               HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstanta.SessionCart).Count() > 0)
+               HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstanta.SessionCart).Any())
             {
                 shoppingCartList = HttpContext.Session.Get<List<ShoppingCart>>(WebConstanta.SessionCart);
             }
@@ -181,13 +189,19 @@ namespace EuroPlitka.Controllers
 
 
             HttpContext.Session.Set(WebConstanta.SessionCart, shoppingCartList);
-            var claimsIndentity = (ClaimsIdentity)User.Identity;
-            var claim = claimsIndentity.FindFirst(ClaimTypes.NameIdentifier);
 
-            //Remove Basket
-            var basetUser = await _basketRepo.FirstOrDefault(x=>x.ProductId == id && x.CreatedByUserId == claim.Value );
-            _basketRepo.Delete(basetUser);
 
+
+            if (User.Identity.IsAuthenticated)
+            {
+                var claimsIndentity = (ClaimsIdentity)User.Identity;
+                var claim = claimsIndentity.FindFirst(ClaimTypes.NameIdentifier);
+
+
+                //Remove Basket
+                var basetUser = await _basketRepo.FirstOrDefault(x => x.ProductId == id && x.CreatedByUserId == claim.Value);
+                _basketRepo.Delete(basetUser);
+            }
 
 
             TempData[WebConstanta.Success] = "Product remote to cart successfully";
@@ -206,12 +220,6 @@ namespace EuroPlitka.Controllers
 
         [HttpGet]
         public async Task<IActionResult> SearchPartialModal(string Name) => PartialView(await _productRepository.GetAll(x => x.Name.Contains(Name)));
-
-
-
-
-
-
 
 
 

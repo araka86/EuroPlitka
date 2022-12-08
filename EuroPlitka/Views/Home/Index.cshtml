@@ -27,7 +27,7 @@
                     У нашому каталозі Ви можете підібрати за потрібними параметрами плитку на будь-який смак з доставкою по всій Україні.
                 </span>
             </div>
-          <div class="col-12 col-md-6 col-lg-5  ">
+            <div class="col-12 col-md-6 col-lg-5  ">
                 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                     <div class="controls">
                         <a class="prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -39,11 +39,9 @@
                             <span class="sr-only">Next</span>
                         </a>
                     </div>
-                 
-                   <ol class="carousel-indicators">
-                        @{
-                            int i = 0;
-                        }
+
+                    <ol class="carousel-indicators">
+
                         @foreach (var ind in Model.News)
                         {
                             @if (ind.Id == 2)
@@ -61,13 +59,21 @@
                     <div class="carousel-inner text-center">
                         @foreach (var news in Model.News)
                         {
+                            var LsIP = @news.LeftSideInfoPicture ?? "0%";
+                            var RsIP = @news.RightSideInfoPicture ?? "Top";
+
+
 
                             if (news.IsFirst)
                             {
                                 <div class="carousel-item active">
                                     <H1>@news.Title</H1>
+                                    <div class="benefit-icons">
+                                        <span class="benefit discount">@LsIP</span>
+                                        <span class="benefit top">@RsIP</span>
+                                    </div>
                                     <img class="d-block w-100" style="height: 300px;" src="@string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(news.Image).ToString())" alt="Second slide">
-                                    <i>@news.DateTime.ToShortDateString()</i>
+                                    <i class="dataNews">@news.DateTime.ToShortDateString()</i>
                                     <button class="form-control">
                                         <span class="b-footer">
                                             <span class="description">@news.ShortDescription</span>
@@ -80,20 +86,24 @@
                             {
                                 <div class="carousel-item text-center">
                                     <H1>@news.Title</H1>
+                                    <div class="benefit-icons">
+                                        <span class="benefit discount">@LsIP</span>
+                                        <span class="benefit top">@RsIP</span>
+                                    </div>
                                     <img class="d-block w-100" style="height: 300px;" src="@string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(news.Image).ToString())" alt="Second slide">
-                                    <i>@news.DateTime.ToShortDateString()</i>
+                                    <i class="dataNews" >@news.DateTime.ToShortDateString()</i>
                                     <button class="form-control">
-                                       
+
                                         <span class="b-footer">
                                             <span class="description">@news.ShortDescription</span>
                                             <span class="button py-2 px-3"> &gt; </span>
                                         </span>
                                     </button>
                                 </div>
-                            }         
+                            }
                         }
                     </div>
-               </div>
+                </div>
             </div>
         </div>
     </div>
@@ -102,55 +112,46 @@
 
 
 
-<div class="col-12">
+<div class="section section-benefits mb-5">
+    <div class="container pt-2 pb-2">
+
     <div class="row">
+            <div class="d-flex flex-column flex-sm-row align-items-sm-center mb-2">
+                <h5>ТОП продажів</h5>
+                <span class="button py-2 px-3"> &nbsp; </span>
+                <a href="/CategoryMenu?allResultPage=true">Переглянути всі</a>
+                <span class="button py-2 px-3"> &gt; </span>
+            </div>
         @foreach (var item in Model.Products)
         {
-
-        <div class="col-lg-3 col-md-3 pt-3">        
-            <div class="card bg-white rounded shadow-sm" style="border:1px solid #222">
-                <div class="card-body px-3 pt-3 pb-1 row">
-                    <div class="col-7"><label class="float-left">@item.Name</label></div>
-                    <div class="col-5"><label class="float-right"><span class="text-info h5">@string.Format("{0:C0}",item.Price)</span></label> </div>
-                </div>
-                <img class=" d-block mx-auto mb-2" width="320" height="250" src="@string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(item.imagebyte).ToString())" alt="Card image cap">
-                <div class="card-body p-1 px-3 row">
-                    <div class="col-6">
-                        <a asp-route-id ="@item.Id" asp-controller="CategoryMenu" asp-action="Index"> 
-                            <span class="badge p-2 border w-100 text-dark " style="background-color:lavenderblush;">@item.Category.Name</span> 
-                         </a>
+            <div class="col-lg-3 col-md-3 pt-3">
+                <div class="card bg-white rounded shadow-sm" style="border:1px solid #222">
+                    <div class="card-body px-3 pt-3 pb-1 row">
+                        <div class="col-7"><label class="float-left">@item.Name</label></div>
+                        <div class="col-5"><label class="float-right"><span class="text-info h5">@string.Format("{0:C0}",item.Price)</span></label> </div>
                     </div>
-                    <div class="col-6 border-0">
-                         <span class="badge p-2 border w-100 text-dark" style="background-color:aliceblue">@item.ProductType.Name</span>
-                    </div>
-
+                    <div class="col-12">
+                            <img class=" img-height-home rounded w-100 " src="@string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(item.imagebyte).ToString())" alt="Card image cap">
+                     </div>
+                    <div class="card-body p-1 px-3 row">
+                        <div class="col-6 border-0">
+                            <span class="badge p-2 border w-100 text-dark" style="background-color:aliceblue">@item.ProductType.Name</span>
+                        </div>
                         <div class="col-6 border-0">
                             <span class="badge p-2 border w-100 text-dark" style="background-color:aliceblue">@item.Category.Name</span>
                         </div>
-
-
-
-                    <div class="col-12 pt-2" style="font-size:13px; text-align:justify">
-                        <p>@item.shortDesc</p>
-                    </div>
-
-
-                    <div class="col-12 p-1">
-                        <a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id" class="btn btn-dark form-control btn-sm p-2" style="height:40px">View Details</a>
+                        <div class="col-12 pt-2" style="font-size:13px; text-align:justify">
+                            <p>@item.shortDesc</p>
+                        </div>
+                        <div class="col-12 p-1">
+                            <a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id" class="btn btn-dark form-control btn-sm p-2" style="height:40px">Переглянути</a>
+                        </div>
                     </div>
                 </div>
             </div>
-
-
-
-        </div>
-
-            
         }
-
-
     </div>
-
+</div>
 </div>
 
 
@@ -159,7 +160,7 @@
 
 
 <div class="section section-benefits mb-5">
-    <div class="container pt-5 pb-5">
+    <div class="container pt-2 pb-2">
         <div class="title mb-4">Наші переваги</div>
 
         <div class="row g-3 justify-content-center">
@@ -245,12 +246,12 @@
 
                 $.get("/Home/SearchPartialModal?Name=" + n, function (r) {
                     //update ui with results
-                   $("#resultsTable").html(r);
-                   
-                    
-                                   //$('#dialogContent').html(r);
-                                   // $('#modDialog').modal('show');
-                              
+                    $("#resultsTable").html(r);
+
+
+                    //$('#dialogContent').html(r);
+                    // $('#modDialog').modal('show');
+
 
 
                 });
@@ -260,17 +261,17 @@
         });
 
 
-        //$(function () {
-        //    $.ajaxSetup({ cache: false });
-        //    $(".compItem").keyup(function (e) {
+                //$(function () {
+                //    $.ajaxSetup({ cache: false });
+                //    $(".compItem").keyup(function (e) {
 
-        //        e.preventDefault();
-        //        $.get(this.href, function (data) {
-        //            $('#dialogContent').html(data);
-        //            $('#modDialog').modal('show');
-        //        });
-        //    });
-        //})
+                //        e.preventDefault();
+                //        $.get(this.href, function (data) {
+                //            $('#dialogContent').html(data);
+                //            $('#modDialog').modal('show');
+                //        });
+                //    });
+                //})
 
     </script>
 }

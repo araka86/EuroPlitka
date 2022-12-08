@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using EuroPlitka_DataAccess.Repository.IReposotory;
 using System.Linq.Expressions;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace EuroPlitka_DataAccess.Repository
 {
@@ -127,6 +128,30 @@ namespace EuroPlitka_DataAccess.Repository
         {
            _db.Update(entity);
           return  Save();
+        }
+
+        public async Task<IEnumerable<T>> GetAllFilter(string? includeProperties = null, Expression<Func<T, bool>>? filter = null, bool isTracking = true)
+        {
+            IQueryable<T> query = dbSet;
+            if (includeProperties != null)
+            {
+                foreach (var includePror in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includePror);
+                }
+            }
+         
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+            if (!isTracking)
+            {
+                query = query.AsNoTracking();
+            }
+
+
+            return query.ToList();
         }
     }
 }

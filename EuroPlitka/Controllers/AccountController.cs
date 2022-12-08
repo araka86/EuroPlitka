@@ -62,7 +62,7 @@ namespace EuroPlitka.Controllers
             return RedirectToAction("Index", "Home");
         }
         [HttpGet]
-        public   IActionResult  Login(string returnUrl = null)
+        public   IActionResult  Login(string? returnUrl = null)
         {
             return  View(new LoginRegistrViewModel { ReturnUrl = returnUrl });
         }
@@ -88,9 +88,10 @@ namespace EuroPlitka.Controllers
 
                             var getbasketUser = _basketRepo.GetAll(x => x.CreatedByUserId == user.Id).Result;
 
-                            if (getbasketUser!=null)
+                            List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
+                            if (getbasketUser!=null && getbasketUser.Any())
                             {
-                                List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
+                              
 
                                 if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstanta.SessionCart) != null &&
                                    HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstanta.SessionCart).Any())
@@ -103,16 +104,25 @@ namespace EuroPlitka.Controllers
                                 }
                                 HttpContext.Session.Set(WebConstanta.SessionCart, shoppingCartList);
                             }
-
-                         
-
-
-
-
-
-
-
-
+                            else//when product add to basket and then user login
+                            {
+                                if( HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstanta.SessionCart) != null)
+                                {
+                                    shoppingCartList = HttpContext.Session.Get<List<ShoppingCart>>(WebConstanta.SessionCart);                     
+                                    Basket[] basket = new Basket[shoppingCartList.Count()];
+                                    for (int i = 0; i < shoppingCartList.Count(); i++)
+                                    {
+                                        basket[i] = new Basket() 
+                                        {
+                                            CreatedByUserId = user.Id,
+                                            Data = DateTime.Now,
+                                            ProductId = shoppingCartList[i].ProductId,
+                                            Sqft = shoppingCartList[i].Sqft
+                                        };
+                                    }
+                                    _basketRepo.AddRange(basket);
+                                }
+                            }
                             return RedirectToAction("Index", "Home");
                         }
                     }

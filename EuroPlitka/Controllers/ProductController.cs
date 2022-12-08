@@ -12,10 +12,43 @@ namespace EuroPlitka.Controllers
         {
             _prodRepo = prodRepo;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(ProdoctVM prodoctVM, bool reset = false)
         {
-            IEnumerable<Product> objtList = await _prodRepo.GetAll(includeProperties: "Category,ProductType");
-            return View(objtList);
+
+            ProdoctVM prodocts = new ProdoctVM()
+            {
+                Products = await _prodRepo.GetAll(includeProperties: "Category,ProductType"),
+                CategorySelectList = await _prodRepo.GetAllDropdownList(WebConstanta.CategoryName),
+                ProductTypeSelectList = await _prodRepo.GetAllDropdownList(WebConstanta.ProductTypeName)
+            };
+            if (reset == false)
+            {
+                if (prodoctVM.NameProduct != null || prodoctVM.CategoryListFilter != null || prodoctVM.ProductListFilter != null)
+                {
+
+                    if (!string.IsNullOrEmpty(prodoctVM.NameProduct))
+                    {
+                        prodocts.Products = prodocts.Products.Where(x => x.Name.ToLower().Contains(prodoctVM.NameProduct.ToLower()));
+                    }
+                    if (!string.IsNullOrEmpty(prodoctVM.CategoryListFilter) && prodoctVM.CategoryListFilter != "--Select Category--")
+                    {
+                        prodocts.Products = prodocts.Products.Where(x => x.CategoryId.ToString() == prodoctVM.CategoryListFilter);
+                    }
+                    if (!string.IsNullOrEmpty(prodoctVM.ProductListFilter) && prodoctVM.ProductListFilter != "--Select ProductType--")
+                    {
+
+                        prodocts.Products = prodocts.Products.Where(x => x.ProductTypeId.ToString() == prodoctVM.ProductListFilter);
+                    }
+                    return View(prodocts);
+                }
+
+            }
+
+
+          
+     
+            ModelState.Clear();
+            return View(prodocts);
         }
 
         //Get - Upsert(Views-->Index (create/update))
@@ -50,10 +83,10 @@ namespace EuroPlitka.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (prodoctVM.Product.Description.Contains("<img"))
-                {
-                    //logical for summrnote img
-                }
+                //if (prodoctVM.Product.Description.Contains("<img"))
+                //{
+                //    //logical for summrnote img
+                //}
 
                 var files = HttpContext.Request.Form.Files; //get image
                 if (prodoctVM.Product.Id == 0)//create
