@@ -1,16 +1,14 @@
 ﻿@using EuroPlitka_Model
 @model EuroPlitka_Model.AplicationUser
-
 @using EuroPlitka_Services;
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<AplicationUser> SignInManager
 @inject UserManager<AplicationUser> UserManager
+@{ string img = Model.imgUserAva == null ? "/images/avatar-male-3.jpg" : $"{string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(Model.imgUserAva).ToString())}";}
 
 
-@{
 
-    string img = Model.imgUserAva == null ? "/images/avatar-male-3.jpg" : $"{string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(Model.imgUserAva).ToString())}";
-}
+
 <form asp-action="EditProfile" method="post" class="row" enctype="multipart/form-data">
     <input asp-for="Id" hidden />
     <div class="main-container">
@@ -19,12 +17,9 @@
                 <div class="row justify-content-between align-items-center">
                     <div class="col-auto">
                         <h1 class="h2">Account Settings</h1>
-                    </div>
-                   
-                </div>
-           
-            </div>
-          
+                    </div>                
+                </div>          
+            </div>        
         </section>
       
 

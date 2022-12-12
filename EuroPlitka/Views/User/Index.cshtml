@@ -8,37 +8,51 @@
 @{
     var roleList = _roleManager.Roles.ToList();
 }
-
-
-<section class="flush-with-above">
-    <div class="container">
-        <div class="text-center">
-            <button class="btn btn-dark filter-button" data-filter="all">All</button>  <!-- data-filter - attribute name for javascript-->
-            @foreach (var obj in roleList)
-            {
-                <button class="btn btn-outline-secondary filter-button" data-filter="@obj"> @obj </button>
-            }
-        </div>
-
-        <div class="row">
-            <div class="col">
-                <table class="table table-hover align-items-center table-borderless">
-                    <tbody>
-                        @foreach (var user in Model)
-                        {
-                            <partial name="_AllUsersPartial" model="user" />
-                        }
-                    </tbody>
-                </table>
+@if (User.Identity.IsAuthenticated)
+{
+    <nav aria-label="breadcrumb" role="navigation" class="bg-gray text-white">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"> <a href="/">Головна</a> </li>
+                        <li class="breadcrumb-item active" aria-current="page">Керування користувачами</li>
+                    </ol>
+                </div>
             </div>
         </div>
-        <div id="modDialog" class="modal fade">
-            <div id="dialogContent" class="modal-dialog"></div>
+    </nav>
+
+
+    <section class="flush-with-above">
+        <div class="container">
+            <div class="text-center">
+                <button class="btn btn-dark filter-button" data-filter="all">All</button>  <!-- data-filter - attribute name for javascript-->
+                @foreach (var obj in roleList)
+                {
+                    <button class="btn btn-outline-secondary filter-button" data-filter="@obj"> @obj </button>
+                }
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <table class="table table-hover align-items-center table-borderless">
+                        <tbody>
+                            @foreach (var user in Model)
+                            {
+                                <partial name="_AllUsersPartial" model="user" />
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="modDialog" class="modal fade">
+                <div id="dialogContent" class="modal-dialog"></div>
+            </div>
         </div>
-    </div>
 
-</section>
-
+    </section>
+}
 
 @section Scripts
     {

@@ -1,19 +1,25 @@
 ﻿@model EuroPlitka_Model.ViewModels.ProdoctVM
-
+<nav aria-label="breadcrumb" role="navigation" class="bg-gray text-white">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"> <a href="/">Головна</a> </li>
+                    <li class="breadcrumb-item active" aria-current="page">Керування продутком</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</nav>
 <div class="container p-md-3 table-responsive-md bg-white">
     <div class="row pt-md-4">
         <div class="col-md-6">
-            <h2 class="text-primary">Product List</h2>
+            <h2 class="text-primary">Список продуктів</h2>
         </div>
-
         <div class="col-md-6 text-right">
-            <a asp-controller="Product" asp-action="Upsert" class="btn btn-primary">
-                <i class="fa-solid fa-circle-plus"></i> &nbsp;
-                Create New Product
-            </a>
+            <a asp-controller="Product" asp-action="Upsert" class="btn btn-primary"><i class="fa-solid fa-circle-plus"></i> &nbsp; Створити новий продукт </a>
         </div>
     </div>
-
 </div>
 
 
@@ -23,41 +29,37 @@
 
 <form method="post">
     <div class="container p-4 my-3">
-        <h2 class="text-info">Orders Management</h2>
+        <h6 class="text-info">Фільтр продуктів</h6>
         <div class="border bg-white p-3" style="border-radius:15px;">
             <div class="row">
                 <div class="col-12">
                     <div class="row" style="padding-top:10px;">
                         <div class="col-md-4 col-sm-12">
-                            <input asp-for="NameProduct" class="form-control" placeholder="Name Product" value="" />
-                        </div>
-                      
+                            <input asp-for="NameProduct" class="form-control" placeholder="Імя продукту" value="" />
+                        </div>                   
                         <div class="col-md-4 col-sm-6  ">
                             <select asp-for="CategoryListFilter" asp-items="@Model.CategorySelectList" class="form-select" >
                                 <option>--Select Category--</option>
                             </select>
                             <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
                         </div>
-
                         <div class="col-md-4  col-sm-6">
                             <select asp-for="ProductListFilter" asp-items="@Model.ProductTypeSelectList" class="form-select">
                                 <option >--Select ProductType--</option>  @* disabled - не разрешает установить выборку по умолчанию (--Select Category--)  *@
                             </select>
                             <span asp-validation-for="Product.ProductTypeId" class="text-danger"></span>
-
                         </div>
-
                     </div>
                     <div class="row pt-1">
                         <div class="col-4  ">
                         </div>
                         <div class="col-4  ">
                             <button type="submit" asp-route-reset="false" class="h-100 btn btn-info form-control">
-                                <i class="fas fa-search"></i>Search
+                                <i class="fas fa-search"></i>Пошук
                             </button>
                         </div>
                         <div class="col-4">
-                            <input type="submit" class="btn btn-danger btn_reset" asp-route-reset="true" value="Reset" />
+                            <input type="submit" class="btn btn-danger btn_reset" asp-route-reset="true" value="По замовчуванню" />
                         </div>
                     </div>
                 </div>
@@ -66,86 +68,19 @@
     </div>
 </form>
 <hr />
-
-
-
-
-
 <div class=" bg-white p-3 ">
-
-
     <ejs-grid id="Grid" dataSource="@Model.Products" owHeight="38" allowFiltering="true" allowSorting="true" allowPaging="true">
         <e-grid-filtersettings type="Menu"></e-grid-filtersettings>
         <e-grid-pagesettings pageSize="6"></e-grid-pagesettings> <!-- кол-тво елементов на странице -->
         <e-grid-columns>
-
             <e-grid-column field="Id" headerText="ID" isPrimaryKey="true" textAlign="Right" width="100"></e-grid-column>
-
             <e-grid-column field="Name" headerText="Name" textAlign="Right" width="100"></e-grid-column>
             <e-grid-column field="Category.Name" headerText="Category" textAlign="Right" width="100"></e-grid-column>
             <e-grid-column field="ProductType.Name" headerText="ProductType" textAlign="Right" width="100"></e-grid-column>
-
-
-
-          
-
             <e-grid-column field="Id" headerText="" width="150" 
             template=" <a rel'nofollow' href='Product/Upsert/${Id}' class='btn btn-primary mr-2'> <i class='fa-solid fa-pen-to-square'></i> </a>
                        <a rel'nofollow' href='Product/Delete/${Id}' class='btn btn-primary mr-2'> <i class='fa-solid fa-trash-can'></i> </a>">
-
             </e-grid-column>
-           
-           
-          
         </e-grid-columns>
-
     </ejs-grid>
-
-
-
 </div>
-
-
-
-
-@*
-    @if (Model.Count() > 0)
-    {
-
-        <table class="table table-bordered table-striped" style="width:100%">
-            <thead>
-                <tr>
-                    <th>Product Name</th>
-                    <th> Price</th>
-                    <th>Category</th>
-                    <th>Product Type</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var obj in Model)
-                {
-                    <tr>
-                        <td width="30%" aria-label="Product Name">@obj.Name</td>
-                        <td width="10%" aria-label="Price">@obj.Price</td>
-                        <td width="20%" aria-label="Category">@obj.Category.Name</td>
-                        <td width="20%" aria-label="AplicationType">@obj.ProductType.Name</td>
-                        <td class="text-center">
-                            <div class="w-75 btn-group" role="group">
-                                <a asp-controller="Product" asp-route-Id="@obj.Id" asp-action="Upsert" class="btn btn-primary mx-2">
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </a>
-                                <a asp-controller="Product" asp-route-Id="@obj.Id" asp-action="Delete" class="btn btn-danger mx-2">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
-    else
-    {
-        <p>No product exist!!</p>
-    }*@

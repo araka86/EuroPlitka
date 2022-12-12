@@ -1,9 +1,22 @@
 ﻿@using EuroPlitka_Services
 @model EuroPlitka_Model.ViewModels.OrderListVm
-
+<nav aria-label="breadcrumb" role="navigation" class="bg-gray text-white">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="/">Головна</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Manage History Order</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</nav>
 <form method="post">
     <div class="container p-4 my-3">
-        <h2 class="text-info">Orders Management</h2>
+        <h2 class="text-info">Менеджер замовлень</h2>
         <div class="border bg-white p-3" style="border-radius:15px;">
             <div class="row">
                 <div class="col-12">

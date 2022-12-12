@@ -1,11 +1,50 @@
 ﻿@model string
 
-<div asp-validation-summary="All" class="text-danger"></div>
+<nav aria-label="breadcrumb" role="navigation" class="bg-gray text-white">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"> <a href="/">Головна</a> </li>
+                    <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Roles">Керування ролями</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Створення ролі</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</nav>
 
 <form asp-action="Create" method="post">
-    <div class="form-group">
-        <label for="name">Новая роль</label>
-        <input name="name" class="form-control" />
+    
+
+
+
+
+    <div class="border p-3 bg-white">
+        <div class=form-group p-3>
+            <h2 class="text-info pl-3">Додати новий тип продукту</h2>
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <div class="form-group row py-2">
+                    <div class="col-4"><label>Назва ролі</label></div>
+                    <div class="col-8"><input name="name"  class="form-control" required/></div>
+                </div>
+                <div class="form-group row py-2">
+                    <div class="col-8 offset-4 row ">
+                        <div class="col" mt-1>
+                            <input type="submit"   class="btn btn-info w-100 " value="Створити" />
+                        </div>
+                        <div class="col" mt-1>
+                            <a asp-action="Index" asp-controller="Roles" class="btn btn-success  w-100"><i class="fa-solid fa-rotate-left"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <button type="submit" class="btn btn-primary">Добавить</button>
+
+
+
+
 </form>

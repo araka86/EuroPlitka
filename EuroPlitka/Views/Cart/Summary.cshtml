@@ -9,116 +9,113 @@
                 <div class="card-header bg-dark text-light ml-0 row container">
                     <div class="col-6">
                         <i class="fa fa-shopping-cart"></i> &nbsp;
-                        Order Summary
+                        Підсумки замовлень
                     </div>
                     <div class="col-6 text-right">
-                        <a asp-action="Index" class="btn btn-outline-info btn-sm">Back to Cart</a>
+                        <a asp-action="Index" class="btn btn-outline-info btn-sm">Повернутись в кошик</a>
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="container rounded p-2">
+                    <div class="container container-full-height checkout-checkout mb-5">
                         <div class="row">
-                            <div class="col-12 col-lg-7 pb-4">
+                            <div class="col-md-6 col-lg-7 col-xl-8 pe-md-0 mb-3 mb-md-0">
+                                <div class="p-3 pt-4">
+                                    <div class="row">
+                                        <div class="col-lg-6 mb-3">
+                                            <div class="row">
+                                                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                                    <span class="text-info">Одержувач замовлення</span>
+                                                </h4>
+                                                @*---------------------------FullName--------------------------------*@
+                                                <div class="mb-3">
+                                                    <label class="form-label">Імя</label>
+                                                    <input asp-for="@Model.AplicationUser.FullName" required type="text" class="form-control" />
+                                                </div>
+                                                @*---------------------------PhoneNumber--------------------------------*@
+                                                <div class="mb-3">
+                                                    <label class="form-label">Номер телефону</label>
+                                                    <input asp-for="@Model.AplicationUser.PhoneNumber" required type="text" class="form-control" />
+                                                </div>
+                                                @*---------------------------Email--------------------------------*@
+                                                <div class="mb-3">
+                                                    <label class="form-label">Електронна пошта</label>
+                                                    <input asp-for="@Model.AplicationUser.Email" required type="text" class="form-control" />
+                                                </div>
+                                            </div>
 
-                                <div class="row">
-                                    <h4 class="d-flex justify-content-between align-items-center mb-3">
-                                        <span class="text-info">User Details</span>
-                                    </h4>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                                <span class="text-info">Доставка та оплата</span>
+                                            </h4>
+
+                                            <div class="pay">
+                                                <div class="mb-3">
+                                                    <label for="payment_method_id" class="form-label">Варіант оплати</label>
+                                                    <input asp-for="TypeOfPayment" id="paymentPost" hidden />
+                                                    <select class="form-select " name="payment_method_id" id="payment_method_id">
+                                                        <option value="1">Готівкою в касі магазину</option>
+                                                        <option value="2">Рахунок-фактура</option>
+                                                    </select>
+
+                                                </div>
+                                            </div>
+                                          
+
+
+                                            <div class="delivery">
+                                                <div class="mb-3">
+                                                    <label for="delivery_method_id" class="form-label">Спосіб доставки</label>
+                                                    <input asp-for="TypeOfDelivery" id="deliveryPost" hidden />
+                                                    <select  class="form-select" name="delivery_method_id" id="delivery_method_id">
+                                                        <option value="1">Самовивіз</option>
+                                                        <option value="2">Доставка Київ / Київська обл.</option>
+                                                    </select>
+                                                </div>
+                                                @*---------------------------City--------------------------------*@
+                                                <div class="mb-3 delivery_city" style="display: none;">
+                                                    <label for="delivery_city" class="form-label">Місто</label>
+                                                    <input asp-for="@Model.AplicationUser.City" type="text" class="form-control" value=""  required>
+                                                    <span asp-validation-for="@Model.AplicationUser.City" class="text-danger"></span>
+
+                                                </div>
+                                                @*---------------------------StreetAddress--------------------------------*@
+                                                <div class="mb-3 delivery_address" style="display: none;">
+                                                    <label for="delivery_address" class="form-label">Адреса доставки</label>
+                                                    <input asp-for="@Model.AplicationUser.StreetAddress" type="text" class="form-control"  value="" required >
+                                                    <span asp-validation-for="@Model.AplicationUser.StreetAddress" class="text-danger"></span>
+                                                </div>
+                                                @*---------------------------State--------------------------------*@
+                                                <div class="mb-3 delivery_state" style="display: none;">
+                                                    <label for="delivery_state" class="form-label">Область</label>
+                                                    <input asp-for="@Model.AplicationUser.State" type="text" class="form-control" value="" required>
+                                                    <span asp-validation-for="@Model.AplicationUser.State" class="text-danger"></span>
+                                                </div>
+                                                @*---------------------------PostalCode--------------------------------*@
+                                                <div class="mb-3 delivery_code" style="display: none;">
+                                                    <label for="delivery_code" class="form-label">Поштовий індекс</label>
+                                                    <input asp-for="@Model.AplicationUser.PostalCode" type="text" class="form-control" value="" required>
+                                                    <span asp-validation-for="@Model.AplicationUser.PostalCode" class="text-danger"></span>
+                                                </div>
+
+                                               
+                                            </div>
+
+
+
+                                        </div>
+                                    </div>
                                 </div>
-
-
-
-
-
-                                @*---------------------------FullName--------------------------------*@
-                                <div class="row my-1">
-                                    <div class="col-3">
-                                        <label>Name</label>
-                                    </div>
-                                    <div class="col-9">
-                                        <input asp-for="@Model.AplicationUser.FullName" required type="text" class="form-control" />
-
-                                    </div>
-                                </div>
-                                @*---------------------------PhoneNumber--------------------------------*@
-
-
-                                <div class="row my-1">
-                                    <div class="col-3">
-                                        <label>Phone</label>
-                                    </div>
-                                    <div class="col-9">
-                                        <input asp-for="@Model.AplicationUser.PhoneNumber" required type="text" class="form-control" />
-
-                                    </div>
-                                </div>
-
-
-
-                                @*---------------------------Email--------------------------------*@
-                                <div class="row my-1">
-                                    <div class="col-3">
-                                        <label>Email</label>
-                                    </div>
-                                    <div class="col-9">
-                                        <input asp-for="@Model.AplicationUser.Email" required type="text" class="form-control" />
-
-                                    </div>
-                                </div>
-                                @*---------------------------Adress--------------------------------*@
-                                @if (User.IsInRole(WebConstanta.AdminRole))
-                                {
-                                    @*---------------------------StreetAddress--------------------------------*@
-                                    <div class="row my-1">
-                                        <div class="col-3">
-                                            <label>StreetAddress</label>
-                                        </div>
-                                        <div class="col-9">
-                                            <input asp-for="@Model.AplicationUser.StreetAddress" required type="text" class="form-control" />
-
-                                        </div>
-                                    </div>
-                                    @*---------------------------City--------------------------------*@
-                                    <div class="row my-1">
-                                        <div class="col-3">
-                                            <label>City</label>
-                                        </div>
-                                        <div class="col-9">
-                                            <input asp-for="@Model.AplicationUser.City" type="text" required class="form-control" />
-
-                                        </div>
-                                    </div>
-                                    @*---------------------------State--------------------------------*@
-                                    <div class="row my-1">
-                                        <div class="col-3">
-                                            <label>State</label>
-                                        </div>
-                                        <div class="col-9">
-                                            <input asp-for="@Model.AplicationUser.State" required type="text" class="form-control" />
-
-                                        </div>
-                                    </div>
-                                    @*---------------------------PostalCode--------------------------------*@
-                                    <div class="row my-1">
-                                        <div class="col-3">
-                                            <label>PostalCode</label>
-                                        </div>
-                                        <div class="col-9">
-                                            <input asp-for="@Model.AplicationUser.PostalCode" required type="text" class="form-control" />
-
-                                        </div>
-                                    </div>
-
-                                }
 
 
                             </div>
-                            <div class="col-12 col-lg-5 row">
-                                <div class="col-12">
-                                    <h4 class="d-flex justify-content-sm-between align-items-center mb-3">
-                                        <span class="text-info">Summary</span>
-                                    </h4>
 
+                            <div class="col-md-6 col-lg-5 col-xl-4">
+                                <div class="checkout-cart-products p-3 pt-4">
+
+                                    <h4 class="d-flex justify-content-sm-between align-items-center mb-3">
+                                        <span class="text-info"><i class="fa fa-shopping-cart"></i> &nbsp; Ваше замовлення</span>
+                                    </h4>
                                     <ul class="list-group mb-3">
                                         @{
                                             var orderTotal = 0.0;
@@ -134,42 +131,20 @@
                                             <li class="list-group-item d-flex justify-content-between">
                                                 <div>
                                                     <h6 class="my-0">@Model.ProductList[i].Name</h6>
-                                                    @if (User.IsInRole(WebConstanta.AdminRole))
-                                                    {
-                                                        <small class="text-muted">Sqft: @Model.ProductList[i].TempSqFt</small>
-                                                    }
-                                                    else
-                                                    {
-                                                        <small class="text-muted">Price per Sqft: @Model.ProductList[i].Price</small>
-                                                    }
+                                                    <small class="text-muted">Кількість/м2: @Model.ProductList[i].TempSqFt</small>
                                                 </div>
-                                                @if (User.IsInRole(WebConstanta.AdminRole))
-                                                {
-                                                    <span class="text-muted">$@(Model.ProductList[i].Price * Model.ProductList[i].TempSqFt)</span>
-                                                }
+                                                <span class="text-muted">@string.Format("{0:N0} грн." ,(Model.ProductList[i].Price * Model.ProductList[i].TempSqFt))</span>
                                             </li>
                                             orderTotal += Model.ProductList[i].Price * Model.ProductList[i].TempSqFt;
                                         }
-                                        @if (User.IsInRole(WebConstanta.AdminRole))
-                                        {
-                                            <li class="list-group-item d-flex justify-content-between bg-light">
-                                                <small class="text-info">Total (USD)</small>
-                                                <strong class="text-info">$@orderTotal</strong>
-                                            </li>
-                                        }
+
+                                        <li class="list-group-item d-flex justify-content-between bg-light">
+                                            <small class="text-info">Заголом (Грн.)</small>
+                                            <strong class="text-info"> @string.Format("{0:N0} грн." ,@orderTotal)</strong>
+                                        </li>
                                     </ul>
-
                                 </div>
-
-
-
-
-
-
-
                             </div>
-
-
                         </div>
                     </div>
                 </div>
@@ -177,21 +152,7 @@
                 <div class="card-footer">
                     <div class="row">
                         <div class="col-12 col-md-5 offset-md-7">
-
-                            @if (User.IsInRole(WebConstanta.AdminRole))
-                            {
-                                <button class="btn btn-success form-control" id="submit-button" onclick="validateInput()">Submit Order</button>
-                             
-                            }
-                            else
-                            {
-
-                                <button type="submit" class="btn btn-primary form-control" onclick="validateInput()">Submit Inquiry(User)</button>
-
-                            }
-
-
-
+                                <button type="submit" class="btn btn-primary form-control btn-send" onclick="validateInput()">Підтверджую замовлення</button>
                         </div>
                     </div>
                 </div>
@@ -212,13 +173,14 @@
             var app_name = document.getElementById("AplicationUser_FullName").value;
             var phone = document.getElementById("AplicationUser_PhoneNumber").value;
             var app_email = document.getElementById("AplicationUser_Email").value;
+           
 
 
             if (app_name.toString() == '') {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: 'Pleace entar Full Name!',
+                    text: 'Pleace enter Full Name!',
 
                 })
                 return false; //при выводе сообщений sweetAlert нужно возвращать из функции false, тогда данные форм не будут передаватся
@@ -228,7 +190,7 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: 'Pleace entar Phone Number!',
+                    text: 'Pleace enter Phone Number!',
 
                 })
                 return false;
@@ -240,14 +202,40 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: 'Pleace entar Email!',
+                    text: 'Pleace enter Email!',
 
                 })
                 return false;
             }
+       
+
+
+
             // и эсли валидация форми пройденна успешно, то эти данные могут быть переданны из формы
             return true;
         }
+
+
+
+        $('body').on('change', 'select[name=\"delivery_method_id\"]', function (e) {
+            if ($('select[name=\"delivery_method_id\"] option:selected').val() == 2) {
+                $('.delivery_address, .delivery_city, .delivery_state, .delivery_code').slideDown();
+            }          
+            else {
+                $('.delivery_address, .delivery_city, .delivery_state, .delivery_code').slideUp();
+             
+               
+            }
+        });
+     
+
+        $('.btn-send').click(function(){
+            var valueDelivery = $("#delivery_method_id").val();
+            $('#deliveryPost').val(valueDelivery);
+            var valuePayment = $("#payment_method_id").val();
+            $('#paymentPost').val(valuePayment);
+        });
+
 
 
     </script>

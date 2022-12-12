@@ -26,7 +26,7 @@
  
 
 }
-
+<cache expires-sliding="@TimeSpan.FromSeconds(30)"> @*кеш работает если постоянно пережагружать страницу. Эсли ждать 30 сек то после перезагрузики будет новый кеш*@
 <nav aria-label="breadcrumb" role="navigation" class="bg-gray text-white">
     <div class="container">
         <div class="row justify-content-center">
@@ -106,20 +106,21 @@
                 {
                     <a type="button" class="btn btn-sm btn-outline-primary @prevDisabled"
                    asp-action="Index" asp-route-page="@(Model.Page - 1)" asp-route-id="@Model.CategoryProduct.Id">
-                        Prev
+                        назад
                     </a>
                     <a type="button" class="btn btn-sm btn-outline-primary @nextDisabled"
                    asp-action="Index" asp-route-page="@(Model.Page + 1)" asp-route-id="@Model.CategoryProduct.Id">
-                        Next
+                        вперед
                     </a>
-                    <span class="text-muted text-small">Results @resultStart - @resultEnd of @Model.TotalCountAllCurrentCategory</span>
+                    <span class="text-muted text-small">Результати @resultStart - @resultEnd із @Model.TotalCountAllCurrentCategory</span>
 
-                    <a type="button" class="btn btn-sm btn-outline-primary asp-action="Index" asp-route-allResultPage="true">All</a>
+                    <a type="button" class="btn btn-sm btn-outline-primary asp-action="Index" asp-route-allResultPage="true">всі</a>
                 }
             </div>
         </div>
     </div>
 </section>
+</cache>
 @section Scripts
     {
     <!--for filter main menu-->

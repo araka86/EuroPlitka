@@ -2,15 +2,28 @@
 @using EuroPlitka_Services
 
 @{
-    var title = "Create Product";
+    var title = "Створення продукту";
 }
 
 <form id="form" method="post"  enctype="multipart/form-data">
     @if (Model.Product.Id != 0)
     {
-        title = "Edit Prodict";
+        title = "Редагування продукту";
         <input asp-for="Product.Id" hidden />
     }
+    <nav aria-label="breadcrumb" role="navigation" class="bg-gray text-white">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"> <a href="/">Головна</a> </li>
+                        <li class="breadcrumb-item"><a href="javascript:history.go(-1)">Керування продукту</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">@title</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </nav>
     <div class="border p-3 bg-white">
         <div class=form-group p-3>
             <h2 class="text-info pl-3">@title</h2>
@@ -19,31 +32,27 @@
             <div class="col-md-8">
                 @*---------> Name <---------*@
                 <div class="form-group row py-2">
-                    <div class="col-md-4">
-                        <label asp-for="Product.Name"></label>
-                    </div>
+                    <div class="col-md-4"><label>Назва</label></div>
                     <div class="col-md-8">
                         <input asp-for="Product.Name" class="form-control" />
-                        <span asp-validation-for="Product.Name" class="text-danger"></span> @*строка валидации*@
+                        <span asp-validation-for="Product.Name" class="text-danger"></span> 
                     </div>
                 </div>
                 @*---------> CategoryId (DropDouwn) <---------*@
                 <div class="form-group row py-2">
                     <div class="col-md-4">
-                        <label asp-for="Product.CategoryId"></label>
+                        <label>Категорія</label>
                     </div>
                     <div class="col-md-8">
                         <select asp-for="Product.CategoryId" asp-items="@Model.CategorySelectList" class="form-select">
-                            <option disabled selected>--Select Category--</option>  @* disabled - не разрешает установить выборку по умолчанию (--Select Category--)  *@
+                            <option disabled selected>--Select Category--</option>
                         </select>
                         <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
                     </div>
                 </div>
                 @*---------> ProductTypeId (DropDouwn) <---------*@
                 <div class="form-group row py-2">
-                    <div class="col-md-4">
-                        <label asp-for="Product.ProductTypeId"></label>
-                    </div>
+                    <div class="col-md-4"> <label>Тип продукту</label></div>
                     <div class="col-md-8">
                         <select asp-for="Product.ProductTypeId" asp-items="@Model.ProductTypeSelectList" class="form-select">
                             <option disabled selected>--Select AplicationType--</option>  @* disabled - не разрешает установить выборку по умолчанию (--Select Category--)  *@
@@ -53,11 +62,7 @@
                 </div>
                 @*---------> Description <---------*@
                 <div class="form-group row py-2">
-
-                    <div class="col-md-4">
-                        <label asp-for="Product.Description"></label>
-
-                    </div>
+                    <div class="col-md-4"> <label>Опис</label></div>
                     <div class="col-md-8">
                         <textarea asp-for="Product.Description" class="form-control summernote"></textarea>
                         <span asp-validation-for="Product.Description" class="text-danger"></span>
@@ -66,7 +71,7 @@
                 @*---------> Image <---------*@
 
                 <div class="form-group row py-2">
-                    <div class="col-md-4">Image</div>
+                    <div class="col-md-4">Зображення</div>
                     <div class="col-md-8">
                         <input type="file"  name="files" id="uploadBox" multiple class="form-control"  />
                     </div>
@@ -74,9 +79,7 @@
                 @*---------> Price <---------*@
 
                 <div class="form-group row py-2">
-                    <div class="col-md-4">
-                        <label asp-for="Product.Price"></label>
-                    </div>
+                    <div class="col-md-4"> <label>Ціна</label></div>
                     <div class="col-md-8">
                         <input asp-for="Product.Price" class="form-control" />
                         <span asp-validation-for="Product.Price" class="text-danger"></span> @*строка валидации*@
@@ -85,9 +88,7 @@
                 @*---------> ShortDec <---------*@
 
                 <div class="form-group row py-2">
-                    <div class="col-md-4">
-                        <label asp-for="Product.shortDesc"></label>
-                    </div>
+                    <div class="col-md-4"><label>Короткий опис</label></div>
                     <div class="col-md-8">
                         <input asp-for="Product.shortDesc" class="form-control" />
                         <span asp-validation-for="Product.shortDesc" class="text-danger"></span> @*строка валидации*@
@@ -102,46 +103,32 @@
                         <div class="col">
                             @if (Model.Product.Id != 0)//update
                             {
-                                <input type="submit" class="btn btn-info w-100 " value="Update" />
+                                <input type="submit" class="btn btn-info w-100 " value="Оновити" />
                             }
-                            else //create  validateInput()- функция javascript  Проверка запроса
+                            else //create  validateInput() -  javascript check query
                             {
-                                <input type="submit" onclick="return validateInput()" class="btn btn-primary w-100 " value="Create" />
+                                <input type="submit" onclick="return validateInput()" class="btn btn-primary w-100 " value="Створити" />
                             }
                         </div>
-
                         <div class="col">
-                            <a href="javascript:history.go(-1)" class="btn btn-success  w-100">
+                            <a asp-action="Index" asp-controller="Product" class="btn btn-success  w-100">
                                 <i class="fa-solid fa-rotate-left"></i>
                             </a>
                         </div>
                     </div>
                 </div>
-
-
-             
-
             </div>
-
             @if (Model.Product.imagebyte != null)
             {
                 <div class="col-md-4 ">
                     <img src="@string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(Model.Product.imagebyte).ToString())" class="w-100" style="border-radius:15px; border:1px solid #bbb; " />
                 </div>
             }
-
-            
-
         </div>
     </div>
 </form>
-
-
 @section Scripts{
-    @{
         <partial name="_ValidationScriptsPartial" />
-    }
-
     <!--summernote -->
     <script>
         $(document).ready(function () {

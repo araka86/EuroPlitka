@@ -13,7 +13,7 @@ namespace EuroPlitka_Model
         [Key]
         public int Id { get; set; }
 
-        [DisplayName("Pick the Name")]
+        [DisplayName("Назва проукта")]
         [Required]
         [StringLength(20, ErrorMessage = "Name length can't be more than 20.")]
         public string? Name { get; set; }

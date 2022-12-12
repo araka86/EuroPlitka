@@ -1,44 +1,50 @@
 ﻿@using EuroPlitka_Services;
 @model EuroPlitka_Model.ViewModels.OrderVM
-<form method="post">
-    <input asp-for="OrderHeader.Id" readonly />
+@{
+    var payment = (Model.OrderHeader.OrderFactura) ? "Рахунок-фактура" : "Оплата на касі";
+}
 
+
+
+
+<nav aria-label="breadcrumb" role="navigation" class="bg-gray text-white">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"> <a href="/">Головна</a> </li>
+                    <li class="breadcrumb-item"><a href="javascript:history.go(-1)">Manage History Order</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Manage History Order Details</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</nav>
+<form method="post">
+    <input asp-for="OrderHeader.Id" readonly hidden />
+   
     <br />
     <div class="backgroundWhite container">
         <div class="card">
             <div class="card-header bg-dark text-light ml-0 row container">
                 <div class="col-12 d-none d-md-block col-md-6 pb-1">
-                    <i class="fas fa-shopping-cart"></i> &nbsp; Order Summary
+                    <i class="fas fa-shopping-cart"></i> &nbsp; Деталі замовлення
                 </div>
-
-                @if (User.IsInRole(WebConstanta.AdminRole))
-                {
-                    <div class="col-12 col-md-4 offset-md-2 text-right">
-                        <a asp-controller="Order" asp-action="Index" class="btn btn-outline-info form-control btn-sm">Back to Orders</a>
-                    </div>
-                }
-                else
-                {
-                    <div class="col-12 col-md-4 offset-md-2 text-right">
-                        <a asp-controller="User" asp-action="OrdersUser" class="btn btn-outline-info form-control btn-sm">Back to Order</a>
-                    </div>
-                }
-
-
-
+                <div class="col-12 col-md-4 offset-md-2 text-right">
+                    <a asp-controller="Order" asp-action="Index" class="btn btn-outline-info form-control btn-sm">Повернутись до замовлень</a>
+                </div>
             </div>
             <div class="card-body pb-0">
                 <div class="container rounded p-2">
                     <div class="row">
                         <div class="col-12 col-lg-6 pb-4">
                             <div class="row">
-                                <h4 class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="text-info">PickUp Details:</span>
-                                </h4>
+                                <h5 class="d-flex justify-content-between align-items-center mb-3 text-info">Деталі користувача:</h5>
                             </div>
+                            <hr>
                             <!--------------------------Name--------------------------->
                             <div class="row my-1">
-                                <div class="col-3">Name</div>
+                                <div class="col-3">Імя</div>
                                 <div class="col-9">
                                     <input asp-for="OrderHeader.FullName" type="text" class="form-control" />
                                     <span asp-validation-for="OrderHeader.FullName" class="text-danger"></span>
@@ -46,74 +52,97 @@
                             </div>
                             <!--------------------------PhoneNumber--------------------------->
                             <div class="row my-1">
-                                <div class="col-3">Phone</div>
+                                <div class="col-3">Номер телефону</div>
                                 <div class="col-9">
                                     <input asp-for="OrderHeader.PhoneNumber" type="text" class="form-control" />
                                     <span asp-validation-for="OrderHeader.PhoneNumber" class="text-danger"></span>
                                 </div>
                             </div>
-                            <!--------------------------Address(StreetAddress)--------------------------->
-                            <div class="row my-1">
-                                <div class="col-3">Address</div>
-                                <div class="col-9">
-                                    <input asp-for="OrderHeader.StreetAddress" type="text" class="form-control" />
-                                    <span asp-validation-for="OrderHeader.StreetAddress" class="text-danger"></span>
-                                </div>
-                            </div>
-
-                            <!--------------------------City--------------------------->
-                            <div class="row my-1">
-                                <div class="col-3">City</div>
-                                <div class="col-9">
-                                    <input asp-for="OrderHeader.City" type="text" class="form-control" />
-                                    <span asp-validation-for="OrderHeader.City" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <!--------------------------State--------------------------->
-                            <div class="row my-1">
-                                <div class="col-3">State</div>
-                                <div class="col-9">
-                                    <input asp-for="OrderHeader.State" type="text" class="form-control" />
-                                    <span asp-validation-for="OrderHeader.State" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <!--------------------------Zip Code (PostalCode)--------------------------->
-                            <div class="row my-1">
-                                <div class="col-3">Zip Code</div>
-                                <div class="col-9">
-                                    <input asp-for="OrderHeader.PostalCode" type="text" class="form-control" />
-                                    <span asp-validation-for="OrderHeader.PostalCode" class="text-danger"></span>
-                                </div>
-                            </div>
                             <!--------------------------Email--------------------------->
                             <div class="row my-1">
-                                <div class="col-3">Email</div>
+                                <div class="col-3">Поштова адресса</div>
                                 <div class="col-9">
                                     <input asp-for="OrderHeader.Email" type="text" class="form-control" />
                                     <span asp-validation-for="OrderHeader.Email" class="text-danger"></span>
                                 </div>
                             </div>
-                            <!--------------------------Order Date(дата отгруки)--------------------------->
+                            <!--------------------------Payment--------------------------->
                             <div class="row my-1">
-                                <div class="col-3">Order Date</div>
+                                <div class="col-3">Оплата</div>
                                 <div class="col-9">
-                                    <input value="@Model.OrderHeader.OrderDate.ToShortDateString()" type="text" class="form-control" readonly />
-
+                                    <label>@payment</label>
                                 </div>
                             </div>
-                            <!--------------------------Shipping Date(дата доставки)--------------------------->
-                            <div class="row my-1">
-                                <div class="col-3">Shipping Date</div>
-                                <div class="col-9">
-                                    <input value="@Model.OrderHeader.OrderDate.ToShortDateString()" id="ShippingDate" type="text" class="form-control" readonly />
+                            <h5 class="d-flex justify-content-between align-items-center mb-3 text-info">Деталі отримання товару:</h5>
+                            <hr>
+                            @if (@Model.OrderHeader.Delivery)
+                            {
+                                <!--------------------------Delivery--------------------------->
+                                <div class="row my-1">
+                                    <div class="col-3">Отримання товару:</div>
+                                    <div class="col-9">
+                                        <label>Дотавка</label>
+                                    </div>
                                 </div>
-                            </div>
+                                <!--------------------------City--------------------------->
+                                <div class="row my-1">
+                                    <div class="col-3">Місто</div>
+                                    <div class="col-9">
+                                        <input asp-for="OrderHeader.City" type="text" class="form-control" />
+                                        <span asp-validation-for="OrderHeader.City" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <!--------------------------Address(StreetAddress)--------------------------->
+                                <div class="row my-1">
+                                    <div class="col-3">Адресса</div>
+                                    <div class="col-9">
+                                        <input asp-for="OrderHeader.StreetAddress" type="text" class="form-control" />
+                                        <span asp-validation-for="OrderHeader.StreetAddress" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <!--------------------------State--------------------------->
+                                <div class="row my-1">
+                                    <div class="col-3">Область</div>
+                                    <div class="col-9">
+                                        <input asp-for="OrderHeader.State" type="text" class="form-control" />
+                                        <span asp-validation-for="OrderHeader.State" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <!--------------------------Zip Code (PostalCode)--------------------------->
+                                <div class="row my-1">
+                                    <div class="col-3">Поштовий індекс</div>
+                                    <div class="col-9">
+                                        <input asp-for="OrderHeader.PostalCode" type="text" class="form-control" />
+                                        <span asp-validation-for="OrderHeader.PostalCode" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <!--------------------------Order Date(дата отгруки)--------------------------->
+                                <div class="row my-1">
+                                    <div class="col-3">Дата замовлення</div>
+                                    <div class="col-9">
+                                        <input value="@Model.OrderHeader.OrderDate.ToShortDateString()" type="text" class="form-control" readonly />
 
-                            <!--------------------------Order Status(статус заказа)--------------------------->
+                                    </div>
+                                </div>
+                                
+                            }else
+                            {
+                                <!--------------------------Delivery--------------------------->
+                                <div class="row my-1">
+                                    <div class="col-3">Отримання товару:</div>
+                                    <div class="col-9">
+                                        <label>Самовивоз</label>
+                                    </div>
+                                </div>
+                            }
+
+
+
+
                             <!-------------------------------Order Update--------------------------------->
                             <div class="row my-1">
                                 <div class="col-9 offset-3">
-                                    <input type="submit" value="Update Order Details" class="btn btn-warning form-control"
+                                    <input type="submit" value="Оновити деталі замовлення" class="btn btn-warning form-control"
                                            asp-action="UpdateOrderDetails" formmethod="post" />
                                 </div>
                             </div>
@@ -134,8 +163,8 @@
                                             <div class="col-8">
                                                 <h6 class="my-0 text-info">@detail.Product.Name</h6>
 
-                                                <small class="text-muted">Price : @detail.PricePerSqFt</small><br />
-                                                <small class="text-muted">Quantity : @detail.Sqft</small>
+                                                <small class="text-muted">Ціна/м2 : @detail.PricePerSqFt</small><br />
+                                                <small class="text-muted">Кількість : @detail.Sqft</small>
                                             </div>
                                             <div class="col-4">
                                                 <p class="text-success">$@(detail.PricePerSqFt * detail.Sqft)</p>
@@ -147,24 +176,15 @@
                                 <li class="list-group-item bg-info">
                                     <div class="row container">
                                         <div class="col-6">
-                                            <h5 class="text-white">TOTAL </h5>
+                                            <h5 class="text-white">Загальна сумма: </h5>
                                         </div>
                                         <div class="col-6 text-right">
                                             <h5 class="text-white">$@(Model.OrderHeader.FinalOrderTotal)</h5>
                                         </div>
                                     </div>
                                 </li>
-
-
-
                             </ul>
-
-
                             <br />
-
-
-
-
                         </div>
                     </div>
                 </div>
@@ -176,15 +196,4 @@
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
 
-    <script>
-
-        $(document).ready(function () {
-            var ShippingDate = document.getElementById("ShippingDate")
-            if (ShippingDate.value == '1/1/0001') {
-                ShippingDate.value = "";
-            }
-
-        })
-
-    </script>
 }

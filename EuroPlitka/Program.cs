@@ -1,3 +1,4 @@
+using EuroPlitka;
 using EuroPlitka_DataAccess.Data;
 using EuroPlitka_DataAccess.Extensions;
 using EuroPlitka_DataAccess.Repository;
@@ -5,12 +6,36 @@ using EuroPlitka_DataAccess.Repository.IRepository;
 using EuroPlitka_DataAccess.Repository.IReposotory;
 using EuroPlitka_Model;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddDataAnnotationsLocalization().AddViewLocalization();
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+builder.Services.AddControllersWithViews()
+                .AddDataAnnotationsLocalization(options =>
+                {
+                    options.DataAnnotationLocalizerProvider = (type, factory) =>
+                        factory.Create(typeof(SharedResource));
+                }).AddViewLocalization();
+
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = new[]
+              {
+                    new CultureInfo("uk"),
+                    new CultureInfo("en")    
+              };
+
+
+    options.DefaultRequestCulture = new RequestCulture("uk");
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+});
 
 
 //connection to Db
@@ -32,6 +57,12 @@ builder.Services.AddScoped<IBasketRepo, BasketRepo>();
 //builder.Services.AddTransient<AplicationUserRepo>();
 
 
+
+
+
+//uk    україньска
+//ukr   Ukrainian
+//UKR	Ukrainian
 
 
 
@@ -62,7 +93,8 @@ builder.Services.ConfigureApplicationCookie(option =>
 
 var app = builder.Build();
 
-
+//localize
+app.UseRequestLocalization();
 
 
 

@@ -212,6 +212,11 @@ namespace EuroPlitka.Controllers
 
                         if (news.Description.Contains("<img"))
                         {
+                            var objFromDB = await _newsRepositoriy.FirstOrDefault(u => u.Id == news.Id, isTracking: false);
+                            news.CreatedByUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                            news.Image = objFromDB.Image;
+                            _newsRepositoriy.Update(news);
+                            TempData[WebConstanta.Success] = "News Update successfully";
                         }
                         else
                         {
@@ -219,6 +224,7 @@ namespace EuroPlitka.Controllers
                             news.CreatedByUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                             news.Image = objFromDB.Image;
                             _newsRepositoriy.Update(news);
+                            TempData[WebConstanta.Success] = "News Update successfully";
                         }
 
                     }
@@ -228,6 +234,7 @@ namespace EuroPlitka.Controllers
                         news.CreatedByUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                         news.Image = objFromDB.Image;
                         _newsRepositoriy.Update(news);
+                        TempData[WebConstanta.Success] = "News Update successfully";
                     }
 
                     

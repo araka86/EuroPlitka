@@ -1,14 +1,26 @@
 ﻿@using EuroPlitka_Services;
 @model EuroPlitka_Model.ViewModels.LoginRegistrViewModel
+<nav aria-label="breadcrumb" role="navigation" class="bg-gray text-white">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"> <a href="/">Головна</a> </li>
+                    <li class="breadcrumb-item active" aria-current="page">Реєстрація нового користувача</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</nav>
 <div class="py-4">
-    <h2>Регистрация нового пользователя</h2>
+    <h2>Реєстрація нового користувача</h2>
     <form method="post" asp-controller="Account" asp-action="Register"  >
         <div class="py-2">
-            <input asp-for="FullName" placeholder="Name" class="form-control" />
+            <input asp-for="FullName" placeholder="Імя" class="form-control" />
             <span asp-validation-for="FullName" class="text-danger"></span>
         </div>
         <div class="py-2">
-            <input asp-for="Email" placeholder="Email" type="email" class="form-control" />
+            <input asp-for="Email" placeholder="поштова адресса" type="email" class="form-control" />
             <span asp-validation-for="Email" class="text-danger"></span>
         </div>
         <div class="py-2">
@@ -16,16 +28,16 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">+38</span>
                 </div>
-                <input asp-for="PhoneNumber" placeholder="PhoneNumber" type="text" class="form-control" />
+                <input asp-for="PhoneNumber" placeholder="Номер телефону" type="text" class="form-control" />
             </div>
             <span asp-validation-for="PhoneNumber" class="text-danger"></span>
         </div>
         <div class="form-row row py-2">
             <div class="col-6">
-                <input asp-for="Password" placeholder="password" type="password" class="form-control" />
+                <input asp-for="Password" placeholder="Пароль" type="password" class="form-control" />
             </div>
             <div class="col-6">
-                <input asp-for="ConfirmPassword" placeholder="Confirm Password" type="password" class="form-control" />
+                <input asp-for="ConfirmPassword" placeholder="Підтвердження паролю" type="password" class="form-control" />
             </div>
             <span asp-validation-for="Password" class="text-danger"></span>
             <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
@@ -33,11 +45,11 @@
         <div class="py-2">
             @if (User.IsInRole(WebConstanta.AdminRole))
             {
-                <button id="registerSubmit" type="submit" class=" btn-warning form-control rounded ">Register Admin User</button>
+                <button id="registerSubmit" type="submit" class=" btn-warning form-control rounded ">Зареєструвати як нового адміністратора</button>
             }
             else
             {
-                <button id="registerSubmit" type="submit" class="btn-primary form-control rounded">Register</button>
+                <button id="registerSubmit" type="submit" class="btn-primary form-control rounded">Реєстрація</button>
             }
         </div>
     </form>

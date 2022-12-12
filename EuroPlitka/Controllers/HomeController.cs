@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using EuroPlitka_Model.ViewModels;
 using EuroPlitka_DataAccess.Repository.IRepository;
-using Syncfusion.XlsIO;
 using EuroPlitka_DataAccess.Data;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Localization;
+using System.Text.RegularExpressions;
 
 namespace EuroPlitka.Controllers
 {
@@ -23,12 +23,17 @@ namespace EuroPlitka.Controllers
         private readonly IBasketRepo _basketRepo;
 
 
+        private readonly IStringLocalizer<HomeController> _localizer;
+        private readonly IStringLocalizer<SharedResource> _sharedLocalizer;
+
 
         public HomeController(IProductRepository productRepository,
             INewsRepositoriy newsRepositoriy,
             EuroPlitkaDbContext euroPlitkaDbContext,
             IBasketRepo basketRepo,
-            UserManager<AplicationUser> userManager)
+            UserManager<AplicationUser> userManager,
+            IStringLocalizer<HomeController> localizer,
+                   IStringLocalizer<SharedResource> sharedLocalizer)
         {
 
             _productRepository = productRepository;
@@ -36,10 +41,47 @@ namespace EuroPlitka.Controllers
             _euroPlitkaDbContext = euroPlitkaDbContext;
             _basketRepo = basketRepo;
             _userManager = userManager;
+            _localizer = localizer;
+            _sharedLocalizer = sharedLocalizer;
         }
+
+        public string Test()
+        {
+            // получаем ресурс Message
+            string message = _sharedLocalizer["Message"];
+            return message;
+        }
+
+        [HttpPost]
+        public IActionResult SetLanguage(string culture, string returnUrl)
+        {
+
+            var langue1 = CookieRequestCultureProvider.DefaultCookieName;
+            var langue2 = CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture));
+            var langue3 = new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) };
+
+
+
+
+
+
+            Response.Cookies.Append(
+                CookieRequestCultureProvider.DefaultCookieName,
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) });
+
+            return LocalRedirect(returnUrl);
+        }
+
+
 
         public async Task<IActionResult> Index()
         {
+
+            var langue1 = CookieRequestCultureProvider.DefaultCookieName;
+            var langue2 = CookieRequestCultureProvider.MakeCookieValue(new RequestCulture("en"));
+            var langue3 = new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) };
+
 
 
 
@@ -53,7 +95,6 @@ namespace EuroPlitka.Controllers
                 Products = prod.Take(4)
             };
 
-            // productNews.News = await _newsRepositoriy.MarkItem(productNews.News);
             await _newsRepositoriy.ChkMarkItem(productNews.News);
 
 
@@ -67,11 +108,9 @@ namespace EuroPlitka.Controllers
             {
 
                 var getbasketUser = _basketRepo.GetAll(x => x.CreatedByUserId == claim.Value).Result;
-
                 if (getbasketUser != null && getbasketUser.Any())
                 {
                     List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
-
                     if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstanta.SessionCart) != null &&
                        HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstanta.SessionCart).Any())
                     {
@@ -83,13 +122,12 @@ namespace EuroPlitka.Controllers
                         {
                             shoppingCartList.Add(new ShoppingCart { ProductId = (int)item.ProductId, Sqft = item.Sqft });
                         }
-
                         HttpContext.Session.Set(WebConstanta.SessionCart, shoppingCartList);
-
                     }
-
-
                 }
+
+
+
             }
 
 
@@ -130,9 +168,9 @@ namespace EuroPlitka.Controllers
             List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
 
             if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstanta.SessionCart) != null &&
-               HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstanta.SessionCart).Count() > 0)
+               HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstanta.SessionCart).Any())
             {
-                shoppingCartList = HttpContext.Session.Get<List<ShoppingCart>>(WebConstanta.SessionCart);
+                shoppingCartList =  HttpContext.Session.Get<List<ShoppingCart>>(WebConstanta.SessionCart);
             }
 
             shoppingCartList.Add(new ShoppingCart { ProductId = product.Id, Sqft = product.TempSqFt });
@@ -140,6 +178,9 @@ namespace EuroPlitka.Controllers
             HttpContext.Session.Set(WebConstanta.SessionCart, shoppingCartList);
 
             TempData[WebConstanta.Success] = "Product Add to cart successfully";
+
+
+
             var productCat = await _productRepository.FirstOrDefault(x => x.Id == shoppingCartList.LastOrDefault().ProductId);
 
 
@@ -220,6 +261,16 @@ namespace EuroPlitka.Controllers
 
         [HttpGet]
         public async Task<IActionResult> SearchPartialModal(string Name) => PartialView(await _productRepository.GetAll(x => x.Name.Contains(Name)));
+
+
+
+
+
+     
+
+
+
+
 
 
 

@@ -11,5 +11,8 @@
             ProductList = new List<Product>();
 
         }
+
+        public string TypeOfDelivery { get; set; }
+        public string TypeOfPayment { get; set; }
     }
 }

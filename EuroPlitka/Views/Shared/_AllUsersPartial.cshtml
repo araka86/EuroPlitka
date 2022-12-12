@@ -3,9 +3,8 @@
 @using EuroPlitka_Services;
 @using Microsoft.AspNetCore.Identity;
 @inject UserManager<AplicationUser> UserManager
-
-
 @{
+
     var role = UserManager.GetRolesAsync(@Model).Result[0];
 }
 
@@ -14,11 +13,9 @@
     <th scope="row">
         <div class="media align-items-center">
             @{
-
                 var img = @Model.imgUserAva == null ?
                 "/images/avatar-male-3.jpg" :
                 $"{string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(@Model.imgUserAva).ToString())}";
-
                 var id = Model.Id;
 
             }
@@ -30,7 +27,7 @@
         </div>
     </th>
     <td>
-        <a class="btn btn-outline-primary compItem" asp-controller="User" asp-action="DetailModal" asp-route-id="@Model.Id">View Profile </a>
+        <a class="btn btn-outline-primary compItem" asp-controller="User" asp-action="DetailModal" asp-route-id="@Model.Id">Переглянути профіль </a>
     </td>
 
 

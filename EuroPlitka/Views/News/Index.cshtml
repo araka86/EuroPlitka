@@ -1,78 +1,61 @@
 ﻿@model List<EuroPlitka_Model.News>
-
+<nav aria-label="breadcrumb" role="navigation" class="bg-gray text-white">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"> <a href="/">Головна</a> </li>                  
+                    <li class="breadcrumb-item active" aria-current="page">Керування інформації</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</nav>
 <div class="container p-md-3 table-responsive-md bg-white">
     <div class="row pt-md-4">
         <div class="col-md-6">
-            <h2 class="text-primary">News List</h2>
+            <h2 class="text-primary">Список інформації</h2>
         </div>
-
         <div class="col-md-6 text-right">
             <a asp-controller="News" asp-action="Upsert" class="btn btn-primary">
-                <i class="fa-solid fa-circle-plus"></i> &nbsp;
-                Create News
-            </a>
+                <i class="fa-solid fa-circle-plus"></i> &nbsp; Створити інформацію</a>
         </div>
     </div>
-
     @if (Model.Count() > 0)
     {
         <form method="post" asp-action="Upsert">
             <table class="table table-bordered table-striped" style="width:100%">
                 <thead>
-
                     <tr>
-
-                        <th>Titile News</th>
-                        <th>Short Description</th>
-                        <th>DateTime</th>
-
-                        <th>Visible</th>
-
+                        <th>Заголовок назви</th>
+                        <th>Короткий опис</th>
+                        <th>Дата створення/оновлення</th>
+                        <th>Видимість</th>
                         <th></th>
                     </tr>
                 </thead>
-
                 <tbody>
-
-
-                    
 
                     @for (int i = 0; i < Model.Count(); i++)
                     {
-
                         <tr>
-
-
                             <input asp-for="@Model[i].Image" type="text" value="@Convert.ToBase64String(@Model[i].Image).ToString()" readonly  hidden/>
                             <input asp-for="@Model[i].Description" readonly hidden />
                             <input asp-for="@Model[i].LeftSideInfoPicture" readonly hidden />
                             <input asp-for="@Model[i].RightSideInfoPicture" readonly hidden />
-
-
-
                             @if(Model[i].CreatedBy!=null)
                             {
-
                             <td colspan="1" class="text-center">  @Model[i].CreatedBy.FullName</td>
                             <td colspan="4" class="text-center"> <input asp-for="@Model[i].CreatedByUserId" readonly hidden /> @Model[i].CreatedByUserId</td>
                             }
-
-
-
-
-
                         </tr>
-
-
-
                         <tr>
                             <input asp-for="@Model[i].Id" readonly hidden />
                             <td width="auto"><input asp-for="@Model[i].Title" readonly hidden />@Model[i].Title </td>
                             <td width="auto"><input asp-for="@Model[i].ShortDescription" readonly hidden />@Model[i].ShortDescription </td>
                             <td width="auto"> <input asp-for="@Model[i].DateTime" readonly hidden /> @Model[i].DateTime.ToShortDateString()</td>
-
                             <td width="5%">
-                                <label class="form-check-label"><input type="checkbox" name="[@i].checkedState" @((Model[i].IsMainMenu) ? "checked=\"checked\"" : "") /> Show </label>
+                                <label class="form-check-label"><input type="checkbox" name="[@i].checkedState" @((Model[i].IsMainMenu) ? "checked=\"checked\"" : "") /></label>
                             </td>
                             <td class="text-left">
                                 <div class="w-75 btn-group" role="group">
@@ -86,19 +69,15 @@
                             </td>
                         </tr>
                     }
-
-
-
                 </tbody>
             </table>
             <div class="form-group row py-2">
                 <div class="col-8 row">
-
                     <div class="col mt-1 ">
-                        <input type="submit" asp-action="UpateVision" class="btn btn-info w-100 rounded-pill" value="Update Vision" />
+                        <input type="submit" asp-action="UpateVision" class="btn btn-info w-100 rounded-pill" value="Оновити видимість" />
                     </div>
                     <div class="col mt-1">
-                        <a asp-controller="News" asp-action="Index" class="btn btn-success  w-100 rounded-pill">
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-success  w-100 rounded-pill">
                             <i class="fa-solid fa-rotate-left"></i>
                         </a>
                     </div>
@@ -108,6 +87,6 @@
     }
     else
     {
-        <p>No News exist!!</p>
+        <p>Інформації поки що не існує!!</p>
     }
 </div>

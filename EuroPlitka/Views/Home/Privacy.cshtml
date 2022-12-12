@@ -1,9 +1,21 @@
 ﻿@{
     ViewData["Title"] = "Privacy Policy";
 }
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<SharedResource> SharedLocalizer
+@inject IViewLocalizer Localizer
+
+
+<h3>@SharedLocalizer["Price"]</h3>
+
+
 <h1>@ViewData["Title"]</h1>
 
 <p>Use this page to detail your site's privacy policy.</p>
+
+<h3>@Localizer["Message2"]</h3>
+
 <h3>Список моделей</h3>
 <div id="modDialog" class="modal fade">
     <div id="dialogContent" class="modal-dialog"></div>

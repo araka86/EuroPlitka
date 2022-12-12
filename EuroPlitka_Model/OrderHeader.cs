@@ -41,5 +41,7 @@ namespace EuroPlitka_Model
         [Required]
         public string? FullName { get; set; }
         public string? Email { get; set; }
+        public bool OrderFactura { get; set; } = false;
+        public bool Delivery { get; set; } = false;
     }
 }

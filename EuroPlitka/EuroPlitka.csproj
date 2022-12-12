@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="Resources\Views\Account\Login.uk.resx" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CloudinaryDotNet" Version="1.20.0" />
     <PackageReference Include="Microsoft.AspNet.Mvc.Futures" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.10" />
@@ -26,6 +30,11 @@
     <ProjectReference Include="..\EuroPlitka_DataAccess\EuroPlitka_DataAccess.csproj" />
     <ProjectReference Include="..\EuroPlitka_Model\EuroPlitka_Model.csproj" />
     <ProjectReference Include="..\EuroPlitka_Services\EuroPlitka_Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\en\" />
+    <Folder Include="Resources\uk\" />
   </ItemGroup>
 
 </Project>

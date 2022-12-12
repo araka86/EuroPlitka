@@ -26,7 +26,7 @@ namespace EuroPlitka.Controllers
         {
             OrderListVm orderListVm = new OrderListVm()
             {
-                OrderHeaderList = await _orderHRepo.GetAll()
+                OrderHeaderList = await _orderHRepo.GetAll(orderBy: y => y.OrderByDescending(c => c.OrderDate))
             };
             if (IsReset == null)
             {

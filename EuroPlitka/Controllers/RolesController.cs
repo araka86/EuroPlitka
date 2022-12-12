@@ -26,6 +26,7 @@ namespace EuroPlitka.Controllers
                 IdentityResult result = await _roleManager.CreateAsync(new IdentityRole(name));
                 if (result.Succeeded)
                 {
+                    TempData[WebConstanta.Success] = "Role Create successfully";
                     return RedirectToAction("Index");
                 }
                 else
@@ -36,6 +37,7 @@ namespace EuroPlitka.Controllers
                     }
                 }
             }
+            TempData[WebConstanta.Error] = "Role create error!!!!";
             return View(name);
         }
 
@@ -47,7 +49,10 @@ namespace EuroPlitka.Controllers
             if (role != null)
             {
                 IdentityResult result = await _roleManager.DeleteAsync(role);
+                TempData[WebConstanta.Success] = "Role delete successfully";
+                return RedirectToAction("Index");
             }
+            TempData[WebConstanta.Error] = "Role delete error!!!!!";
             return RedirectToAction("Index");
         }
 

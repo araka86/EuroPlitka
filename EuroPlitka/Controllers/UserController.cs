@@ -10,6 +10,7 @@ using System.Security.Claims;
 
 namespace EuroPlitka.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private readonly UserManager<AplicationUser> _userManager;
@@ -34,20 +35,6 @@ namespace EuroPlitka.Controllers
         {
 
             IEnumerable<AplicationUser> users = await _userRepository.GetAll();
-            //var userIdentity = (ClaimsIdentity)User.Identity;
-            //var claims = userIdentity.Claims;
-            //var roleClaimType = userIdentity.RoleClaimType;
-
-            //var roles = claims.Where(c => c.Type == ClaimTypes.Role).ToList();
-
-            //var rolesss = ((ClaimsIdentity)User.Identity).Claims
-            //    .Where(c => c.Type == ClaimTypes.Role)
-            //    .Select(c => c.Value);
-
-            //var rolesssdf = _roleManager.Roles.ToList();
-
-
-
             return View(users);
         }
 

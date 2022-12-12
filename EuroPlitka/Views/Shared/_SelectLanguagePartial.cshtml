@@ -1,0 +1,57 @@
+﻿@using Microsoft.AspNetCore.Builder
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Options
+
+@inject IViewLocalizer Localizer
+@inject IOptions<RequestLocalizationOptions> LocOptions
+
+@{
+    // получаем сервис IRequestCultureFeature
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    // получаем список поддерживаемых культур
+    var cultureItems = LocOptions.Value.SupportedUICultures
+        .Select(c => new SelectListItem { Value = c.Name, Text = c.NativeName })
+        .ToList();
+    var cultureItems2 = LocOptions.Value.SupportedUICultures
+           .Select(c => new SelectListItem { Value = c.Name, Text = c.NativeName })
+           .ToList();
+}
+
+<form asp-controller="Home" asp-action="SetLanguage" asp-route-returnUrl="@Context.Request.Path" method="post" class="form-horizontal lng">
+      
+  @*  <select name="culture" onchange="this.form.submit();" asp-for="@requestCulture.RequestCulture.UICulture.Name" asp-items="cultureItems"></select>*@
+
+  
+@*    <div class="lang-widget">
+        
+        <label type="submit" name="culture" asp-for="@requestCulture.RequestCulture.UICulture.Name" onclick="this.form.submit();">@cultureItems[0].Value</label> <span class="py-1">|</span>
+        <label type="submit" name="culture" asp-for="@requestCulture.RequestCulture.UICulture.Name" onclick="this.form.submit(); ">@cultureItems[1].Value</label> <span class="py-1">|</span>
+
+    </div>
+    *@
+
+
+
+   
+@*    <input type="submit" name="culture" asp-for="@requestCulture.RequestCulture.UICulture.Name" value="@cultureItems[0].Value" onclick="this.form.submit();" /><span class="py-1">|</span>
+    <input type="submit" name="culture" asp-for="@requestCulture.RequestCulture.UICulture.Name" value="@cultureItems[1].Value" onclick="this.form.submit();" />*@
+
+
+
+ @*   <a onclick="this.form.submit();">
+        @cultureItems[0].Value
+        <input name="culture" asp-for="@requestCulture.RequestCulture.UICulture.Name" />
+    </a> <span class="py-1">|</span>
+
+    <a onclick ="this.form.submit();">
+        @cultureItems[1].Value
+        <input name="culture" asp-for="@requestCulture.RequestCulture.UICulture.Name"  />
+        </a>*@
+
+    <label type="submit">UA<input type="submit" name="culture" asp-for="@requestCulture.RequestCulture.UICulture.Name" value="@cultureItems[0].Value" onclick="this.form.submit();" hidden /><span class="py-1">|</span></label>
+    <label type="submit">ENG<input type="submit" name="culture" asp-for="@requestCulture.RequestCulture.UICulture.Name" value="@cultureItems[1].Value" onclick="this.form.submit();" hidden /></label>
+
+
+</form>
+

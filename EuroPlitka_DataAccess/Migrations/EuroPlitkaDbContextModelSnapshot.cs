@@ -161,6 +161,9 @@ namespace EuroPlitka_DataAccess.Migrations
                     b.Property<string>("CreatedByUserId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<bool>("Delivery")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
@@ -173,6 +176,9 @@ namespace EuroPlitka_DataAccess.Migrations
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("OrderFactura")
+                        .HasColumnType("bit");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()

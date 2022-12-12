@@ -1,0 +1,286 @@
+﻿@using EuroPlitka_Services;
+@model EuroPlitka_Model.ViewModels.ProductUserViewModel
+
+<form method="post" id="payment-form">
+    <br />
+    <div class="backgroundWhiteBorder">
+        <div class="container">
+            <div class="card">
+                <div class="card-header bg-dark text-light ml-0 row container">
+                    <div class="col-6">
+                        <i class="fa fa-shopping-cart"></i> &nbsp;
+                        Підсумки замовлень
+                    </div>
+                    <div class="col-6 text-right">
+                        <a asp-action="Index" class="btn btn-outline-info btn-sm">Повернутись в кошик</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="container container-full-height checkout-checkout mb-5">
+                        <div class="row">
+                            <div class="col-md-6 col-lg-7 col-xl-8 pe-md-0 mb-3 mb-md-0">
+                                <div class="p-3 pt-4">
+                                    <div class="row">
+                                        <div class="col-lg-6 mb-3">
+                                            <div class="row">
+                                                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                                    <span class="text-info">Одержувач замовлення</span>
+                                                </h4>
+                                                @*---------------------------FullName--------------------------------*@
+                                                <div class="mb-3">
+                                                    <label class="form-label">Імя</label>
+                                                    <input asp-for="@Model.AplicationUser.FullName" required type="text" class="form-control" />
+                                                </div>
+                                                @*---------------------------PhoneNumber--------------------------------*@
+                                                <div class="mb-3">
+                                                    <label class="form-label">Номер телефону</label>
+                                                    <input asp-for="@Model.AplicationUser.PhoneNumber" required type="text" class="form-control" />
+                                                </div>
+                                                @*---------------------------Email--------------------------------*@
+                                                <div class="mb-3">
+                                                    <label class="form-label">Електронна пошта</label>
+                                                    <input asp-for="@Model.AplicationUser.Email" required type="text" class="form-control" />
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                                <span class="text-info">Адресса отримувача замовлення</span>
+                                            </h4>
+
+                                            <div class="pay">
+                                                <div class="mb-3">
+                                                    <label for="payment_method_id" class="form-label">Варіант оплати</label>
+                                                    <input asp-for="TypeOfPayment" id="paymentPost" hidden />
+                                                    <select class="form-select " name="payment_method_id" id="payment_method_id">
+                                                        <option value="1">Готівкою в касі магазину</option>
+                                                        <option value="2">Рахунок-фактура</option>
+                                                    </select>
+
+                                                </div>
+                                            </div>
+                                          
+
+
+                                            <div class="delivery">
+                                                <div class="mb-3">
+                                                    <label for="delivery_method_id" class="form-label">Спосіб доставки</label>
+                                                    <input asp-for="TypeOfDelivery" id="deliveryPost" hidden />
+                                                    <select  class="form-select" name="delivery_method_id" id="delivery_method_id">
+                                                        <option value="1">Самовивіз</option>
+                                                        <option value="2">Доставка Київ / Київська обл.</option>
+                                                        <option value="3">someting else</option>
+                                                    </select>
+                                                </div>
+                                                @*---------------------------City--------------------------------*@
+                                                <div class="mb-3 delivery_city" style="display: none;">
+                                                    <label for="delivery_city" class="form-label">Місто</label>
+                                                    <input asp-for="@Model.AplicationUser.City" type="text" class="form-control" name="delivery_city" id="delivery_city" value="">
+                                                </div>
+                                                @*---------------------------StreetAddress--------------------------------*@
+                                                <div class="mb-3 delivery_address" style="display: none;">
+                                                    <label for="delivery_address" class="form-label">Адреса доставки</label>
+                                                    <input asp-for="@Model.AplicationUser.StreetAddress" type="text" class="form-control" name="delivery_address" id="delivery_address" value="">
+                                                </div>
+                                                @*---------------------------State--------------------------------*@
+                                                <div class="mb-3 delivery_state" style="display: none;">
+                                                    <label for="delivery_state" class="form-label">Область</label>
+                                                    <input asp-for="@Model.AplicationUser.State" type="text" class="form-control" name="delivery_state" id="delivery_state" value="">
+                                                </div>
+                                                @*---------------------------PostalCode--------------------------------*@
+                                                <div class="mb-3 delivery_code" style="display: none;">
+                                                    <label for="delivery_code" class="form-label">Поштовий індекс</label>
+                                                    <input asp-for="@Model.AplicationUser.PostalCode" type="text" class="form-control" name="delivery_code" id="delivery_code" value="">
+                                                </div>
+
+                                                <div class="mb-3 delivery_some" style="display: none;">
+                                                    <label for="delivery_some" class="form-label">Поштовий індекс</label>
+                                                    <input asp-for="@Model.AplicationUser.PostalCode" type="text" class="form-control" name="delivery_code" id="delivery_some" value="">
+                                                </div>
+                                            </div>
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <div class="col-md-6 col-lg-5 col-xl-4">
+                                <div class="checkout-cart-products p-3 pt-4">
+
+                                    <h4 class="d-flex justify-content-sm-between align-items-center mb-3">
+                                        <span class="text-info"><i class="fa fa-shopping-cart"></i> &nbsp; Ваше замовлення</span>
+                                    </h4>
+                                    <ul class="list-group mb-3">
+                                        @{
+                                            var orderTotal = 0.0;
+                                        }
+                                        <!--------------свойство товара--------------------->
+                                        @for (int i = 0; i < Model.ProductList.Count(); i++)
+                                        {
+                                            <input type="hidden" asp-for="@Model.ProductList[i].Id" />
+                                            <input type="hidden" asp-for="@Model.ProductList[i].Name" />
+                                            <input type="hidden" asp-for="@Model.ProductList[i].Price" />
+                                            <input type="hidden" asp-for="@Model.ProductList[i].TempSqFt" />
+
+                                            <li class="list-group-item d-flex justify-content-between">
+                                                <div>
+                                                    <h6 class="my-0">@Model.ProductList[i].Name</h6>
+                                                    <small class="text-muted">Кількість/м2: @Model.ProductList[i].TempSqFt</small>
+                                                </div>
+                                                <span class="text-muted">@string.Format("{0:N0} грн." ,(Model.ProductList[i].Price * Model.ProductList[i].TempSqFt))</span>
+                                            </li>
+                                            orderTotal += Model.ProductList[i].Price * Model.ProductList[i].TempSqFt;
+                                        }
+
+                                        <li class="list-group-item d-flex justify-content-between bg-light">
+                                            <small class="text-info">Заголом (Грн.)</small>
+                                            <strong class="text-info"> @string.Format("{0:N0} грн." ,@orderTotal)</strong>
+                                        </li>
+                                    </ul>
+
+
+                                </div>
+
+                            </div>
+
+
+
+
+
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-12 col-md-5 offset-md-7">
+
+                            @if (User.IsInRole(WebConstanta.AdminRole))
+                            {
+                                <button class="btn btn-success form-control" id="submit-button" onclick="validateInput()">Submit Order</button>
+
+                            }
+                            else
+                            {
+
+                                <button type="submit" class="btn btn-primary form-control btn-send" onclick="validateInput()">Підтверджую замовлення</button>
+
+                            }
+
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+
+
+
+    <script type="text/javascript">
+        function validateInput() {
+
+            var app_name = document.getElementById("AplicationUser_FullName").value;
+            var phone = document.getElementById("AplicationUser_PhoneNumber").value;
+            var app_email = document.getElementById("AplicationUser_Email").value;
+
+
+            if (app_name.toString() == '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Pleace entar Full Name!',
+
+                })
+                return false; //при выводе сообщений sweetAlert нужно возвращать из функции false, тогда данные форм не будут передаватся
+            }
+
+            if (phone == "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Pleace entar Phone Number!',
+
+                })
+                return false;
+            }
+
+
+
+            if (app_email.toString() == '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Pleace entar Email!',
+
+                })
+                return false;
+            }
+            // и эсли валидация форми пройденна успешно, то эти данные могут быть переданны из формы
+            return true;
+        }
+
+
+
+        $('body').on('change', 'select[name=\"delivery_method_id\"]', function (e) {
+            if ($('select[name=\"delivery_method_id\"] option:selected').val() == 2) {
+                $('.delivery_address, .delivery_city, .delivery_state, .delivery_code').slideDown();
+                //присвоение класса каждому полю
+                if ($('#checkout-registration .lastname').val() < 3) {
+                    $('#checkout-registration .lastname').addClass('animate-input1');
+                }
+                if ($('.delivery_city input').val().length < 1) {
+                    $('.delivery_city input').addClass('animate-input2');
+                }
+                if ($('.delivery_address input').val().length < 1) {
+                    $('.delivery_address input').addClass('animate-input3');
+                }
+                if ($('.delivery_state input').val().length < 1) {
+                    $('.delivery_state input').addClass('animate-input4');
+                }
+                if ($('.delivery_code input').val().length < 1) {
+                    $('.delivery_code input').addClass('animate-input5');
+                }
+            }
+            else if ($('select[name=\"delivery_method_id\"] option:selected').val() == 3){
+                $('.delivery_some').slideDown();
+
+            }
+            else {
+                $('.delivery_address, .delivery_city, .delivery_state, .delivery_code, .delivery_some').slideUp();
+                //удаления классов
+                $('.delivery_address input, .delivery_city, .delivery_state, .delivery_code input').removeClass('animate-input');
+                $('#checkout-registration .lastname').removeClass('animate-input');
+            }
+        });
+        //хз 
+        $('select[name=\"delivery_method_id\"]').change();
+
+
+
+
+      
+        $('.btn-send').click(function(){
+            var valueDelivery = $("#delivery_method_id").val();   //взять из поля пременную
+            $('#deliveryPost').val(valueDelivery); //вставить в поле input, где неаходится asp-for - таким образом отправить значение в модель(класс)
+            var valuePayment = $("#payment_method_id").val();
+            $('#paymentPost').val(valuePayment);
+        });
+
+
+
+    </script>
+}

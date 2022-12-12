@@ -21,7 +21,7 @@
     <div class="card bg-white rounded shadow-sm" style="border:1px solid #222">
         <div class="card-body px-3 pt-3 pb-1 row">
             <div class="col-7"><label class="float-left">@Model.Name</label></div>
-            <div class="col-5"><label class="float-right"><span class="text-info h5">@string.Format("{0:C0}",Model.Price)</span></label> </div>
+            <div class="col-5"><label class="float-right"><span class="text-info h6">@string.Format("{0:N0}",Model.Price)грн/м2</span></label> </div>
         </div>
         <img class=" img-fluid d-block mx-auto mb-4" style="width: 620px; height: 230px;" src="@string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(Model.imagebyte).ToString())" alt="Card image cap">
         <form>

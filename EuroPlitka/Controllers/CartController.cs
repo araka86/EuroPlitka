@@ -152,7 +152,6 @@ namespace EuroPlitka.Controllers
         [ActionName("Summary")]
         public async Task<IActionResult> SummaryPost(IFormCollection collection, ProductUserViewModel productUserViewModel)
         {
-
             //get id user
             var claimsIndentity = (ClaimsIdentity)User.Identity;
             var claim = claimsIndentity.FindFirst(ClaimTypes.NameIdentifier);
@@ -160,17 +159,36 @@ namespace EuroPlitka.Controllers
             {
                 CreatedByUserId = claim.Value, //содержит id текущего пользователя
                 FinalOrderTotal = productuserViewModel.ProductList.Sum(x => x.TempSqFt * x.Price), // общая сумма товвара(Linq)
-                City = "CityTest",
-                StreetAddress = "CityTestAddres",
-                State = "UA",
-                PostalCode = "0744",
                 FullName = productuserViewModel.AplicationUser.FullName,
                 Email = productuserViewModel.AplicationUser.Email,
                 PhoneNumber = productuserViewModel.AplicationUser.PhoneNumber,
                 OrderDate = DateTime.Now,
                 СountItem = productuserViewModel.ProductList.Count()
-
             };
+
+
+            if (productUserViewModel.TypeOfDelivery == "2")
+            {
+                orderHeader.City = productUserViewModel.AplicationUser.City;
+                orderHeader.StreetAddress = productUserViewModel.AplicationUser.StreetAddress;
+                orderHeader.State = productUserViewModel.AplicationUser.State;
+                orderHeader.PostalCode = productUserViewModel.AplicationUser.PostalCode;
+                orderHeader.Delivery = true;
+            }
+            else
+            {
+                orderHeader.City = string.Empty;
+                orderHeader.StreetAddress = string.Empty;
+                orderHeader.State = string.Empty;
+                orderHeader.PostalCode = string.Empty;
+            }
+            if(productUserViewModel.TypeOfPayment == "2")
+            {
+                orderHeader.OrderFactura = true;
+            }
+
+          
+         
             //add orderHeader in DB
             _orderHeaderRepository.Add(orderHeader);
             _orderHeaderRepository.Save();
@@ -190,6 +208,8 @@ namespace EuroPlitka.Controllers
             _orderDetailRepository.Save();
             return RedirectToAction(nameof(InquiryConfirmation), new { id = orderHeader.Id });
         }
+
+
 
         //View Confirm
         //if id has a valid value, then the method is approved for the situation with the placed order (in the case of the admin)
@@ -294,9 +314,9 @@ namespace EuroPlitka.Controllers
 
                 List<Basket> basketsList = new List<Basket>
                 {
-                    await _basketRepo.FirstOrDefault(x => x.ProductId == prod.Id) 
+                    await _basketRepo.FirstOrDefault(x => x.ProductId == prod.Id)
                 };
-               
+
 
 
                 Basket findProd = await _basketRepo.FirstOrDefault(x => x.CreatedByUserId == claim.Value && x.ProductId == prod.Id);
@@ -307,7 +327,7 @@ namespace EuroPlitka.Controllers
                 _basketRepo.Update(findProd);
 
             }
-          
+
 
 
 
@@ -317,6 +337,87 @@ namespace EuroPlitka.Controllers
             return RedirectToAction(nameof(Index));
 
         }
+
+        #region Test for exemple_DropdownList
+
+        public async Task<IActionResult> SummaryDropdownList()
+        {
+
+
+            AplicationUser aplicationUser;
+            // заполнения информации о пользователе в корзине
+            if (User.IsInRole(WebConstanta.AdminRole))
+            {
+                //проверка значений для сеанаса
+
+                if (HttpContext.Session.Get<int>(WebConstanta.SessionInquiryId) != 0) //if not equal to 0, it means that some request is being processed
+                {
+                    OrderHeader orderHeader = await _orderHeaderRepository.FirstOrDefault(u => u.Id == HttpContext.Session.Get<int>(WebConstanta.SessionInquiryId));
+                    //filling the cart based on the current request
+                    aplicationUser = new AplicationUser()
+                    {
+                        Email = orderHeader.Email,
+                        FullName = orderHeader.FullName,
+                        PhoneNumber = orderHeader.PhoneNumber
+                    };
+                }
+                else
+                {
+                    //admin places an order for a customer who just came to the store without using the site
+                    aplicationUser = new AplicationUser();
+                }
+
+
+            }
+            else
+            {
+                var claimsIdentity = (ClaimsIdentity)User.Identity;
+                var claim = claimsIdentity.Claims.FirstOrDefault();
+                var userId = User.FindFirstValue(ClaimTypes.Name);
+                IQueryable<AplicationUser> query = _euroPlitkaDbContext.AplicationUser.Where(u => u.Id == claim.Value);
+                aplicationUser = query.FirstOrDefault();
+            }
+
+            //access to the shopping cart(get access to the session,
+            //load a snapshot from the session and extract the list of items in the cart based on this session)
+
+            List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
+            if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstanta.SessionCart) != null &&
+               HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstanta.SessionCart).Count() > 0)
+            {
+                //session exist
+                shoppingCartList = HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstanta.SessionCart).ToList();
+            }
+            List<int> productCart = shoppingCartList.Select(x => x.ProductId).ToList();
+            productuserViewModel = new ProductUserViewModel()
+            {
+                AplicationUser = aplicationUser
+            };
+
+            //обновление данных (кол-тва)(вытаскиваем колличество)
+            foreach (var cartObj in shoppingCartList)
+            {
+                Product prodTemp = await _productRepository.FirstOrDefault(u => u.Id == cartObj.ProductId);
+                prodTemp.TempSqFt = cartObj.Sqft;
+                productuserViewModel.ProductList.Add(prodTemp);
+            }
+
+
+            return View(productuserViewModel);
+        }
+
+
+        #endregion
+
+
+
+
+
+
+
+
+
+
 
     }
 }

@@ -10623,3 +10623,8 @@ span.benefit.top {
 img.img-height-home.rounded.w-100 {
     border-radius: 1.25rem !important;
 }
+
+form.form-horizontal.lng {
+    display: flex;
+    justify-content: start;
+}

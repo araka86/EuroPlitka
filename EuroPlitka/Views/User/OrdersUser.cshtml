@@ -7,10 +7,22 @@
     var cnntt = Model.cnt1;
   
 }
+<nav aria-label="breadcrumb" role="navigation" class="bg-gray text-white">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"> <a href="/">Головна</a> </li>
+                    <li class="breadcrumb-item active" aria-current="page">Історія замовлень</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</nav>
 
 
 <div class=" bg-white p-3 ">
-
+    <h5 class="text-info">Історія замовлень користувача</h5>
 
     <ejs-grid id="Grid" dataSource="@Model.OrderHeaderList" owHeight="38" allowFiltering="true" allowSorting="true" allowPaging="true">
         <e-grid-filtersettings type="Menu"></e-grid-filtersettings>
@@ -19,12 +31,12 @@
 
             <e-grid-column field="Id" headerText="ID" isPrimaryKey="true" textAlign="Right" width="100"></e-grid-column>
 
-            <e-grid-column field="FullName" headerText="Name" textAlign="Right" width="100"></e-grid-column>
-            <e-grid-column field="countItem" headerText="Count Items" textAlign="Right" width="100"></e-grid-column>
-            <e-grid-column field="FinalOrderTotal" headerText="FinalOrderTotal" textAlign="Right" width="100"></e-grid-column>
-            <e-grid-column field="PhoneNumber" headerText="Phone Number" textAlign="Right" width="100"></e-grid-column>
+            <e-grid-column field="FullName" headerText="Імя" textAlign="Right" width="100"></e-grid-column>
+            <e-grid-column field="СountItem" headerText="Кількість позицій" textAlign="Right" width="100"></e-grid-column>
+            <e-grid-column field="FinalOrderTotal" headerText="Загальна ціна" textAlign="Right" width="100"></e-grid-column>
+            <e-grid-column field="PhoneNumber" headerText="Номер телефону" textAlign="Right" width="100"></e-grid-column>
          
-            <e-grid-column field="OrderDate" headerText="Order Date" customFormat="@(new {type="date", format="MM/dd/yyyy"})" textAlign="Right" width="100"></e-grid-column>
+            <e-grid-column field="OrderDate" headerText="Дата замовлення" customFormat="@(new {type="date", format="MM/dd/yyyy"})" textAlign="Right" width="100"></e-grid-column>
             <e-grid-column field="Id" headerText="" width="70"
                            template="<a rel'nofollow' href='DetailsOrder/${Id}' class='btn btn-primary'> <i class='fas fa-list'></i> </a>"></e-grid-column>
         </e-grid-columns>

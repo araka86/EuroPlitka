@@ -1,5 +1,17 @@
 ﻿@model EuroPlitka_Model.Category
-
+<nav aria-label="breadcrumb" role="navigation" class="bg-gray text-white">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"> <a href="/">Головна</a> </li>
+                    <li class="breadcrumb-item"><a href="javascript:history.go(-1)">Категорії</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Редагування категорії</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</nav>
 <form method="post" >
     <input asp-for="Id" hidden />
     <div class="border p-3 bg-white">
