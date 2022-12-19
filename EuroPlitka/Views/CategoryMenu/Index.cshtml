@@ -2,17 +2,20 @@
 @using EuroPlitka_Services
 <!--Filter-->
 @{
-    string[] prodType = new string[Model.ProductsCat.Count()];
 
 
-    int i = 0;
-    foreach (var obj in Model.ProductsCat)
-    {
-        prodType[i] += @obj.ProductType.Name;
-        i++;
-    }
+    //string[] prodType = new string[Model.ProductsCat.Count()];
 
-    string[] originalItemsProductTypest = WebConstanta.RemoteDuplicates(prodType);
+
+    //int i = 0;
+    //foreach (var obj in Model.ProductsCat)
+    //{
+    //    prodType[i] += @obj.ProductType.Name;
+    //    i++;
+    //}
+    var getMas = Model.ProductsCat.Select(x => x.ProductType.Name).Distinct().ToArray();
+
+ //   var originalItemsProductTypest = WebConstanta.RemoteDuplicates(getMas);
 
 
 
@@ -22,11 +25,11 @@
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 
-    var breatcrump = (Model.CategoryProduct.Name ==null) ? "Всі товари" : Model.CategoryProduct.Name;
+    var breatcrump = (Model.CategoryProduct.NameUa ==null) ? "Всі товари" : Model.CategoryProduct.NameUa;
  
 
 }
-<cache expires-sliding="@TimeSpan.FromSeconds(30)"> @*кеш работает если постоянно пережагружать страницу. Эсли ждать 30 сек то после перезагрузики будет новый кеш*@
+
 <nav aria-label="breadcrumb" role="navigation" class="bg-gray text-white">
     <div class="container">
         <div class="row justify-content-center">
@@ -63,7 +66,7 @@
             }
             else
             {
-                @foreach (var obj in originalItemsProductTypest)
+                    @foreach (var obj in getMas)
                 {
                     <button class="btn btn-outline-secondary filter-button" data-filter="@obj.Replace(' ','_')"> @obj </button>
                 }
@@ -76,7 +79,7 @@
         <br />
 
 
-
+      @*  <cache expires-sliding="@TimeSpan.FromSeconds(30)"> @*кеш работает если постоянно пережагружать страницу. Эсли ждать 30 сек то после перезагрузики будет новый кеш*@
         <form method="post" >
             <div class="row">
                 @if (@Model.AllPage)
@@ -90,7 +93,7 @@
                 }
                 else
                 {
-                    <h5>Категорія: @Model.CategoryProduct.Name</h5>
+                    <h5>Категорія: @Model.CategoryProduct.NameUa</h5>
                     @foreach (var prod in Model.ConditionProducts)
                     {
                        
@@ -99,7 +102,7 @@
                 }
             </div>
         </form>
-
+   @*     </cache>*@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 @if (isValidPage)
@@ -120,7 +123,7 @@
         </div>
     </div>
 </section>
-</cache>
+
 @section Scripts
     {
     <!--for filter main menu-->

@@ -11,7 +11,8 @@ namespace EuroPlitka_DataAccess.Repository.IRepository
         //void Update(Product obj);
 
        Task<IEnumerable<SelectListItem>> GetAllDropdownList(string obj);
-      Task<IEnumerable<Product>> GetProductCategory(
+       Task<IEnumerable<SelectListItem>> GetAllDropdownListEng(string obj);
+        Task<IEnumerable<Product>> GetProductCategory(
             Expression<Func<Product, bool>>? filter = null,
             string? includeProperties = null,
             bool isTracking = true);

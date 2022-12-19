@@ -1,0 +1,107 @@
+﻿@model IEnumerable<EuroPlitka_Model.Pagefille>
+@using EuroPlitka_Model;
+@using EuroPlitka_Services;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+
+<nav aria-label="breadcrumb" role="navigation" class="bg-gray text-white">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"> <a href="/">Головна</a> </li>
+                    <li class="breadcrumb-item active" aria-current="page">Керування Pagefille</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+
+
+
+<section class="flush-with-above">
+    <div class="container">
+
+        <div class="row pt-12">
+            <div class="col-6">
+                <h2 class="text-primary">Список Pagefille</h2>
+            </div>
+            <div class="col-4 text-right">
+                <a asp-controller="Localization" asp-action="UpsertPageFiele" class="btn btn-primary"><i class="fa-solid fa-circle-plus"></i> &nbsp;Add new</a>
+            </div>
+            <div class="col" mt-1>
+                <a asp-controller="Localization" asp-action="Index" class="btn btn-success  w-100"><i class="fa-solid fa-rotate-left"></i></a>
+            </div>
+        </div>
+        @if (Model != null)
+        {
+            <form method="post">
+                <table class="table table-bordered table-striped table-hover" style="width:100%">
+                    <thead class="thead-dark " align="left">
+                        <tr>
+                            <th colspan="2">Назва</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+
+                        <div class="row">
+                            <div class="col">
+                                <table class="table table-hover align-items-center table-borderless">
+                                    <tbody>
+                                        @foreach (var itemVew in Model)
+                                        {
+                                            <partial name="_ViewFileTranslate" model="itemVew" />
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </tbody>
+                </table>
+            </form>
+        }
+        else
+        {
+            <p> View is No exist!!</p>
+        }
+
+
+      
+    </div>
+
+</section>
+
+
+
+
+
+
+
+
+@section Scripts
+    {
+    <!--for filter main menu-->
+    <script>
+        $(document).ready(function () {
+
+            $(".filter-button").click(function () {
+
+                var value = $(this).attr('data-filter');
+                if (value == "all") {
+                    $('.filter').show('1000');
+                }
+                else {
+                    $(".filter").not('.' + value).hide('3000');
+                    $(".filter").filter('.' + value).show('3000');
+                }
+            });
+        });
+
+
+    </script>
+}

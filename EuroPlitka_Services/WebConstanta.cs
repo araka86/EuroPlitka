@@ -15,6 +15,8 @@ namespace EuroPlitka_Services
 
         public const string CategoryName = "Category";
         public const string ProductTypeName = "ProductTypeName";
+        public const string ViewName = "VIew";
+        public const string Pagefille = "Pagefille";
 
 
         //For Path to image
@@ -25,6 +27,10 @@ namespace EuroPlitka_Services
         //ключ для храниния значения ID запроса текущего сеанса
         public const string SessionInquiryId = "InquirySession";
 
+
+        public const string connectToDb = "Server=DESKTOP-ESCI621; Database=EuroPlitka2; Trusted_Connection=True; MultipleActiveResultSets=True; TrustServerCertificate=True";
+
+
         //remove duplicate for category product type
         public static T[] RemoteDuplicates<T>(T[] array)
         {
@@ -33,8 +39,8 @@ namespace EuroPlitka_Services
             set.CopyTo(result);
             return result;
         }
-
-
+     
+       
 
     }
 }

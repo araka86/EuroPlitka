@@ -58,6 +58,7 @@ namespace EuroPlitka.Controllers
             {
                 Product = new Product(),
                 CategorySelectList = await _prodRepo.GetAllDropdownList(WebConstanta.CategoryName),
+                CategorySelectListEng = await _prodRepo.GetAllDropdownListEng(WebConstanta.CategoryName),
                 ProductTypeSelectList = await _prodRepo.GetAllDropdownList(WebConstanta.ProductTypeName)
             };
             if (id == null) //Check object

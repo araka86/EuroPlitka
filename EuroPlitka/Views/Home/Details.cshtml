@@ -9,7 +9,7 @@
                         <a href="/">Головна</a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a asp-route-id="@Model.Product.CategoryId" asp-controller="CategoryMenu" asp-action="Index">@Model.Product.Category.Name</a>
+                        <a asp-route-id="@Model.Product.CategoryId" asp-controller="CategoryMenu" asp-action="Index">@Model.Product.Category.NameUa</a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">@Model.Product.Name</li>
                 </ol>
@@ -41,7 +41,7 @@
                                 <div class="row pl-3">
 
                                     <div class="col-12">
-                                        <span class="badge p-3 border text-dark" style="background-color:lavenderblush">@Model.Product.Category.Name</span>
+                                        <span class="badge p-3 border text-dark" style="background-color:lavenderblush">@Model.Product.Category.NameUa</span>
                                         <span class="badge p-3 border text-dark" style="background-color:azure">@Model.Product.ProductType.Name</span>
                                         <h3 class="text-success"></h3>
                                         <p class="text-secondary">@Html.Raw(Model.Product.Description)</p>

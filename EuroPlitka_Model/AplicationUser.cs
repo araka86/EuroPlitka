@@ -20,9 +20,9 @@ namespace EuroPlitka_Model
 
         public string? Description {  get; set; } = string.Empty;
 
-        [NotMapped]
+       
         public string? State { get; set; } = string.Empty;
-        [NotMapped] 
+    
         public string? PostalCode { get; set; } = string.Empty;
 
         [NotMapped]

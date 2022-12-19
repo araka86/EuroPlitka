@@ -70,6 +70,9 @@ namespace EuroPlitka.Controllers
             user.EditUserVM.PhoneNumber = user.aplicationUser.PhoneNumber;
             user.EditUserVM.City = user.aplicationUser.City;
             user.EditUserVM.StreetAddress = user.aplicationUser.StreetAddress;
+            user.EditUserVM.State = user.aplicationUser.State;
+            user.EditUserVM.ZipCode = user.aplicationUser.PostalCode;
+            user.EditUserVM.Description = user.aplicationUser.Description;
             user.EditUserVM.imgUserAva = user.aplicationUser.imgUserAva;
 
             return View(user);
@@ -99,6 +102,8 @@ namespace EuroPlitka.Controllers
             usr.StreetAddress = editVM.EditUserVM.StreetAddress;
             usr.Description = editVM.EditUserVM.Description;
             usr.PhoneNumber = editVM.EditUserVM.PhoneNumber;
+            usr.State = editVM.EditUserVM.State;
+            usr.PostalCode = editVM.EditUserVM.ZipCode;
             await _userManager.UpdateAsync(usr);
             TempData[WebConstanta.Success] = "User Update successfully";
             return RedirectToAction("Detail", "User", new { usr.Id });
@@ -118,6 +123,8 @@ namespace EuroPlitka.Controllers
                 FullName = user.FullName,
                 StreetAddress = user.StreetAddress,
                 City = user.City,
+                State = user.State,
+                PostalCode = user.PostalCode,
                 Description = user.Description,
                 Email = user.Email,
                 imgUserAva = user.imgUserAva
@@ -141,6 +148,9 @@ namespace EuroPlitka.Controllers
                 FullName = user.FullName,
                 StreetAddress = user.StreetAddress,
                 City = user.City,
+                State = user.State,
+                PostalCode = user.PostalCode,
+                PhoneNumber= user.PhoneNumber,
                 Description = user.Description,
                 Email = user.Email,
                 imgUserAva = user.imgUserAva
@@ -162,6 +172,8 @@ namespace EuroPlitka.Controllers
             {
                 FullName = findUser.Result.FullName,
                 City = findUser.Result.City,
+                State = findUser.Result.State,
+                PostalCode = findUser.Result.PostalCode,
                 Description = findUser.Result.Description,
                 imgUserAva = findUser.Result.imgUserAva,
                 StreetAddress = findUser.Result.StreetAddress

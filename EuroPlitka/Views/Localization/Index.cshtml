@@ -1,0 +1,118 @@
+﻿@model EuroPlitka_Model.ViewModels.LocalizationVM
+@using EuroPlitka_Model;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    var loc = Thread.CurrentThread.CurrentUICulture;
+
+}
+<nav aria-label="breadcrumb" role="navigation" class="bg-gray text-white">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"> <a href="/">Головна</a> </li>
+                    <li class="breadcrumb-item active" aria-current="page">Керування локалізацією</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</nav>
+<div class="container p-md-3 table-responsive-md bg-white">
+    <div class="row pt-md-4">
+        <div class="col-md-6">
+            <h2 class="text-primary">@Localizer["ListofProd"]</h2>
+        </div>
+        <div class="col-md-6 text-right">
+            <a asp-controller="Localization" asp-action="UpsertResources" class="btn btn-primary"><i class="fa-solid fa-circle-plus"></i> &nbsp;Create new Translate</a>
+            <a asp-controller="Localization" asp-action="IndexView" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i> &nbsp;Manage View</a>
+            <a asp-controller="Localization" asp-action="IndexPageFile" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i> &nbsp;Manage File</a>
+
+        </div>
+    </div>
+</div>
+
+
+
+<form method="post">
+    <div class="container p-4 my-3">
+        <h6 class="text-info">@Localizer["FiltrProd"]</h6>
+        <div class="border bg-white p-3" style="border-radius:15px;">
+            <div class="row">
+                <div class="col-12">
+                    <div class="row" style="padding-top:10px;">
+                        @*<div class="col-md-4 col-sm-12">
+                            <input asp-for="NameProduct" class="form-control" placeholder="@Localizer["FiltrProdName"]" value="" />
+                        </div>*@
+                        <div class="col-md-4 col-sm-6  ">
+                            <select asp-for="ViewListFilter" asp-items="@Model.ViewList" class="form-select">
+                                <option>--Select View--</option>
+                            </select>
+                            <span asp-validation-for="ViewList" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4  col-sm-6">
+                            <select asp-for="FileListFilter" asp-items="@Model.FileList" class="form-select">
+                                <option>--Select File--</option>  @* disabled - не разрешает установить выборку по умолчанию (--Select Category--)  *@
+                            </select>
+                            <span asp-validation-for="FileList" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4  col-sm-6">
+                            UA:   @Html.RadioButton("lang","UA",true)
+                            ENG:  @Html.RadioButton("lang","ENG")
+                         </div>
+
+
+
+
+
+
+
+
+                  
+
+                      
+
+
+
+                    </div>
+                    <div class="row pt-1">
+                        <div class="col-4  ">
+                        </div>
+                        <div class="col-4  ">
+                            <button type="submit" asp-route-reset="false" class="h-100 btn btn-info form-control">
+                                <i class="fas fa-search"></i>@Localizer["FiltrProdSearch"]
+                            </button>
+                        </div>
+                        <div class="col-4">
+                            <input type="submit" class="btn btn-danger btn_reset" asp-route-reset="true" value="@Localizer["FiltrProdDft"]" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<hr />
+
+
+<div class=" bg-white p-3 ">
+    <ejs-grid id="Grid" dataSource="@Model.resources" owHeight="38" allowFiltering="true" allowSorting="true" allowPaging="true">
+        <e-grid-filtersettings type="Menu"></e-grid-filtersettings>
+        <e-grid-pagesettings pageSize="10"></e-grid-pagesettings> <!-- кол-тво елементов на странице -->
+        <e-grid-columns>
+
+            <e-grid-column field="Culture.Name" headerText="lang" textAlign="Left" width="70"></e-grid-column>
+            <e-grid-column field="Param" headerText="Param" textAlign="Left" width="100"></e-grid-column>
+            <e-grid-column field="Value" headerText="Tranclate" textAlign="Left" width="200"></e-grid-column>
+            <e-grid-column field="Description" headerText="Description" textAlign="Left" width="150"></e-grid-column>
+            <e-grid-column field="View.Name" headerText="View" textAlign="Left" width="100"></e-grid-column>
+            <e-grid-column field="Pagefille.Filename" headerText="Fille" textAlign="Left" width="100"></e-grid-column>
+            <e-grid-column width="150" textAlign="Right"
+                           template=" <a rel'nofollow' href='Localization/UpsertResources/${Id}' class='btn btn-primary mr-2'> <i class='fa-solid fa-pen-to-square'></i> </a>
+                       <a rel'nofollow' href='Localization/DeleteResources/${Id}' class='btn btn-primary mr-2'> <i class='fa-solid fa-trash-can'></i> </a>">
+            </e-grid-column>
+
+        </e-grid-columns>
+    </ejs-grid>
+</div>

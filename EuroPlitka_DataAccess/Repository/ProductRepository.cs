@@ -17,6 +17,8 @@ namespace EuroPlitka_DataAccess.Repository
             _db = db;
         }
 
+
+
         public  async Task<IEnumerable<SelectListItem>> GetAllDropdownList(string obj)
         {
             //DropDownList
@@ -24,7 +26,7 @@ namespace EuroPlitka_DataAccess.Repository
             {
                 return  _db.Categorys.Select(u => new SelectListItem
                 {
-                    Text = u.Name,
+                    Text = u.NameUa,
                     Value = u.Id.ToString()
                 });
             }
@@ -40,6 +42,48 @@ namespace EuroPlitka_DataAccess.Repository
 
             return null;
         }
+
+
+
+
+        public async Task<IEnumerable<SelectListItem>> GetAllDropdownListEng(string obj)
+        {
+            //DropDownList
+            if (obj == WebConstanta.CategoryName)
+            {
+                return _db.Categorys.Select(u => new SelectListItem
+                {
+                    Text = u.NameEng,
+                    Value = u.Id.ToString()
+                });
+            }
+            if (obj == WebConstanta.ProductTypeName)
+            {
+                return _db.ProductTypes.Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString()
+                });
+            }
+
+
+            return null;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         public async Task<IEnumerable<Product>> GetProductCategory(Expression<Func<Product, bool>>? filter = null, string? includeProperties = null, bool isTracking = true)
         {

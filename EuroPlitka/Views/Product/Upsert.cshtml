@@ -1,14 +1,17 @@
 ﻿@model EuroPlitka_Model.ViewModels.ProdoctVM
 @using EuroPlitka_Services
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedResource> SharedLocalizer
 
 @{
-    var title = "Створення продукту";
+    var title = @Localizer["TitleCreate"].Value.ToString();
 }
 
 <form id="form" method="post"  enctype="multipart/form-data">
     @if (Model.Product.Id != 0)
     {
-        title = "Редагування продукту";
+        title = @Localizer["TitleRedact"].Value.ToString();
         <input asp-for="Product.Id" hidden />
     }
     <nav aria-label="breadcrumb" role="navigation" class="bg-gray text-white">
@@ -16,8 +19,8 @@
             <div class="row justify-content-center">
                 <div class="col">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"> <a href="/">Головна</a> </li>
-                        <li class="breadcrumb-item"><a href="javascript:history.go(-1)">Керування продукту</a></li>
+                        <li class="breadcrumb-item"> <a href="/">@SharedLocalizer["brcMain"]</a> </li>
+                        <li class="breadcrumb-item"><a href="javascript:history.go(-1)">@Localizer["BrcMngProd"]</a></li>
                         <li class="breadcrumb-item active" aria-current="page">@title</li>
                     </ol>
                 </div>
@@ -32,37 +35,64 @@
             <div class="col-md-8">
                 @*---------> Name <---------*@
                 <div class="form-group row py-2">
-                    <div class="col-md-4"><label>Назва</label></div>
+                    <div class="col-md-4"><label>@Localizer["NameProd"]</label></div>
                     <div class="col-md-8">
                         <input asp-for="Product.Name" class="form-control" />
                         <span asp-validation-for="Product.Name" class="text-danger"></span> 
                     </div>
                 </div>
+
+
+
                 @*---------> CategoryId (DropDouwn) <---------*@
-                <div class="form-group row py-2">
-                    <div class="col-md-4">
-                        <label>Категорія</label>
+
+                @if (Thread.CurrentThread.CurrentUICulture.ToString() == "uk")
+                {
+                    <div class="form-group row py-2">
+                        <div class="col-md-4">
+                            <label>@Localizer["Category"]</label>
+                        </div>
+                        <div class="col-md-8">
+                            <select asp-for="Product.CategoryId" asp-items="@Model.CategorySelectList" class="form-select">
+                                <option disabled selected>@Localizer["CatListUa"]</option>
+                            </select>
+                            <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
+                        </div>
                     </div>
-                    <div class="col-md-8">
-                        <select asp-for="Product.CategoryId" asp-items="@Model.CategorySelectList" class="form-select">
-                            <option disabled selected>--Select Category--</option>
-                        </select>
-                        <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
+                }
+                else
+                {
+                    <div class="form-group row py-2">
+                        <div class="col-md-4">
+                            <label>@Localizer["Category"]</label>
+                        </div>
+                        <div class="col-md-8">
+                            <select asp-for="Product.CategoryId" asp-items="@Model.CategorySelectListEng" class="form-select">
+                                <option disabled selected>@Localizer["CatListEng"]</option>
+                            </select>
+                            <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
+                        </div>
                     </div>
-                </div>
+                }
+
+              
+
+
+
+
                 @*---------> ProductTypeId (DropDouwn) <---------*@
                 <div class="form-group row py-2">
-                    <div class="col-md-4"> <label>Тип продукту</label></div>
+                    <div class="col-md-4"> <label>@Localizer["TypeProd"]</label></div>
                     <div class="col-md-8">
                         <select asp-for="Product.ProductTypeId" asp-items="@Model.ProductTypeSelectList" class="form-select">
-                            <option disabled selected>--Select AplicationType--</option>  @* disabled - не разрешает установить выборку по умолчанию (--Select Category--)  *@
+                            <option disabled selected>@Localizer["TypeProdList"]</option>  @* disabled - не разрешает установить выборку по умолчанию (--Select Category--)  *@
                         </select>
                         <span asp-validation-for="Product.ProductTypeId" class="text-danger"></span>
                     </div>
                 </div>
                 @*---------> Description <---------*@
                 <div class="form-group row py-2">
-                    <div class="col-md-4"> <label>Опис</label></div>
+                    <div class="col-md-4"> <label>@Localizer["Desc"]</label></div>
                     <div class="col-md-8">
                         <textarea asp-for="Product.Description" class="form-control summernote"></textarea>
                         <span asp-validation-for="Product.Description" class="text-danger"></span>
@@ -71,15 +101,23 @@
                 @*---------> Image <---------*@
 
                 <div class="form-group row py-2">
-                    <div class="col-md-4">Зображення</div>
+                    <div class="col-md-4">@Localizer["Img"]</div>
                     <div class="col-md-8">
-                        <input type="file"  name="files" id="uploadBox" multiple class="form-control"  />
+                        <label class="btn btn-light">
+                            @Localizer["UploadFilePrpd"]
+                        <input type="file" style="visibility:hidden;" name="files" id="uploadBox" multiple class="form-control" />
+                        </label>
                     </div>
                 </div>
+
+
+
+
+
                 @*---------> Price <---------*@
 
                 <div class="form-group row py-2">
-                    <div class="col-md-4"> <label>Ціна</label></div>
+                    <div class="col-md-4"> <label>@Localizer["Price"]</label></div>
                     <div class="col-md-8">
                         <input asp-for="Product.Price" class="form-control" />
                         <span asp-validation-for="Product.Price" class="text-danger"></span> @*строка валидации*@
@@ -88,7 +126,7 @@
                 @*---------> ShortDec <---------*@
 
                 <div class="form-group row py-2">
-                    <div class="col-md-4"><label>Короткий опис</label></div>
+                    <div class="col-md-4"><label>@Localizer["SDesc"]</label></div>
                     <div class="col-md-8">
                         <input asp-for="Product.shortDesc" class="form-control" />
                         <span asp-validation-for="Product.shortDesc" class="text-danger"></span> @*строка валидации*@
@@ -103,11 +141,11 @@
                         <div class="col">
                             @if (Model.Product.Id != 0)//update
                             {
-                                <input type="submit" class="btn btn-info w-100 " value="Оновити" />
+                                <input type="submit" class="btn btn-info w-100 " value="@Localizer["ProdUpdate"]" />
                             }
                             else //create  validateInput() -  javascript check query
                             {
-                                <input type="submit" onclick="return validateInput()" class="btn btn-primary w-100 " value="Створити" />
+                                <input type="submit" onclick="return validateInput()" class="btn btn-primary w-100 " value="@Localizer["ProdCreate"]" />
                             }
                         </div>
                         <div class="col">

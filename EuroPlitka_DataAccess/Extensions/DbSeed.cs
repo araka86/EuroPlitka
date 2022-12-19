@@ -3,13 +3,7 @@ using EuroPlitka_Model;
 using EuroPlitka_Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EuroPlitka_DataAccess.Extensions
 {
@@ -69,11 +63,11 @@ namespace EuroPlitka_DataAccess.Extensions
                 {
                     context.Categorys.AddRange(new List<Category>()
                     {
-                        new Category{Name ="Для ванной", DisplayOrder= 1},
-                        new Category{Name ="Для підлоги", DisplayOrder= 2},
-                        new Category{Name ="Для стін", DisplayOrder= 3},
-                        new Category{Name ="Для кухні", DisplayOrder= 4},
-                        new Category{Name ="Вулична", DisplayOrder= 5}
+                        new Category{NameUa ="Для ванної", NameEng= "For bathroom"},
+                        new Category{NameUa ="Для підлоги", NameEng= "For the floor"},
+                        new Category{NameUa ="Для стін", NameEng= "For walls"},
+                        new Category{NameUa ="Для кухні", NameEng= "For the kitchen"},
+                        new Category{NameUa ="Вулична", NameEng= "street"}
                     
                      
                     });

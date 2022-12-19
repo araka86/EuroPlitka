@@ -1,11 +1,16 @@
 ﻿@model IEnumerable<EuroPlitka_Model.Category>
 
-
-
 <div class="dropdown-menu">
     @foreach (var cat in Model)
     {
-        <a class="dropdown-item" asp-route-id="@cat.Id" asp-controller="CategoryMenu" asp-action="Index">@cat.Name</a>
+        @if (Thread.CurrentThread.CurrentUICulture.ToString()=="uk")
+        {
+            <a class="dropdown-item" asp-route-id="@cat.Id" asp-controller="CategoryMenu" asp-action="Index">@cat.NameUa</a>
+        }
+        else
+        {
+            <a class="dropdown-item" asp-route-id="@cat.Id" asp-controller="CategoryMenu" asp-action="Index">@cat.NameEng</a>
+        }      
         
     }
     <a class="dropdown-item text-cyan" asp-area="" asp-controller="CategoryMenu" asp-action="Index" asp-route-allResultPage="true" >Всі товари </a>

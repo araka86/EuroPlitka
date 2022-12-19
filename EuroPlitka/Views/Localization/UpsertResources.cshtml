@@ -1,0 +1,150 @@
+﻿@model EuroPlitka_Model.ViewModels.LocalizationVM
+@using EuroPlitka_Services
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+    var title = "Create";
+}
+<nav aria-label="breadcrumb" role="navigation" class="bg-gray text-white">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"> <a href="/">Головна</a> </li>
+                    <li class="breadcrumb-item"><a href="javascript:history.go(-1)">Керування Pagefille</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Створення Pagefille</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</nav>
+<form method="post">
+    @if (Model.resource.Id != 0)
+    {
+        title = "Update";
+        <input asp-for="resource.Id" />
+    }
+    <div class="border p-3 bg-white">
+        <div class=form-group p-3>
+            <h2 class="text-info pl-3">@title</h2>
+        </div>
+        <div class="row">
+            <div class="col-12">
+
+
+                <div class="row ">
+
+                    <div class="col-md-3 mb-2">
+                        <input asp-for="resource.Param" class="form-control" placeholder="word" />
+                        <span asp-validation-for="resource.Param" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <input asp-for="resource.Value" class="form-control" placeholder="lang" />
+                        <span asp-validation-for="resource.Value" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <input asp-for="resource.Description" class="form-control" placeholder="Description" />
+                        <span asp-validation-for="resource.Description" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="row">
+                    @*--------->  (DropDouwnView) <---------*@
+                    <div class="col-md-5 mb-2">
+                        <select asp-for="resource.EuroplitkaviewId" asp-items="@Model.ViewList" class="form-select">
+                            <option disabled selected>@Localizer["CatList"]</option>
+                        </select>
+                        <span asp-validation-for="resource.EuroplitkaviewId" class="text-danger"></span>
+                    </div>
+
+                    @*--------->  (DropDouwnFile) <---------*@
+                    <div class="col-md-5 mb-2 ">
+                        <select asp-for="resource.PagefilleId" asp-items="@Model.FileList" class="form-select">
+                            <option disabled selected>@Localizer["CatList"]</option>
+                        </select>
+                        <span asp-validation-for="resource.PagefilleId" class="text-danger"></span>
+                    </div>
+
+
+
+
+
+                </div>
+
+
+
+                @if (Model.resource.Culture.Name != null)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input"
+                               type="radio"
+                               id="flexRadioDefault1"
+                               name="flexRadioDefault"
+                               value="uk"
+                        @(Model.resource.Culture.Name.Contains("uk") ? "checked=\"checked\"" : "") />
+
+                        <label class="form-check-label" for="flexRadioDefault1" value="@Model.resource.Culture.Name">
+                            UA
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input"
+                               type="radio"
+                               id="flexRadioDefault2"
+                               name="flexRadioDefault"
+                               value="en"
+                        @(Model.resource.Culture.Name.Contains("en") ? "checked=\"checked\"" : "") />
+                        <label class="form-check-label" for="flexRadioDefault2" value="@Model.resource.Culture.Name">
+                            ENG
+                        </label>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-2  ">
+                        UA:   @Html.RadioButton("flexRadioDefault","uk", true)
+                        ENG:  @Html.RadioButton("flexRadioDefault","en")
+                    </div>
+                }
+
+
+
+
+
+
+
+
+
+
+
+            </div>
+            <div class="form-group row py-2">
+                <div class="col-8 offset-4 row ">
+                    @if (title == "Create")
+                    {
+                        <div class="col" mt-1><input type="submit" class="btn btn-info w-100 " value="Створити" /></div>
+                    }
+                    else
+                    {
+                        <div class="col" mt-1><input type="submit" class="btn btn-info w-100 " value="Оновити" /></div>
+                    }
+
+                    <div class="col" mt-1>
+                        <a asp-controller="Localization" asp-action="Index" class="btn btn-success  w-100"><i class="fa-solid fa-rotate-left"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</form>
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
+

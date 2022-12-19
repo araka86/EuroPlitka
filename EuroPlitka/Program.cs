@@ -1,16 +1,28 @@
 using EuroPlitka;
+using EuroPlitka_DataAccess;
 using EuroPlitka_DataAccess.Data;
 using EuroPlitka_DataAccess.Extensions;
 using EuroPlitka_DataAccess.Repository;
 using EuroPlitka_DataAccess.Repository.IRepository;
 using EuroPlitka_DataAccess.Repository.IReposotory;
 using EuroPlitka_Model;
+using EuroPlitka_Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+//connection to Db
+builder.Services.AddDbContext<EuroPlitkaDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddDataAnnotationsLocalization().AddViewLocalization();
@@ -21,6 +33,12 @@ builder.Services.AddControllersWithViews()
                     options.DataAnnotationLocalizerProvider = (type, factory) =>
                         factory.Create(typeof(SharedResource));
                 }).AddViewLocalization();
+
+
+
+builder.Services.AddTransient<IStringLocalizer, EFStringLocalizer>();
+builder.Services.AddSingleton<IStringLocalizerFactory>(new EFStringLocalizerFactory(WebConstanta.connectToDb));
+         
 
 
 builder.Services.Configure<RequestLocalizationOptions>(options =>
@@ -38,11 +56,7 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 });
 
 
-//connection to Db
-builder.Services.AddDbContext<EuroPlitkaDbContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
+
 
 builder.Services.AddScoped<IDbSeed, DbSeed>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
@@ -53,6 +67,10 @@ builder.Services.AddScoped<IOrderHeaderRepository, OrderHeaderRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<INewsRepositoriy, NewsRepositoriy>();
 builder.Services.AddScoped<IBasketRepo, BasketRepo>();
+builder.Services.AddScoped<IResourcesRepo, ResourcesRepo>();
+//depend loc
+builder.Services.AddScoped<IPageFileRepo, PageFileRepo>();
+builder.Services.AddScoped<IViewRepo, ViewRepo>();
 
 //builder.Services.AddTransient<AplicationUserRepo>();
 

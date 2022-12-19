@@ -58,6 +58,10 @@ namespace EuroPlitka.Controllers
                         await _signInManager.SignInAsync(user, isPersistent: false);
                     }
                 }
+                else
+                {
+                    TempData[WebConstanta.Error] = "User Exist in system!!!!";
+                }
             }
             return RedirectToAction("Index", "Home");
         }

@@ -13,6 +13,7 @@ namespace EuroPlitka_Model.ViewModels
 
     
         public IEnumerable<SelectListItem>? CategorySelectList { get; set; }
+        public IEnumerable<SelectListItem>? CategorySelectListEng { get; set; }
         public IEnumerable<SelectListItem>? ProductTypeSelectList { get; set; }
     }
 }

@@ -1,11 +1,6 @@
 ﻿using EuroPlitka_Model;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EuroPlitka_DataAccess.Data
 {
@@ -26,6 +21,12 @@ namespace EuroPlitka_DataAccess.Data
         public DbSet<Basket> Baskets { get; set; }
 
 
+        public DbSet<Culture> Cultures { get; set; }
+        public DbSet<Resource> Resources { get; set; }
+    
+        public DbSet<Europlitkaview> Views { get; set; }
+
+        public DbSet<Pagefille> Pagefilles { get; set; }
 
 
     }
