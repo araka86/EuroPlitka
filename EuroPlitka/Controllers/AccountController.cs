@@ -78,6 +78,7 @@ namespace EuroPlitka.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(Input.Email);
+              
                 if (user != null)
                 {
                     var result = await _signInManager.PasswordSignInAsync(user.UserName, Input.Password, Input.RememberMe, false);
@@ -89,7 +90,7 @@ namespace EuroPlitka.Controllers
                         }
                         else
                         {
-
+                           
                             var getbasketUser = _basketRepo.GetAll(x => x.CreatedByUserId == user.Id).Result;
 
                             List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();

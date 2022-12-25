@@ -5,52 +5,31 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using EuroPlitka_Model.ViewModels;
 using EuroPlitka_DataAccess.Repository.IRepository;
-using EuroPlitka_DataAccess.Data;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Localization;
-using System.Text.RegularExpressions;
 
 namespace EuroPlitka.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly UserManager<AplicationUser> _userManager;
+      
         private readonly IProductRepository _productRepository;
         private readonly INewsRepositoriy _newsRepositoriy;
-        private readonly EuroPlitkaDbContext _euroPlitkaDbContext;
         private readonly IBasketRepo _basketRepo;
-
-
-        private readonly IStringLocalizer<HomeController> _localizer;
-        private readonly IStringLocalizer<SharedResource> _sharedLocalizer;
+     
 
 
         public HomeController(IProductRepository productRepository,
             INewsRepositoriy newsRepositoriy,
-            EuroPlitkaDbContext euroPlitkaDbContext,
-            IBasketRepo basketRepo,
-            UserManager<AplicationUser> userManager,
-            IStringLocalizer<HomeController> localizer,
-                   IStringLocalizer<SharedResource> sharedLocalizer)
+            IBasketRepo basketRepo)
         {
-
             _productRepository = productRepository;
             _newsRepositoriy = newsRepositoriy;
-            _euroPlitkaDbContext = euroPlitkaDbContext;
-            _basketRepo = basketRepo;
-            _userManager = userManager;
-            _localizer = localizer;
-            _sharedLocalizer = sharedLocalizer;
+            _basketRepo = basketRepo;         
         }
 
-        public string Test()
-        {
-            // получаем ресурс Message
-            string message = _sharedLocalizer["Message"];
-            return message;
-        }
+      
 
         [HttpPost]
         public IActionResult SetLanguage(string culture, string returnUrl)
@@ -84,16 +63,13 @@ namespace EuroPlitka.Controllers
 
 
 
-
-            var prod = await _productRepository.GetAll(includeProperties: "Category,ProductType");
-
-
-
             var productNews = new NewsProducstHomeVM()
             {
                 News = await _newsRepositoriy.GetAll(x => x.IsMainMenu == true, orderBy: y => y.OrderByDescending(c => c.DateTime)),
-                Products = prod.Take(4)
+                Products =  _productRepository.GetAllProduct().GetAwaiter().GetResult().Take(4)
             };
+
+            var news = await _newsRepositoriy.GetAll(x => x.IsMainMenu == true, orderBy: y => y.OrderByDescending(c => c.DateTime));
 
             await _newsRepositoriy.ChkMarkItem(productNews.News);
 
@@ -101,13 +77,18 @@ namespace EuroPlitka.Controllers
 
 
 
-            var claimsIndentity = (ClaimsIdentity)User.Identity;
-            var claim = claimsIndentity.FindFirst(ClaimTypes.NameIdentifier);
 
-            if (claim != null)
+
+            //  var claimsIndentity = (ClaimsIdentity)User.Identity;
+            //   var claim = claimsIndentity.FindFirst(ClaimTypes.NameIdentifier);
+              var usr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var nameUser = User.Identity.Name;
+
+            if (usr != null)
             {
 
-                var getbasketUser = _basketRepo.GetAll(x => x.CreatedByUserId == claim.Value).Result;
+                var getbasketUser = _basketRepo.GetAll(x => x.CreatedByUserId == usr).Result;
                 if (getbasketUser != null && getbasketUser.Any())
                 {
                     List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
@@ -126,14 +107,13 @@ namespace EuroPlitka.Controllers
                     }
                 }
 
-
-
             }
 
 
 
 
-            return View(productNews);
+            return this.View(productNews);
+          //  return this.View(news);
         }
 
         public async Task<IActionResult> Details(int id)
@@ -152,12 +132,21 @@ namespace EuroPlitka.Controllers
                 ExistInCart = false
             };
 
+            if(DetailsVM.Product == null)
+            {
+                TempData[WebConstanta.Error] = "Prodoct  not exist!!";
+                return RedirectToAction("Index");
+            }
+              
+
+
             //check item session
             foreach (var item in shoppingCartList)
             {
                 if (item.ProductId == id)
                     DetailsVM.ExistInCart = true;
             }
+
             return View(DetailsVM);
         }
 
@@ -279,5 +268,7 @@ namespace EuroPlitka.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+      
     }
 }

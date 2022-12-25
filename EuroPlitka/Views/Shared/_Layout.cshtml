@@ -146,28 +146,28 @@
                                             @if (User.IsInRole(WebConstanta.AdminRole))
                                             {
 
-                                                <a class="dropdown-item" asp-controller="User" asp-action="Index"><span class="h6 mb-0">Manage Users</span> </a>
-                                                <a class="dropdown-item" asp-area="" asp-controller="Category" asp-action="Index"> Manage Category</a>
-                                                <a class="dropdown-item" asp-controller="ProductType" asp-action="Index">Manage ProductType</a>
-                                                <a class="dropdown-item" asp-controller="Product" asp-action="Index">Manage Product</a>
-                                                <a class="dropdown-item" asp-controller="Order" asp-action="Index">Manage History Order</a>
-                                                <a class="dropdown-item" asp-controller="Roles" asp-action="Index">Manage Roles</a>
-                                                <a class="dropdown-item" asp-controller="News" asp-action="Index">Manage News</a>
-                                                <a class="dropdown-item" asp-controller="Localization" asp-action="Index">Manage Localization</a>
+                                                <a class="dropdown-item" asp-controller="User" asp-action="Index"><span class="h6 mb-0">Керування користувачами</span> </a>
+                                                <a class="dropdown-item" asp-area="" asp-controller="Category" asp-action="Index"> Керування категоріями</a>
+                                                <a class="dropdown-item" asp-controller="ProductType" asp-action="Index">Керування Типом продукту</a>
+                                                <a class="dropdown-item" asp-controller="Product" asp-action="Index">Керування продуктом</a>
+                                                <a class="dropdown-item" asp-controller="Order" asp-action="Index">Історія замовлень</a>
+                                                <a class="dropdown-item" asp-controller="Roles" asp-action="Index">Керування ролями</a>
+                                                <a class="dropdown-item" asp-controller="News" asp-action="Index">Керування новинами</a>
+                                                <a class="dropdown-item" asp-controller="Localization" asp-action="Index">Керування локалізацією</a>
 
                                             }
                                             else
                                             {
-                                                <a class="dropdown-item" asp-controller="User" asp-action="OrdersUser"> History Order</a>
+                                                <a class="dropdown-item" asp-controller="User" asp-action="OrdersUser">Історія замовлень</a>
                                             }
                                             <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" asp-controller="User" asp-action="Detail" asp-route-id="@currentUser.Id"><span class="h6 mb-0">View Profile</span> </a>
-                                            <a class="dropdown-item" asp-controller="User" asp-action="EditProfile"><span class="h6 mb-0">Edit Profile</span> </a>
+                                            <a class="dropdown-item" asp-controller="User" asp-action="Detail" asp-route-id="@currentUser.Id"><span class="h6 mb-0">Перегляд профілю</span> </a>
+                                            <a class="dropdown-item" asp-controller="User" asp-action="EditProfile"><span class="h6 mb-0">Редагування профілю</span> </a>
 
 
 
                                             <form method="post" asp-controller="Account" asp-action="Logout">
-                                                <input type="submit" class="btn form-control" value="Logout" />
+                                                <input type="submit" class="btn form-control" value="Вихід" />
                                             </form>
 
 

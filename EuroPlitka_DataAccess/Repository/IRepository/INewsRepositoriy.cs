@@ -9,5 +9,7 @@ namespace EuroPlitka_DataAccess.Repository.IRepository
        public Task<IEnumerable<News>> MarkItem(IEnumerable<News> items);
        public Task<INewsRepositoriy> ChkMarkItem(IEnumerable<News> items);
         public bool UpdateRange(IEnumerable<News> items);
+
+        Task<IEnumerable<News>> GetAllTest();
     }
 }

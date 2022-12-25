@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33020.496
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EuroPlitka", "EuroPlitka\EuroPlitka.csproj", "{7A852288-403E-474D-8E75-1C02D72ADF53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EuroPlitka", "EuroPlitka\EuroPlitka.csproj", "{7A852288-403E-474D-8E75-1C02D72ADF53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EuroPlitka_Model", "EuroPlitka_Model\EuroPlitka_Model.csproj", "{254BD340-23C2-45AC-AE4E-F3BC4493BE90}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EuroPlitka_Model", "EuroPlitka_Model\EuroPlitka_Model.csproj", "{254BD340-23C2-45AC-AE4E-F3BC4493BE90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EuroPlitka_DataAccess", "EuroPlitka_DataAccess\EuroPlitka_DataAccess.csproj", "{C667FD81-59B3-459B-B2C4-AE9119FB52D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EuroPlitka_DataAccess", "EuroPlitka_DataAccess\EuroPlitka_DataAccess.csproj", "{C667FD81-59B3-459B-B2C4-AE9119FB52D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EuroPlitka_Services", "EuroPlitka_Services\EuroPlitka_Services.csproj", "{83C482DD-20B0-4B43-BD16-408CBF8E4F8C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EuroPlitka_Services", "EuroPlitka_Services\EuroPlitka_Services.csproj", "{83C482DD-20B0-4B43-BD16-408CBF8E4F8C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EuroPlitka.Test", "EuroPlitka.Test\EuroPlitka.Test.csproj", "{655D0FE1-9B73-4F92-A67A-1B98093CEA0C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{83C482DD-20B0-4B43-BD16-408CBF8E4F8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83C482DD-20B0-4B43-BD16-408CBF8E4F8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83C482DD-20B0-4B43-BD16-408CBF8E4F8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{655D0FE1-9B73-4F92-A67A-1B98093CEA0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{655D0FE1-9B73-4F92-A67A-1B98093CEA0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{655D0FE1-9B73-4F92-A67A-1B98093CEA0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{655D0FE1-9B73-4F92-A67A-1B98093CEA0C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

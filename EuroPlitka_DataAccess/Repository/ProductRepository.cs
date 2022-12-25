@@ -19,6 +19,11 @@ namespace EuroPlitka_DataAccess.Repository
 
 
 
+
+
+
+
+
         public  async Task<IEnumerable<SelectListItem>> GetAllDropdownList(string obj)
         {
             //DropDownList
@@ -70,20 +75,15 @@ namespace EuroPlitka_DataAccess.Repository
             return null;
         }
 
+        public async Task<IEnumerable<Product>> GetAllProduct()
+        {
+            return await GetAll(includeProperties: "Category,ProductType");
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+        public async Task<int> GetCountAsync()
+        {
+            return await _db.Product.CountAsync();
+        }
 
         public async Task<IEnumerable<Product>> GetProductCategory(Expression<Func<Product, bool>>? filter = null, string? includeProperties = null, bool isTracking = true)
         {
@@ -113,12 +113,6 @@ namespace EuroPlitka_DataAccess.Repository
 
 
 
-        //public void Update(Product obj)
-        //{
-        //    _db.Product.Update(obj);
-        //}
-
-
 
 
         public async Task<IEnumerable<Product>> GetSliceAsync(int offset, int size, int idCat)
@@ -131,6 +125,18 @@ namespace EuroPlitka_DataAccess.Repository
         }
 
 
+        public bool RemoveRange(IEnumerable<Product> items)
+        {
+            dbSet.RemoveRange(items);
+            return Save();
+        }
+
+
+
+        public async Task<IEnumerable<Product>> GetAllTest()
+        {
+            return await _db.Product.ToListAsync();
+        }
 
     }
 }

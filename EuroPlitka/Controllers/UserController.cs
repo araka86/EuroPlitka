@@ -33,7 +33,6 @@ namespace EuroPlitka.Controllers
         [HttpGet("users")]
         public async Task<IActionResult> Index()
         {
-
             IEnumerable<AplicationUser> users = await _userRepository.GetAll();
             return View(users);
         }
@@ -109,7 +108,7 @@ namespace EuroPlitka.Controllers
             return RedirectToAction("Detail", "User", new { usr.Id });
         }
    
-        [HttpGet]
+        [HttpGet("user/{id}")]
         public async Task<IActionResult> DetailModal(string id)
         {
             var user = await _userRepository.FirstOrDefault(x => x.Id == id);
@@ -159,7 +158,7 @@ namespace EuroPlitka.Controllers
         }
 
 
-        [HttpGet("users/{Id}")]
+        [HttpGet("user/{Id}")]
         public async Task<IActionResult> Delete(string id)
         {
             var findUser = _userRepository.FirstOrDefault(x => x.Id == id);
@@ -180,7 +179,7 @@ namespace EuroPlitka.Controllers
             };
             return View(delUser);
         }
-        [HttpPost("users/{Id}"), ActionName("Delete")]
+        [HttpPost("user/{Id}"), ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeletePost(string? id)
         {
@@ -195,15 +194,38 @@ namespace EuroPlitka.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ChangePassword(AplicationUser changePassUser)
+        public async Task<IActionResult> ChangePassword( UsersVM changePassUser)
         {
 
             var user = await _userManager.GetUserAsync(User);
-            var finduser = await _userManager.FindByIdAsync(changePassUser.Id);
-            string resetToken = await _userManager.GeneratePasswordResetTokenAsync(finduser);
-            var reset = await _userManager.ResetPasswordAsync(finduser, resetToken, changePassUser.Password);
-            TempData[WebConstanta.Success] = "Password change successfully";
-            return RedirectToAction("Index", "Home");
+       
+          
+            var chkPasswd = await _userManager.CheckPasswordAsync(user, changePassUser.OldPasswd);
+            if (chkPasswd)
+            {
+                string resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var reset = await _userManager.ResetPasswordAsync(user, resetToken, changePassUser.aplicationUser.Password);
+
+                if (reset.Succeeded)
+                {
+                    TempData[WebConstanta.Success] = "Password change successfully";
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    TempData[WebConstanta.Error] = "Password change Error!!!";
+                    return RedirectToAction("Index", "Home");
+                }
+
+            }
+            else
+            {
+                TempData[WebConstanta.Error] = "Password Wrong!!!";
+                return RedirectToAction("Index", "Home");
+            }
+
+
+
         }
 
         [HttpGet]

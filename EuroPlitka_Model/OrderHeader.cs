@@ -31,13 +31,13 @@ namespace EuroPlitka_Model
         [Required]
         public string? PhoneNumber { get; set; }
         [Required]
-        public string? StreetAddress { get; set; }
+        public string? StreetAddress { get; set; } = string.Empty;
         [Required]
-        public string? City { get; set; }
+        public string? City { get; set; } = string.Empty;
         [Required]
-        public string? State { get; set; }
+        public string? State { get; set; } = string.Empty;
         [Required]
-        public string? PostalCode { get; set; }
+        public string? PostalCode { get; set; } = string.Empty;
         [Required]
         public string? FullName { get; set; }
         public string? Email { get; set; }

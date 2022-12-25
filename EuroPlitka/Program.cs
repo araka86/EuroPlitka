@@ -35,12 +35,9 @@ builder.Services.AddControllersWithViews()
                 }).AddViewLocalization();
 
 
-
+//Localize
 builder.Services.AddTransient<IStringLocalizer, EFStringLocalizer>();
 builder.Services.AddSingleton<IStringLocalizerFactory>(new EFStringLocalizerFactory(WebConstanta.connectToDb));
-         
-
-
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
     var supportedCultures = new[]
@@ -48,8 +45,6 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
                     new CultureInfo("uk"),
                     new CultureInfo("en")    
               };
-
-
     options.DefaultRequestCulture = new RequestCulture("uk");
     options.SupportedCultures = supportedCultures;
     options.SupportedUICultures = supportedCultures;

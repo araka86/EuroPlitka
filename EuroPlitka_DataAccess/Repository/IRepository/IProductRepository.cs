@@ -2,6 +2,7 @@
 using EuroPlitka_DataAccess.Repository.IReposotory;
 using EuroPlitka_Model;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace EuroPlitka_DataAccess.Repository.IRepository
@@ -19,7 +20,15 @@ namespace EuroPlitka_DataAccess.Repository.IRepository
 
 
 
-          Task<IEnumerable<Product>> GetSliceAsync(int offset, int size, int idCat);
+        public bool RemoveRange(IEnumerable<Product> items);
+
+        Task<IEnumerable<Product>> GetSliceAsync(int offset, int size, int idCat);
+        Task<IEnumerable<Product>> GetAllProduct();
+        Task<int> GetCountAsync();
+
+        Task<IEnumerable<Product>> GetAllTest();
+      
+
 
 
     }

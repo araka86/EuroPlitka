@@ -17,13 +17,6 @@ namespace EuroPlitka_DataAccess.Repository
             dbSet = _db.Set<T>();
         }
 
-        //public void Add(T entity)
-        //{
-        //    dbSet.Add(entity);
-        //}
-
-       
-
         public async Task<T> Find(int id)
         {
             return  dbSet.Find(id);
@@ -84,23 +77,15 @@ namespace EuroPlitka_DataAccess.Repository
            
         }
 
-        //public void Remove(T entity)
-        //{
-        //    dbSet.Remove(entity);
-        //}
-
-        public void RemoveRange(IEnumerable<T> entity)
+   
+        public bool RemoveRange(IEnumerable<T> entity)
         {
             dbSet.RemoveRange(entity);
+            return Save();
 
         }
 
-        //public void Save()
-        //{
-        //    _db.SaveChanges();
-        //}
-
-
+      
 
 
 

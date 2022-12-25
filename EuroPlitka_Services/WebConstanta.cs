@@ -30,6 +30,12 @@ namespace EuroPlitka_Services
 
         public const string connectToDb = "Server=DESKTOP-ESCI621; Database=EuroPlitka2; Trusted_Connection=True; MultipleActiveResultSets=True; TrustServerCertificate=True";
 
+        //forTest
+        public const string TestUserName = "TestUser";
+        public const string TestIdUser = "TestUser";
+
+
+
 
         //remove duplicate for category product type
         public static T[] RemoteDuplicates<T>(T[] array)

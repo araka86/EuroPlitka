@@ -77,8 +77,9 @@ namespace EuroPlitka.Controllers
 
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var usr = User.Identity.Name;
 
-
+        
 
             if (ModelState.IsValid)
             {

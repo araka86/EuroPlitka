@@ -12,15 +12,17 @@ namespace EuroPlitka.Controllers
         {
             _prodRepo = prodRepo;
         }
-        public async Task<IActionResult> Index(ProdoctVM prodoctVM, bool reset = false)
+        [HttpGet]
+        public async Task<IActionResult> Index(ProdoctVM? prodoctVM, bool reset = false)
         {
 
             ProdoctVM prodocts = new ProdoctVM()
             {
-                Products = await _prodRepo.GetAll(includeProperties: "Category,ProductType"),
+                Products = await _prodRepo.GetAllProduct(),
                 CategorySelectList = await _prodRepo.GetAllDropdownList(WebConstanta.CategoryName),
                 ProductTypeSelectList = await _prodRepo.GetAllDropdownList(WebConstanta.ProductTypeName)
             };
+
             if (reset == false)
             {
                 if (prodoctVM.NameProduct != null || prodoctVM.CategoryListFilter != null || prodoctVM.ProductListFilter != null)
@@ -44,15 +46,14 @@ namespace EuroPlitka.Controllers
 
             }
 
-
-          
-     
             ModelState.Clear();
             return View(prodocts);
         }
 
         //Get - Upsert(Views-->Index (create/update))
-        public async Task<IActionResult> Upsert(int? id)
+        [HttpGet]
+        [Route("Product/Upsert/{id}")]
+        public async Task<IActionResult> Upsert(int? id )
         {
             ProdoctVM prodoctVM = new ProdoctVM()
             {
@@ -61,26 +62,28 @@ namespace EuroPlitka.Controllers
                 CategorySelectListEng = await _prodRepo.GetAllDropdownListEng(WebConstanta.CategoryName),
                 ProductTypeSelectList = await _prodRepo.GetAllDropdownList(WebConstanta.ProductTypeName)
             };
-            if (id == null) //Check object
+            if (id == null) 
             {
-                //this is for create
-                return View(prodoctVM);
+                return NotFound();
+        
             }
             else
             {
                 //update
                 prodoctVM.Product = await _prodRepo.Find(id.GetValueOrDefault());
-                if (prodoctVM == null)
+                if (prodoctVM.Product == null)
                     return NotFound();
 
 
-                return View(prodoctVM);
+
+                 return View(prodoctVM);
+            
             }
         }
         //Post - Upsert (Views-->Upsert(only UPDATE) )
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert(ProdoctVM prodoctVM)
+        public async Task<IActionResult> Upsert(ProdoctVM? prodoctVM)
         {
             if (ModelState.IsValid)
             {
@@ -150,6 +153,14 @@ namespace EuroPlitka.Controllers
             TempData[WebConstanta.Success] = "Prodoct Delete successfully";
             return RedirectToAction("Index");
         }
+
+
+
+
+     
+
+
+
 
     }
 }

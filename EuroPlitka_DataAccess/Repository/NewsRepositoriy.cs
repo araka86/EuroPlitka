@@ -7,16 +7,19 @@ namespace EuroPlitka_DataAccess.Repository
 {
     public class NewsRepositoriy : Repository<News>, INewsRepositoriy
     {
-       
 
+        private readonly EuroPlitkaDbContext _db;
         public NewsRepositoriy(EuroPlitkaDbContext db) : base(db)
         {
            
         }
 
-       
+        public async Task<IEnumerable<News>> GetAllTest()
+        {
+            return await _db.News.ToListAsync();
+        }
 
-       public async Task<IEnumerable<News>> MarkItem(IEnumerable<News> items)
+        public async Task<IEnumerable<News>> MarkItem(IEnumerable<News> items)
         {
            
            foreach (var item in items)
