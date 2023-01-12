@@ -80,10 +80,9 @@ namespace EuroPlitka_DataAccess.Repository
             return await GetAll(includeProperties: "Category,ProductType");
         }
 
-        public async Task<int> GetCountAsync()
-        {
-            return await _db.Product.CountAsync();
-        }
+
+        public async Task<int> GetCountAsync() => await _db.Product.CountAsync();
+        
 
         public async Task<IEnumerable<Product>> GetProductCategory(Expression<Func<Product, bool>>? filter = null, string? includeProperties = null, bool isTracking = true)
         {

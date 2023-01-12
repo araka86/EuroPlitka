@@ -33,7 +33,7 @@ namespace EuroPlitka.Controllers
             if (ModelState.IsValid)
             {
                 _catRepo.Add(obj);             
-                TempData[WebConstanta.Success] = "Catogory created successfully";
+             //   TempData[WebConstanta.Success] = "Catogory created successfully";
                 return Redirect("Index");
             }
             TempData[WebConstanta.Error] = "Error while creating category ";
@@ -61,7 +61,7 @@ namespace EuroPlitka.Controllers
             {
                 _catRepo.Update(obj);
                
-                TempData[WebConstanta.Success] = "Catogory update successfully";
+           //     TempData[WebConstanta.Success] = "Catogory update successfully";
                 return RedirectToAction("Index");
             }
             TempData[WebConstanta.Error] = "Catogory update Error";

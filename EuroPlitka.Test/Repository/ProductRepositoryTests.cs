@@ -6,8 +6,9 @@ using EuroPlitka_DataAccess.Repository.IRepository;
 using EuroPlitka_Model;
 using EuroPlitka_Model.ViewModels;
 using EuroPlitka_Services;
+using FakeItEasy;
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
+using Moq;
 using Syncfusion.EJ2.Linq;
 using System.Collections.Immutable;
 
@@ -16,14 +17,13 @@ namespace EuroPlitka.Test.Repository
     public class ProductRepositoryTests
     {
         private IProductRepository _productRepo;
-        private ProductController _productController;
         private EuroPlitkaDbContext _EuroPlitkaDbContext;
 
         public ProductRepositoryTests()
         {
             _EuroPlitkaDbContext = InitializeStartData.GetDbContext().GetAwaiter().GetResult();
             _productRepo = new ProductRepository(_EuroPlitkaDbContext);
-            _productController = new ProductController(_productRepo);
+
         }
 
 
@@ -34,7 +34,7 @@ namespace EuroPlitka.Test.Repository
         public async void ProductRerository_GetAll_ReturnsProductList()
         {
             //Arrange
-       
+
 
             var prodVm = new ProdoctVM()
             {
@@ -77,7 +77,7 @@ namespace EuroPlitka.Test.Repository
         {
             //Arrange
             var id = 99999;
-         
+
 
             //Act
             var result = _productRepo.FirstOrDefault(x => x.Id == id);
@@ -96,6 +96,7 @@ namespace EuroPlitka.Test.Repository
 
         //Add product
         [Fact]
+        [Trait("ProductRepo", "Add Product")]
         public async void ProductRerository_Add_ReturnsBool()
         {
             //Arrange
@@ -150,9 +151,30 @@ namespace EuroPlitka.Test.Repository
 
 
 
- 
+        [Fact]
+        public  void ProductRerository_UpdatePrice_ReturnsBool()
+        {
+            //Arrange
 
-     
+            EuroPlitkaDbContext _EuroPlitkaDbContextt = InitializeStartData.GetDbContext().GetAwaiter().GetResult();
+            IProductRepository _productRepository = new ProductRepository(_EuroPlitkaDbContextt);
+            double UpdatePrice = 17.500;
+            int id = 2;
+            Product findProduct = _productRepository.FirstOrDefault(x => x.Id == id).Result;
+            findProduct.Price = UpdatePrice;
+
+            //Act
+            var result = _productRepository.Update(findProduct);
+            var findUdpateName = _productRepository.FirstOrDefault(x => x.Id == id);
+
+            //Assert
+            result.Should().BeTrue();
+            findUdpateName.Result.Should().NotBeNull();
+            findUdpateName.Result.Price.Should().Be(UpdatePrice);
+        }
+
+
+
 
 
 
@@ -168,6 +190,7 @@ namespace EuroPlitka.Test.Repository
 
         //delete product
         [Fact]
+        [Trait("ProductRepo", "Delete Product")]
         public async void ProductRepository_SuccessfulDelete_ReturnsTrue()
         {
 
@@ -187,7 +210,7 @@ namespace EuroPlitka.Test.Repository
         public async void ProductRepository_SuccessfulDeleteAll_ReturnsTrue()
         {
             //Arrange
-            IEnumerable<Product> products =  _EuroPlitkaDbContext.Product;          
+            IEnumerable<Product> products = _EuroPlitkaDbContext.Product;
 
             //Act        
             var result = _productRepo.RemoveRange(products);
@@ -197,6 +220,64 @@ namespace EuroPlitka.Test.Repository
             result.Should().BeTrue();
             count.Should().Be(0);
         }
+
+
+
+
+
+
+        [Fact]
+        [Trait("ProductRepo", "Count Product")]
+        public async void ProductRepository_GetCount_ReturnsCount()
+        {
+
+            //Arrange
+          
+          
+
+
+            int countProduct = 10;
+            var _prodRepo = A.Fake<IProductRepository>();
+            A.CallTo(() => _prodRepo.GetCountAsync()).Returns(countProduct);
+
+            //Act
+            var count = await _prodRepo.GetCountAsync();
+            //Assert
+
+            count.Should().Be(countProduct);
+        }
+
+
+
+        
+
+        //інтеграційно-функціональний
+        [Fact]
+        [Trait("ProductRepo", "ReturnCount")]
+        public async Task ProductRepository_GetCountProduct()
+        {
+
+            Mock<IProductRepository> Imock = new Mock<IProductRepository>();
+            var fakrRepo = A.Fake<IProductRepository>();
+
+            var controller = new Mock<ProductController>(Imock.Object);
+
+
+          
+
+            var rrr = controller.Object.Upsert(2);
+
+            //Arrange
+            var _EuroPlitkaDbContext = await InitializeStartData.GetDbContext();
+            var _productRepo =  new ProductRepository(_EuroPlitkaDbContext);
+            
+            //Act
+            var count = await _productRepo.GetCountAsync();
+
+            //Assert
+            count.Should().Be(10);
+        }
+
 
 
 

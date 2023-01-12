@@ -1,4 +1,5 @@
 using EuroPlitka;
+using EuroPlitka.Test.Extention;
 using EuroPlitka_DataAccess;
 using EuroPlitka_DataAccess.Data;
 using EuroPlitka_DataAccess.Extensions;
@@ -7,6 +8,7 @@ using EuroPlitka_DataAccess.Repository.IRepository;
 using EuroPlitka_DataAccess.Repository.IReposotory;
 using EuroPlitka_Model;
 using EuroPlitka_Services;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
@@ -53,6 +55,12 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 
 
 
+//builder.Services.AddRazorPages(options =>
+//{
+//    options.Conventions.AuthorizePage("/Home/Contact");
+//});
+
+
 builder.Services.AddScoped<IDbSeed, DbSeed>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IProductTypeRepository, ProductTypeRepository>();
@@ -97,6 +105,18 @@ builder.Services.AddIdentity<AplicationUser, IdentityRole>()
                     .AddEntityFrameworkStores<EuroPlitkaDbContext>();
 
 
+
+
+
+//builder.Services.AddAuthentication(defaultScheme: "TestScheme")
+//                    .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>(
+//                        "TestScheme", options => { });
+
+
+
+
+
+
 //identity Path
 builder.Services.ConfigureApplicationCookie(option =>
 {
@@ -108,6 +128,7 @@ var app = builder.Build();
 
 //localize
 app.UseRequestLocalization();
+
 
 
 

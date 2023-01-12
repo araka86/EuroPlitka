@@ -25,6 +25,7 @@ namespace EuroPlitka.Test.Controllers
             _productController = new ProductController(_productRepo);
         }
         [Fact]
+        [Trait("Product", "Index")]
         public async void ProductCantroller_Index_Returns_Success()
         {
             //Arrange
@@ -69,6 +70,17 @@ namespace EuroPlitka.Test.Controllers
         }
 
 
+
+
+
+
+
+
+
+
+
+
+
         [Fact]
         public async void productController_Upsert_Product_id_NotExsist()
         {
@@ -105,6 +117,27 @@ namespace EuroPlitka.Test.Controllers
             var viewResultNew =  Assert.IsType<ViewResult>(viewResult);
             var modelNew = Assert.IsAssignableFrom<ProdoctVM>(viewResultNew.Model);
             Assert.Equal(10, modelNew.Products.Count());
+          
+        }
+
+
+        [Fact]
+        public async Task IndexTestReturnViewResultSuccess()
+        {
+            //Arrange
+
+            var FakeproductVm = A.Fake<ProdoctVM>();
+
+            //Act
+
+            var viewResult = await _productController.Index(FakeproductVm);
+
+            //Assert
+
+            var viewResultNew = Assert.IsType<ViewResult>(viewResult);
+            var modelNew = Assert.IsAssignableFrom<ProdoctVM>(viewResultNew.Model);
+            Assert.Equal(10, modelNew.Products.Count());
+
 
         }
 

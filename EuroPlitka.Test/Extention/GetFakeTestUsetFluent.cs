@@ -9,8 +9,6 @@ namespace EuroPlitka.Test.Extintion
     public static class GetFakeTestUsetFluent
     {
 
-
-
         public static T WithTestUser<T>(this T controller) where T : Controller
         {
             controller.ControllerContext = new ControllerContext()

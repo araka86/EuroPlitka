@@ -1,18 +1,11 @@
 ﻿using EuroPlitka_DataAccess.Data;
 using EuroPlitka_Model;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EuroPlitka.Test.Data
 {
     public static class InitializeStartData
     {
-
-
         public static async Task<EuroPlitkaDbContext> GetDbContext()
         {
             var options = new DbContextOptionsBuilder<EuroPlitkaDbContext>()
@@ -31,15 +24,8 @@ namespace EuroPlitka.Test.Data
                           shortDesc = "shDesc",
                           Description = "desc",
                           Price = 100 + i,
-                          Category = new Category()
-                          {
-                              NameUa = $"UaName {i}",
-                              NameEng = $"EngName {i}"
-                          },
-                          ProductType = new ProductType()
-                          {
-                              Name = $"Type {i}"
-                          }
+                          Category = new Category(){NameUa = $"UaName {i}",NameEng = $"EngName {i}" },
+                          ProductType = new ProductType() { Name = $"Type {i}" }
                       });
                     await databaseContext.SaveChangesAsync();
                 }

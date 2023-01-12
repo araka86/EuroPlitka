@@ -8,6 +8,7 @@ using EuroPlitka_DataAccess.Repository.IRepository;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Localization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EuroPlitka.Controllers
 {
@@ -56,38 +57,16 @@ namespace EuroPlitka.Controllers
 
         public async Task<IActionResult> Index()
         {
-
-            var langue1 = CookieRequestCultureProvider.DefaultCookieName;
-            var langue2 = CookieRequestCultureProvider.MakeCookieValue(new RequestCulture("en"));
-            var langue3 = new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) };
-
-
-
             var productNews = new NewsProducstHomeVM()
             {
                 News = await _newsRepositoriy.GetAll(x => x.IsMainMenu == true, orderBy: y => y.OrderByDescending(c => c.DateTime)),
                 Products =  _productRepository.GetAllProduct().GetAwaiter().GetResult().Take(4)
             };
-
-            var news = await _newsRepositoriy.GetAll(x => x.IsMainMenu == true, orderBy: y => y.OrderByDescending(c => c.DateTime));
-
             await _newsRepositoriy.ChkMarkItem(productNews.News);
-
-
-
-
-
-
-
-            //  var claimsIndentity = (ClaimsIdentity)User.Identity;
-            //   var claim = claimsIndentity.FindFirst(ClaimTypes.NameIdentifier);
               var usr = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            var nameUser = User.Identity.Name;
-
+              var nameUser = User.Identity.Name;
             if (usr != null)
             {
-
                 var getbasketUser = _basketRepo.GetAll(x => x.CreatedByUserId == usr).Result;
                 if (getbasketUser != null && getbasketUser.Any())
                 {
@@ -108,13 +87,11 @@ namespace EuroPlitka.Controllers
                 }
 
             }
-
-
-
-
-            return this.View(productNews);
-          //  return this.View(news);
+            return View(productNews);
         }
+
+
+    
 
         public async Task<IActionResult> Details(int id)
         {
@@ -246,6 +223,7 @@ namespace EuroPlitka.Controllers
 
         public ActionResult Privacy() => View();
         public ActionResult About() => View();
+        public ActionResult Contact() => View();
         public ActionResult Modal(int id) => PartialView();
 
         [HttpGet]
